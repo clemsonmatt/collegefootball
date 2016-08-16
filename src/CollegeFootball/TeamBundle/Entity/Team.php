@@ -27,7 +27,7 @@ class Team
     public function __toString()
     {
         if ($this->currentRanking()) {
-            return '#'.$this->currentRanking().' '.$this->name;
+            return '#'.$this->currentRanking()->getApRank().' '.$this->name;
         }
 
         return $this->name;
@@ -104,7 +104,6 @@ class Team
     public function currentRanking()
     {
         if (count($this->rankings)) {
-            die(dump("in here"));
             return $this->rankings->last();
         }
 

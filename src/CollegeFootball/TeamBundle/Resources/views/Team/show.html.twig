@@ -5,7 +5,7 @@
         <div class="panel-body" style="padding-bottom: 0px;">
             <img src="{{ asset(team.imageLocation) }}" style="width: 100px; float: left; padding-right: 15px; border-right: 1px solid #{{ team.primaryColor }};">
             <h2 style="color: #{{ team.primaryColor }}; margin-left: 110px; line-height: 2.3em; margin-bottom: 0px; padding-bottom: 0px;">
-                {{ team.name }}
+                {{ team }}
             </h2>
         </div>
     </div>
@@ -106,10 +106,10 @@
                                 </div>
                                 {% if game.homeTeam == team %}
                                     <img src="{{ game.awayTeam.imageLocation }}" style="width: 35px;">
-                                    vs {{ game.awayTeam.nameShort }}
+                                    vs {{ game.awayTeam.currentRanking ? '#' ~ game.awayTeam.currentRanking.apRank }} {{ game.awayTeam.nameShort }}
                                 {% else %}
                                     <img src="{{ game.homeTeam.imageLocation }}" style="width: 35px;">
-                                    @ {{ game.homeTeam.nameShort }}
+                                    @ {{ game.homeTeam.currentRanking ? '#' ~ game.homeTeam.currentRanking.apRank }} {{ game.homeTeam.nameShort }}
                                 {% endif %}
                             </h4>
                         </a>

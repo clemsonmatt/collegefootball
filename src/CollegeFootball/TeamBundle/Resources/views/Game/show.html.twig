@@ -8,7 +8,7 @@
                 <h2 style="color: #{{ game.awayTeam.primaryColor }}; margin-right: 10px; line-height: 2.3em; margin-bottom: 0px; padding-bottom: 0px; float: right;">
                     <small style="color: #ccc;">Away</small>
                     <a href="{{ path('collegefootball_team_show', {'slug': game.awayTeam.slug}) }}" style="color: inherit;">
-                        {{ game.awayTeam.name }}
+                        {{ game.awayTeam }}
                     </a>
                 </h2>
             </div>
@@ -16,7 +16,7 @@
             <img src="{{ asset(game.homeTeam.imageLocation) }}" style="width: 100px; float: left; padding-right: 15px; border-right: 1px solid #{{ game.homeTeam.primaryColor }};">
             <h2 style="color: #{{ game.homeTeam.primaryColor }}; margin-left: 110px; line-height: 2.3em; margin-bottom: 0px; padding-bottom: 0px;">
                 <a href="{{ path('collegefootball_team_show', {'slug': game.homeTeam.slug}) }}" style="color: inherit;">
-                    {{ game.homeTeam.name }}
+                    {{ game.homeTeam }}
                 </a>
                 <small style="color: #ccc;">Home</small>
             </h2>

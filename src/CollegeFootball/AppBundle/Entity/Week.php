@@ -2,6 +2,7 @@
 
 namespace CollegeFootball\AppBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -11,6 +12,11 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Week
 {
+    public function __construct()
+    {
+        $this->rankings = new ArrayCollection();
+    }
+
     public function __toString()
     {
         if ($this->number == 0) {
@@ -46,6 +52,11 @@ class Week
      * @ORM\Column(name="end_date", type="date")
      */
     private $endDate;
+
+    /**
+     * @ORM\OneToMany(targetEntity="CollegeFootball\TeamBundle\Entity\Ranking", mappedBy="week")
+     */
+    private $rankings;
 
 
     /**
@@ -148,5 +159,15 @@ class Week
     public function getEndDate()
     {
         return $this->endDate;
+    }
+
+    /**
+     * Get rankings
+     *
+     * @return Ranking
+     */
+    public function getRankings()
+    {
+        return $this->rankings;
     }
 }

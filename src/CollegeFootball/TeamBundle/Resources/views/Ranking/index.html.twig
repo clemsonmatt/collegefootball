@@ -4,16 +4,25 @@
     <legend>
         <h2>
             <div class="btn-group pull-right">
-                <a href="#" class="btn btn-sm btn-primary">
+                <a href="{{ path('collegefootball_team_ranking_add', {'week': week.id}) }}" class="btn btn-sm btn-primary">
                     {{ icon('edit') }}
                 </a>
-                <a href="#" class="btn btn-sm btn-primary">
+                <button type="button" class="btn btn-sm btn-primary dropdown-toggle" data-toggle="dropdown">
                     {{ icon('calendar') }}
-                    Week 1
+                    {{ week }}
                     <span class="caret"></span>
-                </a>
+                </button>
+                <ul class="dropdown-menu dropdown-menu-right">
+                    {% for season_week in weeks %}
+                        <li>
+                            <a href="{{ path('collegefootball_team_ranking_index', {'week': season_week.id}) }}">
+                                {{ season_week }}
+                            </a>
+                        </li>
+                    {% endfor %}
+                </ul>
             </div>
-            Week 1 Standings
+            {{ week }} Standings
         </h2>
     </legend>
     <div class="row">
@@ -24,7 +33,13 @@
                 </div>
                 <ul class="list-group">
                     {% for ranking in ap_rankings %}
-                        <li class="list-group-item">{{ ranking }}</li>
+                        <a href="{{ path('collegefootball_team_show', {'slug': ranking.team.slug}) }}" class="list-group-item">
+                            <h4>
+                                <img src="{{ ranking.team.imageLocation }}" style="height: 50px;">
+                                #{{ ranking.apRank }}
+                                {{ ranking.team.name }}
+                            </h4>
+                        </a>
                     {% endfor %}
                 </ul>
             </div>
@@ -36,7 +51,13 @@
                 </div>
                 <ul class="list-group">
                     {% for ranking in coaches_poll_rankings %}
-                        <li class="list-group-item">#{{ ranking.coachesPollRank }} {{ ranking.team }}</li>
+                        <a href="{{ path('collegefootball_team_show', {'slug': ranking.team.slug}) }}" class="list-group-item">
+                            <h4>
+                                <img src="{{ ranking.team.imageLocation }}" style="height: 50px;">
+                                #{{ ranking.coachesPollRank }}
+                                {{ ranking.team.name }}
+                            </h4>
+                        </a>
                     {% endfor %}
                 </ul>
             </div>

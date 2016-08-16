@@ -26,13 +26,21 @@ AppBundle
 
 TeamBundle
     Controller
-        Overview
-        Schedule
-            - CRUD Games
-        Stats
-            - Show stats summary (Game) / compare to other teams
-        Roster
-            - CRUD / Show player stats / compare to others
+        Conference
+        Game
+        GameStats
+        Ranking
+            - Manage AP/Coaches top 25 by week
+            - Manage Conference standings by week
+        Team
+        Team/
+            Overview
+            Schedule
+                - CRUD Games
+            Stats
+                - Show stats summary (Game) / compare to other teams
+            Roster
+                - CRUD / Show player stats / compare to others
     Entity
         Conference
             Name

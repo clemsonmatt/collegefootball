@@ -5,6 +5,7 @@ namespace CollegeFootball\TeamBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
+use CollegeFootball\AppBundle\Entity\Week;
 use CollegeFootball\TeamBundle\Entity\Team;
 
 /**
@@ -15,7 +16,7 @@ class Ranking
 {
     public function __toString()
     {
-        return '#'.$this->apRank.' '.$this->team;
+        return (string)$this->team;
     }
 
     /**
@@ -26,34 +27,30 @@ class Ranking
     protected $id;
 
     /**
-     * @ORM\Column(name="week", type="integer")
-     */
-    private $week;
-
-    /**
-     * @ORM\Column(name="season", type="integer")
-     */
-    private $season;
-
-    /**
-     * @ORM\Column(name="ap_rank", type="integer")
+     * @ORM\Column(name="ap_rank", type="integer", nullable=true)
      */
     private $apRank;
 
     /**
-     * @ORM\Column(name="coaches_poll_rank", type="integer")
+     * @ORM\Column(name="coaches_poll_rank", type="integer", nullable=true)
      */
     private $coachesPollRank;
 
     /**
-     * @ORM\Column(name="conference_rank", type="integer")
+     * @ORM\Column(name="conference_rank", type="integer", nullable=true)
      */
     private $conferenceRank;
 
     /**
-     * @ORM\Column(name="sub_conference_rank", type="integer")
+     * @ORM\Column(name="sub_conference_rank", type="integer", nullable=true)
      */
     private $subConferenceRank;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="CollegeFootball\AppBundle\Entity\Week", inversedBy="rankings")
+     * @ORM\JoinColumn(name="week_id", referencedColumnName="id")
+     */
+    private $week;
 
     /**
      * @ORM\ManyToOne(targetEntity="Team", inversedBy="rankings")
@@ -70,52 +67,6 @@ class Ranking
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * Set week
-     *
-     * @param integer $week
-     * @return Ranking
-     */
-    public function setWeek($week)
-    {
-        $this->week = $week;
-
-        return $this;
-    }
-
-    /**
-     * Get week
-     *
-     * @return integer
-     */
-    public function getWeek()
-    {
-        return $this->week;
-    }
-
-    /**
-     * Set season
-     *
-     * @param integer $season
-     * @return Ranking
-     */
-    public function setSeason($season)
-    {
-        $this->season = $season;
-
-        return $this;
-    }
-
-    /**
-     * Get season
-     *
-     * @return integer
-     */
-    public function getSeason()
-    {
-        return $this->season;
     }
 
     /**
@@ -208,6 +159,29 @@ class Ranking
     public function getSubConferenceRank()
     {
         return $this->subConferenceRank;
+    }
+
+    /**
+     * Set week
+     *
+     * @param Week $week
+     * @return Ranking
+     */
+    public function setWeek(Week $week)
+    {
+        $this->week = $week;
+
+        return $this;
+    }
+
+    /**
+     * Get week
+     *
+     * @return Week
+     */
+    public function getWeek()
+    {
+        return $this->week;
     }
 
     /**
