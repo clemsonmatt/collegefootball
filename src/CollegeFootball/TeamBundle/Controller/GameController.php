@@ -16,16 +16,59 @@ use CollegeFootball\TeamBundle\Form\Type\GameType;
 class GameController extends Controller
 {
     /**
-     * @Route("/", name="collegefootball_team_game_index")
+     * @Route("/{season}", name="collegefootball_team_game_index", defaults={"season": null})
+     * @Route("/{season}/week/{week}", name="collegefootball_team_game_index_week", defaults={"week": null})
      */
-    public function indexAction()
+    public function indexAction($season = null, $week = null)
     {
-        $em         = $this->getDoctrine()->getManager();
+        $em = $this->getDoctrine()->getManager();
+
+        if (! $season) {
+            $season = date('Y');
+        }
+
+        $repository  = $em->getRepository('CollegeFootballAppBundle:Week');
+        $seasonWeeks = $repository->createQueryBuilder('w')
+            ->where('w.season = :season')
+            ->andWhere('w.number > 0')
+            ->orderBy('w.endDate', 'ASC')
+            ->setParameter('season', $season)
+            ->getQuery()
+            ->getResult();
+
+        if ($week) {
+            $week = $repository->findOneBy([
+                'season' => $season,
+                'number' => $week,
+            ], [
+                'endDate' => 'ASC'
+            ]);
+        } else {
+            $week = $seasonWeeks[1];
+
+            foreach ($seasonWeeks as $singleWeek) {
+                if ($singleWeek->getEndDate() > date('Y-m-d') && $singleWeek->getNumber() != 0) {
+                    $week = $singleWeek;
+                    break;
+                }
+            }
+        }
+
         $repository = $em->getRepository('CollegeFootballTeamBundle:Game');
-        $games      = $repository->findBy([], ['date' => 'asc']);
+        $games      = $repository->createQueryBuilder('g')
+            ->where('g.date >= :startDate')
+            ->andWhere('g.date <= :endDate')
+            ->orderBy('g.date, g.time')
+            ->setParameter('startDate', $week->getStartDate())
+            ->setParameter('endDate', $week->getEndDate())
+            ->getQuery()
+            ->getResult();
 
         return $this->render('CollegeFootballTeamBundle:Game:index.html.twig', [
-            'games' => $games,
+            'games'        => $games,
+            'season'       => $season,
+            'week'         => $week,
+            'season_weeks' => $seasonWeeks,
         ]);
     }
 

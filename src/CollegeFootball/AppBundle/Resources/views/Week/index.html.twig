@@ -1,0 +1,30 @@
+{% extends 'CollegeFootballAppBundle:Week:layout.html.twig' %}
+
+{% block content %}
+    <legend>
+        <h2>
+            <div class="pull-right">
+                <a href="{{ path('collegefootball_week_add', {'season': "now"|date('Y')}) }}" class="btn btn-sm btn-primary">
+                    {{ icon('plus') }}
+                    Add Week
+                </a>
+            </div>
+            {{ season }} Season
+        </h2>
+    </legend>
+    {% for week in weeks %}
+        <div class="panel panel-default panel-click">
+            <div class="panel-body">
+                <h4>
+                    {{ week }}
+                    <small>{{ week.startDate|date('m/d') }} &ndash; {{ week.endDate|date('m/d') }}</small>
+                </h4>
+            </div>
+        </div>
+    {% else %}
+        <a href="{{ path('collegefootball_week_add', {'season': "now"|date('Y')}) }}" class="btn btn-primary">
+            {{ icon('plus') }}
+            Setup Season
+        </a>
+    {% endfor %}
+{% endblock %}

@@ -18,14 +18,11 @@ AppBundle
             game
             winner
             prediction
-        Ranking
-            week
+        Week
             season
-            team
-            ap_rank
-            coaches_poll_rank
-            conference_rank
-            conference_division_rank
+            week_number
+            start_date
+            end_date
 
 TeamBundle
     Controller
@@ -142,6 +139,14 @@ TeamBundle
                     }
                 }
             }
+        Ranking
+            week
+            season
+            team
+            ap_rank
+            coaches_poll_rank
+            conference_rank
+            conference_division_rank
         Roster
             name (f,l)
             school_class

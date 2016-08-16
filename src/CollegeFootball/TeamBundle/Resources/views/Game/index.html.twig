@@ -3,14 +3,23 @@
 {% block content %}
     <legend>
         <h2>
-            <div class="pull-right">
-                <a href="#" class="btn btn-sm btn-primary">
+            <div class="btn-group pull-right">
+                <button type="button" class="btn btn-sm btn-primary dropdown-toggle" data-toggle="dropdown">
                     {{ icon('calendar') }}
-                    Week 1
+                    {{ week }}
                     <span class="caret"></span>
-                </a>
+                </button>
+                <ul class="dropdown-menu dropdown-menu-right">
+                    {% for season_week in season_weeks %}
+                        <li>
+                            <a href="{{ path('collegefootball_team_game_index_week', {'season': season, 'week': season_week.number}) }}">
+                                {{ season_week }}
+                            </a>
+                        </li>
+                    {% endfor %}
+                </ul>
             </div>
-            Week 1 Games
+            {{ week }} Games
         </h2>
     </legend>
     {% for game in games %}
