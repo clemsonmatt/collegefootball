@@ -1,0 +1,16 @@
+<div class="sidebar" role="navigation">
+    <div class="sidebar-nav navbar-collapse">
+        <div class="clearfix">
+            <a href="#" class="navbar-brand">
+                <center><img src="{{ asset('bundles/collegefootballapp/images/espnCollegeFootballLogo.png') }}" style="width: 65%;"></center>
+            </a>
+        </div>
+
+        <div style="margin: 85px 15px 20px 15px;">
+            <input class="form-control" placeholder="Search Teams...">
+        </div>
+
+        {% set primary_navigation = knp_menu_get('CollegeFootballAppBundle:Builder:mainMenu') %}
+        {{ knp_menu_render(primary_navigation, {'currentClass': 'active', 'depth': 2}) }}
+    </div>
+</div>

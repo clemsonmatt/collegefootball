@@ -1,0 +1,54 @@
+{% extends 'CollegeFootballTeamBundle:Conference:layout.html.twig' %}
+{% import _self as macros %}
+
+{% block content %}
+    <legend><h2>FBS (Division I-A Conferences)</h2></legend>
+    {{ macros.conferences(fbs_conferences) }}
+
+    <legend><h2>FCS (Division I-AA Conferences)</h2></legend>
+    {{ macros.conferences(fcs_conferences) }}
+{% endblock %}
+
+{% macro conferences(conferences) %}
+    {% for conference in conferences %}
+        {% if loop.index0 % 3 == 0 or loop.first %}
+            {% if not loop.first %}</div>{% endif %}
+            <div class="row">
+        {% endif %}
+        <div class="col-lg-4 col-sm-6">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <a href="{{ path('collegefootball_team_conference_show', {'slug': conference.slug}) }}">
+                        {{ conference }}
+                    </a>
+                </div>
+                <div class="panel-body">
+                    {% if conference.subConferences|length > 0 %}
+                        {% set current_sub_conference = null %}
+                        {% for subConference, teams in conference.teamsBySubConference %}
+                            {% if current_sub_conference != subConference %}
+                                {% set current_sub_conference = subConference %}
+                                <h4>{{ subConference }}</h4>
+                            {% endif %}
+
+                            {% for team in teams %}
+                                <a href="{{ path('collegefootball_team_show', {'slug': team.slug}) }}" class="text-muted">
+                                    {{ team }}
+                                </a>
+                                <br>
+                            {% endfor %}
+                        {% endfor %}
+                    {% else %}
+                        {% for team in conference.teams %}
+                            <a href="{{ path('collegefootball_team_show', {'slug': team.slug}) }}" class="text-muted">
+                                {{ team }}
+                            </a>
+                            <br>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+    </div>
+{% endmacro %}

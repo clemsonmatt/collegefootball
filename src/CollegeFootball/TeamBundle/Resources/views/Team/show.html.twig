@@ -1,0 +1,121 @@
+{% extends 'CollegeFootballTeamBundle:Team:layout.html.twig' %}
+
+{% block content %}
+    <div class="panel panel-default" style="margin-bottom: 0px;">
+        <div class="panel-body" style="padding-bottom: 0px;">
+            <img src="{{ asset(team.imageLocation) }}" style="width: 100px; float: left; padding-right: 15px; border-right: 1px solid #{{ team.primaryColor }};">
+            <h2 style="color: #{{ team.primaryColor }}; margin-left: 110px; line-height: 2.3em; margin-bottom: 0px; padding-bottom: 0px;">
+                {{ team.name }}
+            </h2>
+        </div>
+    </div>
+    <nav class="navbar navbar-default" style="margin-bottom: 20px;">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-2">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+            </div>
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
+                <ul class="nav navbar-nav">
+                    <li class="active">
+                        <a href="#">
+                            {{ icon('star') }}
+                            Overview
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            {{ icon('calendar') }}
+                            Schedule
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            {{ icon('stats-bars') }}
+                            Statistics
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            {{ icon('clipboard') }}
+                            Roster
+                        </a>
+                    </li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="{{ path('collegefootball_team_edit', {'slug': team.slug}) }}">
+                            {{ icon('edit') }}
+                            Edit
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="row">
+        <div class="col-lg-4">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    {{ icon('clipboard') }}
+                    {{ team.conference }} Standings
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    {{ icon('network') }}
+                    Stat Comparison
+                </div>
+            </div>
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    {{ icon('stats-bars') }}
+                    Stats Overview
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <div class="pull-right">
+                        <a href="{{ path('collegefootball_team_game_add_team', {'slug': team.slug}) }}" class="btn btn-primary btn-xs">
+                            {{ icon('plus') }}
+                            Add Game
+                        </a>
+                    </div>
+                    {{ icon('calendar') }}
+                    Schedule
+                </div>
+                <ul class="list-group">
+                    {% for game in games %}
+                        <a href="{{ path('collegefootball_team_game_show', {'game': game.id}) }}" class="list-group-item">
+                            <h4 class="list-group-item-heading">
+                                <div class="pull-right">
+                                    <small class="text-muted">
+                                        {{ game.date|date('m/d') }}
+                                        <br>
+                                        {{ game.time ? game.time|date('h:i') : 'TBD' }}
+                                    </small>
+                                </div>
+                                {% if game.homeTeam == team %}
+                                    <img src="{{ game.awayTeam.imageLocation }}" style="width: 35px;">
+                                    vs {{ game.awayTeam.nameShort }}
+                                {% else %}
+                                    <img src="{{ game.homeTeam.imageLocation }}" style="width: 35px;">
+                                    @ {{ game.homeTeam.nameShort }}
+                                {% endif %}
+                            </h4>
+                        </a>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,391 @@
+{% extends 'CollegeFootballTeamBundle:Game:layout.html.twig' %}
+{% set macros = _self %}
+
+{% block content %}
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <a href="{{ path('collegefootball_team_game_show', {'game': game.id}) }}">
+                {{ game }}
+            </a>
+            |
+            Manage Statistics
+        </div>
+    </div>
+
+    {{ form_start(form, {'attr': {'class': 'form-horizontal'}}) }}
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="panel panel-default">
+                    <div class="panel-heading" style="padding-bottom: 0px;">
+                        <img src="{{ asset(game.homeTeam.imageLocation) }}" style="width: 100px; float: left; padding-right: 15px; border-right: 1px solid #{{ game.homeTeam.primaryColor }};">
+                        <h2 style="color: #{{ game.homeTeam.primaryColor }}; margin-left: 110px; line-height: 2.3em; margin-bottom: 0px; padding-bottom: 0px;">
+                            {{ game.homeTeam.name }}
+                            <small style="color: #ccc;">Home</small>
+                        </h2>
+                    </div>
+                    <div class="panel-body">
+                        {{ macros.statForm(form.stats.children.homeStats) }}
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="panel panel-default">
+                    <div class="panel-heading" style="padding-bottom: 0px;">
+                        <img src="{{ asset(game.awayTeam.imageLocation) }}" style="width: 100px; float: left; padding-right: 15px; border-right: 1px solid #{{ game.awayTeam.primaryColor }};">
+                        <h2 style="color: #{{ game.awayTeam.primaryColor }}; margin-left: 110px; line-height: 2.3em; margin-bottom: 0px; padding-bottom: 0px;">
+                            {{ game.awayTeam.name }}
+                            <small style="color: #ccc;">Away</small>
+                        </h2>
+                    </div>
+                    <div class="panel-body">
+                        {{ macros.statForm(form.stats.children.awayStats) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <button class="btn btn-primary pull-right" type="submit">
+            {{ icon('checkmark') }}
+            Save
+        </button>
+    {{ form_end(form) }}
+{% endblock %}
+
+{% macro statForm(stats) %}
+    <h4>Points</h4>
+    <div class="form-group row">
+        <label class="col-md-3 control-label">{{ form_label(stats.pointsFinal) }}</label>
+        <div class="col-md-9">
+            {{ form_widget(stats.pointsFinal, {'attr': {'class': 'form-control'}}) }}
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-md-3 control-label">{{ form_label(stats.pointsFirst) }}</label>
+        <div class="col-md-9">
+            {{ form_widget(stats.pointsFirst, {'attr': {'class': 'form-control'}}) }}
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-md-3 control-label">{{ form_label(stats.pointsSecond) }}</label>
+        <div class="col-md-9">
+            {{ form_widget(stats.pointsSecond, {'attr': {'class': 'form-control'}}) }}
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-md-3 control-label">{{ form_label(stats.pointsThird) }}</label>
+        <div class="col-md-9">
+            {{ form_widget(stats.pointsThird, {'attr': {'class': 'form-control'}}) }}
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-md-3 control-label">{{ form_label(stats.pointsFourth) }}</label>
+        <div class="col-md-9">
+            {{ form_widget(stats.pointsFourth, {'attr': {'class': 'form-control'}}) }}
+        </div>
+    </div>
+    <hr>
+
+    <h4>Total Offense</h4>
+    <div class="form-group row">
+        <label class="col-md-3 control-label">{{ form_label(stats.totalOffensePlays) }}</label>
+        <div class="col-md-9">
+            {{ form_widget(stats.totalOffensePlays, {'attr': {'class': 'form-control'}}) }}
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-md-3 control-label">{{ form_label(stats.totalOffenseYards) }}</label>
+        <div class="col-md-9">
+            {{ form_widget(stats.totalOffenseYards, {'attr': {'class': 'form-control'}}) }}
+        </div>
+    </div>
+    <hr>
+
+    <h4>Rushing</h4>
+    <div class="form-group row">
+        <label class="col-md-3 control-label">{{ form_label(stats.rushingYards) }}</label>
+        <div class="col-md-9">
+            {{ form_widget(stats.rushingYards, {'attr': {'class': 'form-control'}}) }}
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-md-3 control-label">{{ form_label(stats.rushingAttempts) }}</label>
+        <div class="col-md-9">
+            {{ form_widget(stats.rushingAttempts, {'attr': {'class': 'form-control'}}) }}
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-md-3 control-label">{{ form_label(stats.rushingTd) }}</label>
+        <div class="col-md-9">
+            {{ form_widget(stats.rushingTd, {'attr': {'class': 'form-control'}}) }}
+        </div>
+    </div>
+    <hr>
+
+    <h4>Passing</h4>
+    <div class="form-group row">
+        <label class="col-md-3 control-label">{{ form_label(stats.passingYards) }}</label>
+        <div class="col-md-9">
+            {{ form_widget(stats.passingYards, {'attr': {'class': 'form-control'}}) }}
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-md-3 control-label">{{ form_label(stats.passingAttempts) }}</label>
+        <div class="col-md-9">
+            {{ form_widget(stats.passingAttempts, {'attr': {'class': 'form-control'}}) }}
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-md-3 control-label">{{ form_label(stats.passingCompletions) }}</label>
+        <div class="col-md-9">
+            {{ form_widget(stats.passingCompletions, {'attr': {'class': 'form-control'}}) }}
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-md-3 control-label">{{ form_label(stats.passingTd) }}</label>
+        <div class="col-md-9">
+            {{ form_widget(stats.passingTd, {'attr': {'class': 'form-control'}}) }}
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-md-3 control-label">{{ form_label(stats.passingInterceptions) }}</label>
+        <div class="col-md-9">
+            {{ form_widget(stats.passingInterceptions, {'attr': {'class': 'form-control'}}) }}
+        </div>
+    </div>
+    <hr>
+
+    <h4>Total Defense</h4>
+    <div class="form-group row">
+        <label class="col-md-3 control-label">{{ form_label(stats.totalDefensePassesBrokenUp) }}</label>
+        <div class="col-md-9">
+            {{ form_widget(stats.totalDefensePassesBrokenUp, {'attr': {'class': 'form-control'}}) }}
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-md-3 control-label">{{ form_label(stats.totalDefenseQBHurries) }}</label>
+        <div class="col-md-9">
+            {{ form_widget(stats.totalDefenseQBHurries, {'attr': {'class': 'form-control'}}) }}
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-md-3 control-label">{{ form_label(stats.totalDefenseFumblesForced) }}</label>
+        <div class="col-md-9">
+            {{ form_widget(stats.totalDefenseFumblesForced, {'attr': {'class': 'form-control'}}) }}
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-md-3 control-label">{{ form_label(stats.totalDefenseKickPuntBlock) }}</label>
+        <div class="col-md-9">
+            {{ form_widget(stats.totalDefenseKickPuntBlock, {'attr': {'class': 'form-control'}}) }}
+        </div>
+    </div>
+    <hr>
+
+    <h4>Sacks</h4>
+    <div class="form-group row">
+        <label class="col-md-3 control-label">{{ form_label(stats.sackCount) }}</label>
+        <div class="col-md-9">
+            {{ form_widget(stats.sackCount, {'attr': {'class': 'form-control'}}) }}
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-md-3 control-label">{{ form_label(stats.sackYards) }}</label>
+        <div class="col-md-9">
+            {{ form_widget(stats.sackYards, {'attr': {'class': 'form-control'}}) }}
+        </div>
+    </div>
+    <hr>
+
+    <h4>Punt Returns</h4>
+    <div class="form-group row">
+        <label class="col-md-3 control-label">{{ form_label(stats.puntReturnCount) }}</label>
+        <div class="col-md-9">
+            {{ form_widget(stats.puntReturnCount, {'attr': {'class': 'form-control'}}) }}
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-md-3 control-label">{{ form_label(stats.puntReturnYards) }}</label>
+        <div class="col-md-9">
+            {{ form_widget(stats.puntReturnYards, {'attr': {'class': 'form-control'}}) }}
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-md-3 control-label">{{ form_label(stats.puntReturnTd) }}</label>
+        <div class="col-md-9">
+            {{ form_widget(stats.puntReturnTd, {'attr': {'class': 'form-control'}}) }}
+        </div>
+    </div>
+    <hr>
+
+    <h4>Punts</h4>
+    <div class="form-group row">
+        <label class="col-md-3 control-label">{{ form_label(stats.puntCount) }}</label>
+        <div class="col-md-9">
+            {{ form_widget(stats.puntCount, {'attr': {'class': 'form-control'}}) }}
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-md-3 control-label">{{ form_label(stats.puntYards) }}</label>
+        <div class="col-md-9">
+            {{ form_widget(stats.puntYards, {'attr': {'class': 'form-control'}}) }}
+        </div>
+    </div>
+    <hr>
+
+    <h4>Turnovers</h4>
+    <div class="form-group row">
+        <label class="col-md-3 control-label">{{ form_label(stats.interceptionCount) }}</label>
+        <div class="col-md-9">
+            {{ form_widget(stats.interceptionCount, {'attr': {'class': 'form-control'}}) }}
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-md-3 control-label">{{ form_label(stats.interceptionYards) }}</label>
+        <div class="col-md-9">
+            {{ form_widget(stats.interceptionYards, {'attr': {'class': 'form-control'}}) }}
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-md-3 control-label">{{ form_label(stats.interceptionTd) }}</label>
+        <div class="col-md-9">
+            {{ form_widget(stats.interceptionTd, {'attr': {'class': 'form-control'}}) }}
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-md-3 control-label">{{ form_label(stats.fumbleCount) }}</label>
+        <div class="col-md-9">
+            {{ form_widget(stats.fumbleCount, {'attr': {'class': 'form-control'}}) }}
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-md-3 control-label">{{ form_label(stats.fumbleYards) }}</label>
+        <div class="col-md-9">
+            {{ form_widget(stats.fumbleYards, {'attr': {'class': 'form-control'}}) }}
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-md-3 control-label">{{ form_label(stats.fumbleTd) }}</label>
+        <div class="col-md-9">
+            {{ form_widget(stats.fumbleTd, {'attr': {'class': 'form-control'}}) }}
+        </div>
+    </div>
+    <hr>
+
+    <h4>Penalties</h4>
+    <div class="form-group row">
+        <label class="col-md-3 control-label">{{ form_label(stats.penaltyCount) }}</label>
+        <div class="col-md-9">
+            {{ form_widget(stats.penaltyCount, {'attr': {'class': 'form-control'}}) }}
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-md-3 control-label">{{ form_label(stats.penaltyYards) }}</label>
+        <div class="col-md-9">
+            {{ form_widget(stats.penaltyYards, {'attr': {'class': 'form-control'}}) }}
+        </div>
+    </div>
+    <hr>
+
+    <h4>Time of Possession</h4>
+    <div class="form-group row">
+        <label class="col-md-3 control-label">{{ form_label(stats.timeOfPossession) }}</label>
+        <div class="col-md-9">
+            {{ form_widget(stats.timeOfPossession, {'attr': {'class': 'form-control'}}) }}
+        </div>
+    </div>
+    <hr>
+
+    <h4>3rd Down</h4>
+    <div class="form-group row">
+        <label class="col-md-3 control-label">{{ form_label(stats.thirdDownAttempts) }}</label>
+        <div class="col-md-9">
+            {{ form_widget(stats.thirdDownAttempts, {'attr': {'class': 'form-control'}}) }}
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-md-3 control-label">{{ form_label(stats.thirdDownConversions) }}</label>
+        <div class="col-md-9">
+            {{ form_widget(stats.thirdDownConversions, {'attr': {'class': 'form-control'}}) }}
+        </div>
+    </div>
+    <hr>
+
+    <h4>4th Down</h4>
+    <div class="form-group row">
+        <label class="col-md-3 control-label">{{ form_label(stats.fourthDownAttempts) }}</label>
+        <div class="col-md-9">
+            {{ form_widget(stats.fourthDownAttempts, {'attr': {'class': 'form-control'}}) }}
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-md-3 control-label">{{ form_label(stats.fourthDownConversions) }}</label>
+        <div class="col-md-9">
+            {{ form_widget(stats.fourthDownConversions, {'attr': {'class': 'form-control'}}) }}
+        </div>
+    </div>
+    <hr>
+
+    <h4>Red Zone</h4>
+    <div class="form-group row">
+        <label class="col-md-3 control-label">{{ form_label(stats.redZoneAttempts) }}</label>
+        <div class="col-md-9">
+            {{ form_widget(stats.redZoneAttempts, {'attr': {'class': 'form-control'}}) }}
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-md-3 control-label">{{ form_label(stats.redZoneScores) }}</label>
+        <div class="col-md-9">
+            {{ form_widget(stats.redZoneScores, {'attr': {'class': 'form-control'}}) }}
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-md-3 control-label">{{ form_label(stats.redZonePoints) }}</label>
+        <div class="col-md-9">
+            {{ form_widget(stats.redZonePoints, {'attr': {'class': 'form-control'}}) }}
+        </div>
+    </div>
+    <hr>
+
+    <h4>Field Goals</h4>
+    <div class="form-group row">
+        <label class="col-md-3 control-label">{{ form_label(stats.fieldGoalAttempts) }}</label>
+        <div class="col-md-9">
+            {{ form_widget(stats.fieldGoalAttempts, {'attr': {'class': 'form-control'}}) }}
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-md-3 control-label">{{ form_label(stats.fieldGoalMade) }}</label>
+        <div class="col-md-9">
+            {{ form_widget(stats.fieldGoalMade, {'attr': {'class': 'form-control'}}) }}
+        </div>
+    </div>
+    <hr>
+
+    <h4>PAT</h4>
+    <div class="form-group row">
+        <label class="col-md-3 control-label">{{ form_label(stats.patAttempts) }}</label>
+        <div class="col-md-9">
+            {{ form_widget(stats.patAttempts, {'attr': {'class': 'form-control'}}) }}
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-md-3 control-label">{{ form_label(stats.patMade) }}</label>
+        <div class="col-md-9">
+            {{ form_widget(stats.patMade, {'attr': {'class': 'form-control'}}) }}
+        </div>
+    </div>
+    <hr>
+
+    <h4>2 Point Conversions</h4>
+    <div class="form-group row">
+        <label class="col-md-3 control-label">{{ form_label(stats.twoPtConversionAttempts) }}</label>
+        <div class="col-md-9">
+            {{ form_widget(stats.twoPtConversionAttempts, {'attr': {'class': 'form-control'}}) }}
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-md-3 control-label">{{ form_label(stats.twoPtConversionMade) }}</label>
+        <div class="col-md-9">
+            {{ form_widget(stats.twoPtConversionMade, {'attr': {'class': 'form-control'}}) }}
+        </div>
+    </div>
+{% endmacro %}

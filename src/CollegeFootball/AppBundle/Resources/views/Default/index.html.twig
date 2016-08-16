@@ -1,0 +1,75 @@
+{% extends 'CollegeFootballAppBundle:Shared:layout.html.twig' %}
+
+{% block page_title %}
+    College Football Scoreboard
+{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            Clemson vs. FSU Matchup
+                        </div>
+                        <div class="panel-body">
+
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            Upcomming
+                        </div>
+                        <ul class="list-group">
+                            <li class="list-group-item">
+                                <h4>#1 Clemson vs #3 FSU</h4>
+                            </li>
+                            <li class="list-group-item">
+                                <h4>#2 Alabama vs #24 UGA</h4>
+                            </li>
+                            <li class="list-group-item">
+                                <h4>#4 Oklahoma vs Fresno St.</h4>
+                            </li>
+                            <li class="list-group-item">
+                                <h4>#5 TCU vs Texas</h4>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <div class="pull-right">
+                        <a href="#" class="btn btn-primary btn-xs">
+                            {{ icon('refresh') }}
+                            Coaches Poll
+                        </a>
+                    </div>
+                    AP Top 25
+                </div>
+                <ul class="list-group">
+                    <li class="list-group-item">
+                        <h4>#1 Clemson <small>(8-0)</small></h4>
+                    </li>
+                    <li class="list-group-item">
+                        <h4>#2 Alabama <small>(8-0)</small></h4>
+                    </li>
+                    <li class="list-group-item">
+                        <h4>#3 Florida State <small>(8-0)</small></h4>
+                    </li>
+                    <li class="list-group-item">
+                        <h4>#4 Oklahoma <small>(8-0)</small></h4>
+                    </li>
+                    <li class="list-group-item">
+                        <h4>#5 TCU <small>(8-0)</small></h4>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+{% endblock %}

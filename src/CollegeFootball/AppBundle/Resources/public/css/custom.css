@@ -1,0 +1,14 @@
+.tr-header {
+    background: #374046;
+    color: #dee9ef;
+}
+.stats-table td {
+    text-align: center;
+}
+
+.panel-click {
+    cursor: pointer;
+}
+.panel-click:hover {
+    box-shadow: 0px 0px 10px #ddd;
+}

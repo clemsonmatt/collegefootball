@@ -1,0 +1,45 @@
+{% extends 'CollegeFootballTeamBundle:Ranking:layout.html.twig' %}
+
+{% block content %}
+    <legend>
+        <h2>
+            <div class="btn-group pull-right">
+                <a href="#" class="btn btn-sm btn-primary">
+                    {{ icon('edit') }}
+                </a>
+                <a href="#" class="btn btn-sm btn-primary">
+                    {{ icon('calendar') }}
+                    Week 1
+                    <span class="caret"></span>
+                </a>
+            </div>
+            Week 1 Standings
+        </h2>
+    </legend>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    AP Rankings
+                </div>
+                <ul class="list-group">
+                    {% for ranking in ap_rankings %}
+                        <li class="list-group-item">{{ ranking }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    Coaches Poll
+                </div>
+                <ul class="list-group">
+                    {% for ranking in coaches_poll_rankings %}
+                        <li class="list-group-item">#{{ ranking.coachesPollRank }} {{ ranking.team }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+{% endblock %}

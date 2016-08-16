@@ -1,0 +1,10 @@
+.page-title {
+    font-size: 1.8em;
+    color: #2196f3;
+}
+
+.navbar {
+    border-radius: 0px;
+    z-index: 1;
+    margin-bottom: 0px;
+}

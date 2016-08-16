@@ -1,0 +1,157 @@
+ApiBundle
+    Service
+        EspnService
+
+AppBundle
+    Controller
+        Default -- show dashboard with upcomming games / scoreboard / rankings / gameday / predictions
+        Ranking -- manage rankings by week
+        Gameday -- manage gameday location and predictions
+    Entity
+        Bowl
+        GameDay
+            date
+            location
+            game
+        GameDayPrediction
+            name
+            game
+            winner
+            prediction
+        Ranking
+            week
+            season
+            team
+            ap_rank
+            coaches_poll_rank
+            conference_rank
+            conference_division_rank
+
+TeamBundle
+    Controller
+        Overview
+        Schedule
+            - CRUD Games
+        Stats
+            - Show stats summary (Game) / compare to other teams
+        Roster
+            - CRUD / Show player stats / compare to others
+    Entity
+        Conference
+            Name
+            Division
+            Teams
+        Team
+            Name
+            Short Name
+            Abbr. Name
+            Logo
+            Mascot
+            Location
+            School
+            Stadium
+            Conference
+        Game
+            Date
+            Season
+            Outcome (W/L)
+            Home/Away
+            Location
+            Prediction to win
+            GameStats {
+                game_id
+                home, away {
+                    points {
+                        final
+                        1, 2, 3, 4
+                        ot {
+                            1, 2, ...
+                        }
+                    }
+                    first_down {
+                        rushing
+                        passing
+                        penalty
+                    }
+                    rushing {
+                        yards
+                        attempts
+                        td
+                    }
+                    passing {
+                        yards
+                        attempts
+                        completions
+                        td
+                        interceptions
+                    }
+                    total_offense {
+                        plays
+                        yards
+                    }
+                    punt_returns {
+                        returns
+                        yards
+                        td
+                    }
+                    punts {
+                        number
+                        yards
+                    }
+                    turnovers {
+                        interceptions {
+                            number
+                            yards
+                            td
+                        }
+                        fumbles {
+                            number
+                            yards
+                            td
+                        }
+                    }
+                    penalties {
+                        number
+                        yards
+                    }
+                    time_of_possession
+                    3rd_down {
+                        attempts
+                        conversions
+                    }
+                    4th_down {
+                        attempts
+                        conversions
+                    }
+                    red_zone {
+                        attempts
+                        scores
+                        points
+                    }
+                    field_goals {
+                        attempts
+                        made
+                    }
+                    pat_kicking {
+                        attempts
+                        made
+                    }
+                    2pt_conversions {
+                        attempts
+                        made
+                    }
+                }
+            }
+        Roster
+            name (f,l)
+            school_class
+            number
+            height
+            weight
+            positions
+            status
+        RosterStats
+            game_id
+            roster_id
+            ... (http://www.espn.com/college-football/player/_/id/3122840/deshaun-watson)
+

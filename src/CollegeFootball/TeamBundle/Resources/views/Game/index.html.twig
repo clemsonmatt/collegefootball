@@ -1,0 +1,47 @@
+{% extends 'CollegeFootballTeamBundle:Game:layout.html.twig' %}
+
+{% block content %}
+    <legend>
+        <h2>
+            <div class="pull-right">
+                <a href="#" class="btn btn-sm btn-primary">
+                    {{ icon('calendar') }}
+                    Week 1
+                    <span class="caret"></span>
+                </a>
+            </div>
+            Week 1 Games
+        </h2>
+    </legend>
+    {% for game in games %}
+        <div class="panel panel-default panel-click" data-url="{{ path('collegefootball_team_game_show', {'game': game.id}) }}">
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-lg-4">
+                        <img src="{{ asset(game.homeTeam.imageLocation) }}" style="width: 100px; float: left; padding-right: 15px; border-right: 1px solid #{{ game.homeTeam.primaryColor }};">
+                        <h3 style="color: #{{ game.homeTeam.primaryColor }}; margin-left: 110px; line-height: 1.3em; margin-bottom: 0px; padding-bottom: 0px;">
+                            <a href="{{ path('collegefootball_team_show', {'slug': game.homeTeam.slug}) }}" style="color: inherit;">
+                                {{ game.homeTeam.name }}
+                            </a>
+                        </h3>
+                    </div>
+                    <div class="col-lg-4">
+                        <center class="text-muted" style="margin-top: 20px;">
+                            {{ game.location }}
+                            <hr style="margin: 5px 60px;">
+                            {{ game.date|date('m/d') }} @ {{ game.time|date('h:i') }}
+                        </center>
+                    </div>
+                    <div class="col-lg-4">
+                        <img src="{{ asset(game.awayTeam.imageLocation) }}" style="width: 100px; float: right; padding-left: 15px; border-left: 1px solid #{{ game.awayTeam.primaryColor }};">
+                        <h3 style="color: #{{ game.awayTeam.primaryColor }}; margin-right: 110px; line-height: 1.3em; margin-bottom: 0px; padding-bottom: 0px; text-align: right;">
+                            <a href="{{ path('collegefootball_team_show', {'slug': game.awayTeam.slug}) }}" style="color: inherit;">
+                                {{ game.awayTeam.name }}
+                            </a>
+                        </h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+{% endblock %}

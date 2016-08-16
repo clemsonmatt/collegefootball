@@ -1,0 +1,3 @@
+app:
+    resource: "@CollegeFootballAppBundle/Resources/config/routing.yml"
+    schemes:  [http]
