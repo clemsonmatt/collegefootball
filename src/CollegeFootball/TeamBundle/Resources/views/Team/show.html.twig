@@ -64,25 +64,29 @@
                     Upcomming Game
                 </div>
                 <div class="panel-body">
-                    {% set next_game = games[0] %}
-                    <center>
-                        {% if next_game.homeTeam == team %}
-                            <h4>
-                                <img src="{{ next_game.awayTeam.imageLocation }}" style="width: 35px;">
-                                vs {{ next_game.awayTeam.currentRanking ? '#' ~ next_game.awayTeam.currentRanking.apRank }} {{ next_game.awayTeam.nameShort }}
-                            </h4>
-                        {% else %}
-                            <h4>
-                                <img src="{{ next_game.homeTeam.imageLocation }}" style="width: 35px;">
-                                @ {{ next_game.homeTeam.currentRanking ? '#' ~ next_game.homeTeam.currentRanking.apRank }} {{ next_game.homeTeam.nameShort }}
-                            </h4>
-                        {% endif %}
+                    {% if games|length %}
+                        {% set next_game = games[0] %}
+                        <center>
+                            {% if next_game.homeTeam == team %}
+                                <h4>
+                                    <img src="{{ next_game.awayTeam.imageLocation }}" style="width: 35px;">
+                                    vs {{ next_game.awayTeam.currentRanking ? '#' ~ next_game.awayTeam.currentRanking.apRank }} {{ next_game.awayTeam.nameShort }}
+                                </h4>
+                            {% else %}
+                                <h4>
+                                    <img src="{{ next_game.homeTeam.imageLocation }}" style="width: 35px;">
+                                    @ {{ next_game.homeTeam.currentRanking ? '#' ~ next_game.homeTeam.currentRanking.apRank }} {{ next_game.homeTeam.nameShort }}
+                                </h4>
+                            {% endif %}
 
-                        {{ next_game.location }}
-                        <hr style="margin: 5px 60px;">
-                        {{ next_game.date|date('m/d') }} @ {{ next_game.time }}
-                    </center>
-                    <br>
+                            {{ next_game.location }}
+                            <hr style="margin: 5px 60px;">
+                            {{ next_game.date|date('m/d') }} @ {{ next_game.time }}
+                        </center>
+                        <br>
+                    {% else %}
+                        <span class="text-muted">None</span>
+                    {% endif %}
                 </div>
             </div>
 
