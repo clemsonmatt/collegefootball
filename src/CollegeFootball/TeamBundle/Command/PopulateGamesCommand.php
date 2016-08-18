@@ -46,11 +46,6 @@ class PopulateGamesCommand extends ContainerAwareCommand
 
         foreach ($weeks as $weekGames) {
             foreach ($weekGames->games as $game) {
-                // dump($game->date);
-                // dump($game->awayTeam);
-                // dump($game->homeTeam);
-                // dump($game->time);
-                // die(dump($game->location));
                 $awayTeam = $repository->findOneByNameShort($game->awayTeam);
                 $homeTeam = $repository->findOneByNameShort($game->homeTeam);
 
