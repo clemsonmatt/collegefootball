@@ -255,6 +255,7 @@ class Team
 
         $this->slug = strtolower($nameShort);
         $this->slug = str_replace(" ", "-", $this->slug);
+        $this->slug = str_replace("&", "-and-", $this->slug);
 
         return $this;
     }
