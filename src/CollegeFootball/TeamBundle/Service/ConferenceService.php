@@ -1,0 +1,72 @@
+<?php
+
+namespace CollegeFootball\TeamBundle\Service;
+
+use Doctrine\ORM\EntityManager;
+use JMS\DiExtraBundle\Annotation as DI;
+
+use CollegeFootball\TeamBundle\Entity\Conference;
+use CollegeFootball\TeamBundle\Entity\Team;
+
+/**
+* @DI\Service("collegefootball.team.conference")
+*/
+class ConferenceService
+{
+    /**
+     * @DI\InjectParams({
+     *      "em" = @DI\Inject("doctrine.orm.entity_manager")
+     *  })
+     */
+    public function __construct(EntityManager $em)
+    {
+        $this->em = $em;
+    }
+
+    public function teamRankInConference(Conference $conference)
+    {
+        $subConferences = $conference->teamsBySubConference();
+
+        $rankedTeams = [];
+
+        /* rank the teams with win/loss */
+        foreach ($subConferences as $subConference => $subConferenceTeams) {
+            if (is_array($subConferenceTeams)) {
+                foreach ($subConferenceTeams as $team) {
+                    $rankedTeams = $this->getTeamRanking($team, $rankedTeams);
+                }
+            } else {
+                $rankedTeams = $this->getTeamRanking($subConferenceTeams, $rankedTeams);
+            }
+        }
+
+        krsort($rankedTeams);
+
+        return $rankedTeams;
+    }
+
+    private function getTeamRanking(Team $team, $rankedTeams)
+    {
+        $gamesWon = count($team->getWonGames());
+
+        $repository  = $this->em->getRepository('CollegeFootballTeamBundle:Game');
+        $gamesPlayed = $repository->createQueryBuilder('g')
+            ->where('g.winningTeam IS NOT NULL')
+            ->andWhere('g.homeTeam = :team OR g.awayTeam = :team')
+            ->setParameter('team', $team)
+            ->getQuery()
+            ->getResult();
+
+        $gamesLost  = count($gamesPlayed) - $gamesWon;
+        $rankPoints = $gamesWon - $gamesLost;
+
+        $rankedTeams[$rankPoints][] = [
+            'subConference' => $team->getSubConference(),
+            'team'          => $team,
+            'gamesWon'      => $gamesWon,
+            'gamesPlayed'   => count($gamesPlayed)
+        ];
+
+        return $rankedTeams;
+    }
+}

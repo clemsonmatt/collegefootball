@@ -37,16 +37,6 @@ class Ranking
     private $coachesPollRank;
 
     /**
-     * @ORM\Column(name="conference_rank", type="integer", nullable=true)
-     */
-    private $conferenceRank;
-
-    /**
-     * @ORM\Column(name="sub_conference_rank", type="integer", nullable=true)
-     */
-    private $subConferenceRank;
-
-    /**
      * @ORM\ManyToOne(targetEntity="CollegeFootball\AppBundle\Entity\Week", inversedBy="rankings")
      * @ORM\JoinColumn(name="week_id", referencedColumnName="id")
      */
@@ -113,52 +103,6 @@ class Ranking
     public function getCoachesPollRank()
     {
         return $this->coachesPollRank;
-    }
-
-    /**
-     * Set conferenceRank
-     *
-     * @param integer $conferenceRank
-     * @return Ranking
-     */
-    public function setConferenceRank($conferenceRank)
-    {
-        $this->conferenceRank = $conferenceRank;
-
-        return $this;
-    }
-
-    /**
-     * Get conferenceRank
-     *
-     * @return integer
-     */
-    public function getConferenceRank()
-    {
-        return $this->conferenceRank;
-    }
-
-    /**
-     * Set subConferenceRank
-     *
-     * @param integer $subConferenceRank
-     * @return Ranking
-     */
-    public function setSubConferenceRank($subConferenceRank)
-    {
-        $this->subConferenceRank = $subConferenceRank;
-
-        return $this;
-    }
-
-    /**
-     * Get subConferenceRank
-     *
-     * @return integer
-     */
-    public function getSubConferenceRank()
-    {
-        return $this->subConferenceRank;
     }
 
     /**

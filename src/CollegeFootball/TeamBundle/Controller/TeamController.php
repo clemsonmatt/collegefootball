@@ -37,9 +37,13 @@ class TeamController extends Controller
         $repository = $em->getRepository('CollegeFootballTeamBundle:Game');
         $games      = $repository->findGamesByTeam($team);
 
+        $conferenceService = $this->get('collegefootball.team.conference');
+        $conferenceRanking = $conferenceService->teamRankInConference($team->getConference());
+
         return $this->render('CollegeFootballTeamBundle:Team:show.html.twig', [
-            'team'  => $team,
-            'games' => $games,
+            'team'               => $team,
+            'games'              => $games,
+            'conference_ranking' => $conferenceRanking,
         ]);
     }
 

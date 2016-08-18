@@ -31,7 +31,6 @@ TeamBundle
         GameStats
         Ranking
             - Manage AP/Coaches top 25 by week
-            - Manage Conference standings by week
         Team
         Team/
             Overview

@@ -29,7 +29,7 @@ class Game
     private $date;
 
     /**
-     * @ORM\Column(name="time", type="integer", nullable=true)
+     * @ORM\Column(name="time", type="string", nullable=true)
      */
      private $time;
 
