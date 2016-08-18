@@ -1,0 +1,49 @@
+{% extends 'CollegeFootballTeamBundle:Team:layout.html.twig' %}
+
+{% block content %}
+    {% include 'CollegeFootballTeamBundle:Team:header.html.twig' %}
+
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <div class="pull-right">
+                <a href="{{ path('collegefootball_team_game_add_team', {'slug': team.slug}) }}" class="btn btn-primary btn-xs">
+                    {{ icon('plus') }}
+                    Add Game
+                </a>
+            </div>
+            {{ "now"|date('Y') }} Schedule
+        </div>
+        <table class="table table-striped table-hover" style="margin-top: -20px;">
+            <thead>
+                <th>Date</th>
+                <th>Opponent</th>
+                <th>Time</th>
+                <th>Location</th>
+                <th>Prediction</th>
+                <th>Outcome</th>
+            </thead>
+            {% for game in games %}
+                <tr class="table-click" data-url="{{ path('collegefootball_team_game_show', {'game': game.id}) }}">
+                    <td>{{ game.date|date('D, M. j') }}</td>
+                    <td>
+                        {% if game.awayTeam == team %}
+                            <img src="{{ asset(game.homeTeam.imageLocation) }}" style="width: 25px;">
+                            @
+                            <a href="{{ path('collegefootball_team_show', {'slug': game.homeTeam.slug}) }}" style="color: inherit;">
+                                {{ game.homeTeam }}
+                            </a>
+                        {% else %}
+                            <img src="{{ asset(game.awayTeam.imageLocation) }}" style="width: 25px;">
+                            vs.
+                            <a href="{{ path('collegefootball_team_show', {'slug': game.awayTeam.slug}) }}" style="color: inherit;">
+                                {{ game.awayTeam }}
+                            </a>
+                        {% endif %}
+                    </td>
+                    <td>{{ game.time }}</td>
+                    <td>{{ game.location }}</td>
+                    <td>&mdash;</td>
+                    <td>&mdash;</td>
+                </tr>
+            {% endfor %}
+{% endblock %}

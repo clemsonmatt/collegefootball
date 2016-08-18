@@ -39,7 +39,7 @@ class Builder implements ContainerAwareInterface
             'uri' => '#'
         ]);
 
-        $menu->addChild('Stat Leaders', [
+        $menu->addChild('Pick\'em', [
             'uri' => '#'
         ]);
 

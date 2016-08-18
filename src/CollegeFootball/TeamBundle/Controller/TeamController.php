@@ -89,6 +89,12 @@ class TeamController extends Controller
         $form->handleRequest($request);
 
         if ($form->isValid()) {
+            if ($form['logo']->getData() !== null) {
+                $uploadService = $this->get('collegefootball.team.upload');
+                $imagePath     = $uploadService->uploadImage($form['logo']->getData(), 'team');
+                $team->setLogo($imagePath);
+            }
+
             $em = $this->getDoctrine()->getManager();
             $em->flush();
 
@@ -115,5 +121,30 @@ class TeamController extends Controller
 
         $this->addFlash('warning', 'Team removed');
         return $this->redirectToRoute('collegefootball_team_index');
+    }
+
+    /**
+     * @Route("/{slug}/schedule", name="collegefootball_team_schedule")
+     */
+    public function scheduleAction(Team $team)
+    {
+        $em         = $this->getDoctrine()->getManager();
+        $repository = $em->getRepository('CollegeFootballTeamBundle:Game');
+        $games      = $repository->findGamesByTeam($team);
+
+        return $this->render('CollegeFootballTeamBundle:Team:schedule.html.twig', [
+            'games' => $games,
+            'team'  => $team,
+        ]);
+    }
+
+    /**
+     * @Route("/{slug}/statistics", name="collegefootball_team_statistics")
+     */
+    public function statisticsAction(Team $team)
+    {
+        return $this->render('CollegeFootballTeamBundle:Team:statistics.html.twig', [
+            'team' => $team,
+        ]);
     }
 }

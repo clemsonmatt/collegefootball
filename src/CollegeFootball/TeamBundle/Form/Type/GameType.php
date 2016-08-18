@@ -23,14 +23,8 @@ class GameType extends AbstractType
             'placeholder' => 'mm/dd/yyyy',
         ]);
 
-        $builder->add('time', SymfonyTypes\TimeType::class, [
-            'input'       => 'timestamp',
-            'widget'      => 'choice',
-            'required'    => false,
-            'placeholder' => [
-                'hour'   => '-- Hour --',
-                'minute' => '-- Min --',
-            ]
+        $builder->add('time', SymfonyTypes\TextType::class, [
+            'required' => false,
         ]);
 
         $builder->add('season', SymfonyTypes\IntegerType::class, [

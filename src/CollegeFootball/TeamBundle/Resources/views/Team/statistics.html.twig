@@ -1,0 +1,41 @@
+{% extends 'CollegeFootballTeamBundle:Team:layout.html.twig' %}
+
+{% block content %}
+    {% include 'CollegeFootballTeamBundle:Team:header.html.twig' %}
+
+    <div class="row">
+        <div class="col-lg-4">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    Total Offense
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    Total Defense
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    Points
+                </div>
+            </div>
+
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    Kicking
+                </div>
+            </div>
+
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    Other
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

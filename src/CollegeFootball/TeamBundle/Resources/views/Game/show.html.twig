@@ -2,29 +2,30 @@
 
 {% block content %}
     <div class="panel panel-default">
-        <div class="panel-body" style="padding-bottom: 0px;">
-            <div class="pull-right">
-                <img src="{{ asset(game.awayTeam.imageLocation) }}" style="width: 100px; float: right; padding-left: 15px; border-left: 1px solid #{{ game.awayTeam.primaryColor }};">
-                <h2 style="color: #{{ game.awayTeam.primaryColor }}; margin-right: 10px; line-height: 2.3em; margin-bottom: 0px; padding-bottom: 0px; float: right;">
-                    <small style="color: #ccc;">Away</small>
-                    <a href="{{ path('collegefootball_team_show', {'slug': game.awayTeam.slug}) }}" style="color: inherit;">
-                        {{ game.awayTeam }}
-                    </a>
-                </h2>
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <img src="{{ asset(game.homeTeam.imageLocation) }}" style="width: 100px; float: left; padding-right: 15px; border-right: 1px solid #{{ game.homeTeam.primaryColor }};">
+                    <h3 style="color: #{{ game.homeTeam.primaryColor }}; margin-left: 110px; line-height: 1.3em; margin-bottom: 0px; padding-bottom: 0px;">
+                        <a href="{{ path('collegefootball_team_show', {'slug': game.homeTeam.slug}) }}" style="color: inherit;">
+                            {{ game.homeTeam }}
+                        </a>
+                    </h3>
+                </div>
+                <div class="col-md-6">
+                    <img src="{{ asset(game.awayTeam.imageLocation) }}" style="width: 100px; float: right; padding-left: 15px; border-left: 1px solid #{{ game.awayTeam.primaryColor }};">
+                    <h3 style="color: #{{ game.awayTeam.primaryColor }}; margin-right: 110px; line-height: 1.3em; margin-bottom: 0px; padding-bottom: 0px; text-align: right;">
+                        <a href="{{ path('collegefootball_team_show', {'slug': game.awayTeam.slug}) }}" style="color: inherit;">
+                            {{ game.awayTeam }}
+                        </a>
+                    </h3>
+                </div>
             </div>
-
-            <img src="{{ asset(game.homeTeam.imageLocation) }}" style="width: 100px; float: left; padding-right: 15px; border-right: 1px solid #{{ game.homeTeam.primaryColor }};">
-            <h2 style="color: #{{ game.homeTeam.primaryColor }}; margin-left: 110px; line-height: 2.3em; margin-bottom: 0px; padding-bottom: 0px;">
-                <a href="{{ path('collegefootball_team_show', {'slug': game.homeTeam.slug}) }}" style="color: inherit;">
-                    {{ game.homeTeam }}
-                </a>
-                <small style="color: #ccc;">Home</small>
-            </h2>
         </div>
     </div>
 
     <div class="row">
-        <div class="col-lg-4">
+        <div class="col-md-4">
             <div class="panel panel-default">
                 <div class="panel-heading">
                     Details
@@ -56,7 +57,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-lg-8">
+        <div class="col-md-8">
             <h3>
                 Winner:
                 {% if not game.winningTeam %}

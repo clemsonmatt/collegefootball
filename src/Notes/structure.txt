@@ -23,6 +23,16 @@ AppBundle
             week_number
             start_date
             end_date
+        Person
+            username
+            first_name
+            last_name
+            password
+        Prediction
+            person_id
+            game_id
+            winner
+            over_under
 
 TeamBundle
     Controller
@@ -152,8 +162,6 @@ TeamBundle
             team
             ap_rank
             coaches_poll_rank
-            conference_rank
-            conference_division_rank
         Roster
             name (f,l)
             school_class

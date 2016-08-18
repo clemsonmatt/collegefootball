@@ -142,7 +142,7 @@
             $('[data-toggle="popover"]').popover({'html': true});
 
             /* panel-click */
-            $('.panel-click').on('click', function(){
+            $('.panel-click, .table-click').on('click', function(){
                 var route = $(this).data('url');
                 window.location.href = route;
             });

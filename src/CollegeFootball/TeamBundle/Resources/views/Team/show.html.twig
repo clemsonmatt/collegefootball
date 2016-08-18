@@ -1,110 +1,35 @@
 {% extends 'CollegeFootballTeamBundle:Team:layout.html.twig' %}
 
 {% block content %}
-    <div class="panel panel-default" style="margin-bottom: 0px;">
-        <div class="panel-body" style="padding-bottom: 0px;">
-            <img src="{{ asset(team.imageLocation) }}" style="width: 100px; float: left; padding-right: 15px; border-right: 1px solid #{{ team.primaryColor }};">
-            <h2 style="color: #{{ team.primaryColor }}; margin-left: 110px; line-height: 2.3em; margin-bottom: 0px; padding-bottom: 0px;">
-                {{ team }}
-            </h2>
-        </div>
-    </div>
-    <nav class="navbar navbar-default" style="margin-bottom: 20px;">
-        <div class="container-fluid">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-2">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-            </div>
-            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
-                <ul class="nav navbar-nav">
-                    <li class="active">
-                        <a href="#">
-                            {{ icon('star') }}
-                            Overview
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#">
-                            {{ icon('calendar') }}
-                            Schedule
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#">
-                            {{ icon('stats-bars') }}
-                            Statistics
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#">
-                            {{ icon('clipboard') }}
-                            Roster
-                        </a>
-                    </li>
-                </ul>
-                <ul class="nav navbar-nav navbar-right">
-                    <li>
-                        <a href="{{ path('collegefootball_team_edit', {'slug': team.slug}) }}">
-                            {{ icon('edit') }}
-                            Edit
-                        </a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </nav>
+    {% include 'CollegeFootballTeamBundle:Team:header.html.twig' %}
 
     <div class="row">
-        <div class="col-lg-4">
+        <div class="col-lg-4 col-md-6">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    {{ icon('clipboard') }}
-                    {{ team.conference }} Standings
+                    {{ icon('information-circled') }}
+                    School Info
                 </div>
-                <ul class="list-group">
-                    {% for conference_rank in conference_ranking %}
-                        {% for team_details in conference_rank %}
-                            <a href="{{ path('collegefootball_team_show', {'slug': team_details.team.slug}) }}" class="list-group-item">
-                                <h4 class="list-group-item-heading">
-                                    <div class="pull-right text-muted">
-                                        ({{ team_details.gamesWon }} &mdash; {{ team_details.gamesPlayed }})
-                                    </div>
-                                    <img src="{{ team_details.team.imageLocation }}" style="width: 35px;">
-                                    {{ team_details.team.currentRanking ? '#' ~ team_details.team.currentRanking.apRank }} {{ team_details.team.nameShort }}
-                                </h4>
-                            </a>
-                        {% endfor %}
-                    {% endfor %}
-                </ul>
-            </div>
-        </div>
-        <div class="col-lg-4">
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    {{ icon('network') }}
-                    Stat Comparison
+                <div class="panel-body">
+                    <h4>{{ team.school }}</h4>
+                    <dl>
+                        <dt>Location</dt>
+                        <dd>{{ team.city }}, {{ team.state }}</dd>
+                        <dt>Stadium</dt>
+                        <dd>{{ team.stadiumName }}</dd>
+                        <dt>Colors</dt>
+                        <dd>
+                            <div style="width: 75%; height: 20px; background-color: #{{ team.primaryColor }}; float: left;">
+                            </div>
+                            <div style="width: 25%; height: 20px; background-color: #{{ team.secondaryColor }}; margin-left: 75%;">
+                            </div>
+                        </dd>
+                    </dl>
                 </div>
             </div>
+
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    {{ icon('stats-bars') }}
-                    Stats Overview
-                </div>
-            </div>
-        </div>
-        <div class="col-lg-4">
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <div class="pull-right">
-                        <a href="{{ path('collegefootball_team_game_add_team', {'slug': team.slug}) }}" class="btn btn-primary btn-xs">
-                            {{ icon('plus') }}
-                            Add Game
-                        </a>
-                    </div>
                     {{ icon('calendar') }}
                     Schedule
                 </div>
@@ -128,6 +53,68 @@
                                 {% endif %}
                             </h4>
                         </a>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+        <div class="col-lg-4 col-md-6">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    {{ icon('document-text') }}
+                    Upcomming Game
+                </div>
+                <div class="panel-body">
+                    {% set next_game = games[0] %}
+                    <center>
+                        {% if next_game.homeTeam == team %}
+                            <h4>
+                                <img src="{{ next_game.awayTeam.imageLocation }}" style="width: 35px;">
+                                vs {{ next_game.awayTeam.currentRanking ? '#' ~ next_game.awayTeam.currentRanking.apRank }} {{ next_game.awayTeam.nameShort }}
+                            </h4>
+                        {% else %}
+                            <h4>
+                                <img src="{{ next_game.homeTeam.imageLocation }}" style="width: 35px;">
+                                @ {{ next_game.homeTeam.currentRanking ? '#' ~ next_game.homeTeam.currentRanking.apRank }} {{ next_game.homeTeam.nameShort }}
+                            </h4>
+                        {% endif %}
+
+                        {{ next_game.location }}
+                        <hr style="margin: 5px 60px;">
+                        {{ next_game.date|date('m/d') }} @ {{ next_game.time }}
+                    </center>
+                    <br>
+                </div>
+            </div>
+
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    {{ icon('stats-bars') }}
+                    Team Comparison
+                </div>
+                <div class="panel-body">
+                    <span class="text-muted">Comming Soon</span>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4 visible-lg">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    {{ icon('clipboard') }}
+                    {{ team.conference }} Standings
+                </div>
+                <ul class="list-group">
+                    {% for conference_rank in conference_ranking %}
+                        {% for team_details in conference_rank %}
+                            <a href="{{ path('collegefootball_team_show', {'slug': team_details.team.slug}) }}" class="list-group-item">
+                                <h4 class="list-group-item-heading">
+                                    <div class="pull-right text-muted">
+                                        ({{ team_details.gamesWon }} &mdash; {{ team_details.gamesPlayed }})
+                                    </div>
+                                    <img src="{{ team_details.team.imageLocation }}" style="width: 35px;">
+                                    {{ team_details.team.currentRanking ? '#' ~ team_details.team.currentRanking.apRank }} {{ team_details.team.nameShort }}
+                                </h4>
+                            </a>
+                        {% endfor %}
                     {% endfor %}
                 </ul>
             </div>
