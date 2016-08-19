@@ -22,7 +22,13 @@
             {{ week }} Games
         </h2>
     </legend>
+
+    {% set current_date = null %}
     {% for game in games %}
+        {% if current_date != game.date %}
+            {% set current_date = game.date %}
+            <h3>{{ game.date|date('D, M. j') }}</h3>
+        {% endif %}
         <div class="panel panel-default panel-click" data-url="{{ path('collegefootball_team_game_show', {'game': game.id}) }}">
             <div class="panel-body">
                 <div class="row">

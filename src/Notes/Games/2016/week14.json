@@ -1,0 +1,60 @@
+{
+    "games": [
+        {
+            "date": "12/3/16",
+            "awayTeam": "Baylor",
+            "homeTeam": "West Virginia",
+            "time": "TBD",
+            "location": "Milan Puskar Stadium, Morgantown, WV"
+        },
+        {
+            "date": "12/3/16",
+            "awayTeam": "Kansas State",
+            "homeTeam": "TCU",
+            "time": "TBD",
+            "location": "Amon G. Carter Stadium, Fort Worth, TX"
+        },
+        {
+            "date": "12/3/16",
+            "awayTeam": "Oklahoma State",
+            "homeTeam": "Oklahoma",
+            "time": "TBD",
+            "location": "Memorial Stadium, Norman, OK"
+        },
+        {
+            "date": "12/3/16",
+            "awayTeam": "New Mexico State",
+            "homeTeam": "South Alabama",
+            "time": "TBD",
+            "location": "Ladd-Peebles Stadium, Mobile, AL"
+        },
+        {
+            "date": "12/3/16",
+            "awayTeam": "Troy",
+            "homeTeam": "Georgia Southern",
+            "time": "1:00 PM",
+            "location": "Allen E. Paulson Stadium, Statesboro, GA"
+        },
+        {
+            "date": "12/3/16",
+            "awayTeam": "Louisiana Lafayette",
+            "homeTeam": "Louisiana Monroe",
+            "time": "3:00 PM",
+            "location": "Malone Stadium, Monroe, LA"
+        },
+        {
+            "date": "12/3/16",
+            "awayTeam": "Arkansas State",
+            "homeTeam": "Texas State",
+            "time": "4:00 PM",
+            "location": "Bobcat Stadium , San Marcos, TX"
+        },
+        {
+            "date": "12/3/16",
+            "awayTeam": "Georgia State",
+            "homeTeam": "Idaho",
+            "time": "5:00 PM",
+            "location": "Kibbie Dome, Moscow, ID"
+        }
+    ]
+}
