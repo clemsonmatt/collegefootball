@@ -1,0 +1,50 @@
+{% extends 'CollegeFootballTeamBundle:Team:layout.html.twig' %}
+
+{% block content %}
+    {% include 'CollegeFootballTeamBundle:Team:header.html.twig' %}
+
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            {{ team.conference }} Rankings
+        </div>
+        <table class="table table-striped table-hover">
+            <thead>
+                <th>Team</th>
+                <th style="text-align: center;">Conference</th>
+                <th style="text-align: center;">Overall</th>
+                <th style="text-align: center;">AP</th>
+                <th style="text-align: center;">Coaches Poll</th>
+            </thead>
+
+            {% set sub_conference = null %}
+            {% for conference_rank in conference_ranking %}
+                {% for team_details in conference_rank %}
+                    {% if team_details.subConference != sub_conference %}
+                        {% set sub_conference = team_details.subConference %}
+                        <tr><th colspan="5" class="tr-header">{{ team_details.subConference }}</th></tr>
+                    {% endif %}
+                    <tr>
+                        <td>
+                            <img src="{{ team_details.team.imageLocation }}" style="width: 25px;">
+                            <a href="{{ path('collegefootball_team_show', {'slug': team_details.team.slug}) }}" style="color: inherit;">
+                                {{ team_details.team.name }}
+                            </a>
+                        </td>
+                        <td style="text-align: center;">
+                            {{ team_details.conferenceWon }} &mdash; {{ team_details.conferencePlayed - team_details.conferenceWon }}
+                        </td>
+                        <td style="text-align: center;">
+                            {{ team_details.gamesWon }} &mdash; {{ team_details.gamesPlayed - team_details.gamesWon }}
+                        </td>
+                        <td style="text-align: center;">
+                            {{ team_details.team.currentRanking ? team_details.team.currentRanking.apRank : 'NR' }}
+                        </td>
+                        <td style="text-align: center;">
+                            {{ team_details.team.currentRanking ? team_details.team.currentRanking.coachesPollRank : 'NR' }}
+                        </td>
+                    </tr>
+                {% endfor %}
+            {% endfor %}
+        </table>
+    </div>
+{% endblock %}

@@ -60,11 +60,34 @@ class ConferenceService
         $gamesLost  = count($gamesPlayed) - $gamesWon;
         $rankPoints = $gamesWon - $gamesLost;
 
+        /* find the conference ranking */
+        $conferenceGamesPlayed = $repository->createQueryBuilder('g')
+            ->join('g.homeTeam', 'ht')
+            ->join('g.awayTeam', 'at')
+            ->join('ht.conference', 'htc')
+            ->join('at.conference', 'atc')
+            ->where('g.winningTeam IS NOT NULL')
+            ->andWhere('g.homeTeam = :team OR g.awayTeam = :team')
+            ->andWhere('htc = :conference AND atc = :conference')
+            ->setParameter('team', $team)
+            ->setParameter('conference', $team->getConference())
+            ->getQuery()
+            ->getResult();
+
+        $conferenceGamesWon = 0;
+        foreach ($conferenceGamesPlayed as $conferenceGame) {
+            if ($conferenceGame->getWinningTeam() == $team) {
+                $conferenceGamesWon++;
+            }
+        }
+
         $rankedTeams[$rankPoints][] = [
-            'subConference' => $team->getSubConference(),
-            'team'          => $team,
-            'gamesWon'      => $gamesWon,
-            'gamesPlayed'   => count($gamesPlayed)
+            'subConference'    => $team->getSubConference(),
+            'team'             => $team,
+            'gamesWon'         => $gamesWon,
+            'gamesPlayed'      => count($gamesPlayed),
+            'conferenceWon'    => $conferenceGamesWon,
+            'conferencePlayed' => count($conferenceGamesPlayed),
         ];
 
         return $rankedTeams;

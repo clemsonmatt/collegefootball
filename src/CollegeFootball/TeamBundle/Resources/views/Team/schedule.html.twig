@@ -13,7 +13,7 @@
             </div>
             {{ "now"|date('Y') }} Schedule
         </div>
-        <table class="table table-striped table-hover" style="margin-top: -20px;">
+        <table class="table table-striped table-hover">
             <thead>
                 <th>Date</th>
                 <th>Opponent</th>
@@ -40,7 +40,7 @@
                             </a>
                         {% endif %}
                     </td>
-                    <td>{{ game.time }}</td>
+                    <td>{{ game.time|default('TBD') }}</td>
                     <td>{{ game.location }}</td>
                     <td>&mdash;</td>
                     <td>&mdash;</td>

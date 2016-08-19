@@ -29,7 +29,8 @@ class Builder implements ContainerAwareInterface
         ])->setAttribute('icon', 'calendar');
 
         $menu->addChild('Rankings', [
-            'uri' => '#'
+            'route'           => 'collegefootball_team_rankings',
+            'routeParameters' => ['slug' => $options['team']->getSlug()]
         ])->setAttribute('icon', 'arrow-graph-up-right');
 
         $menu->addChild('Statistics', [

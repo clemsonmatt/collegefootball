@@ -139,6 +139,20 @@ class TeamController extends Controller
     }
 
     /**
+     * @Route("/{slug}/rankings", name="collegefootball_team_rankings")
+     */
+    public function rankingsAction(Team $team)
+    {
+        $conferenceService = $this->get('collegefootball.team.conference');
+        $conferenceRanking = $conferenceService->teamRankInConference($team->getConference());
+
+        return $this->render('CollegeFootballTeamBundle:Team:rankings.html.twig', [
+            'team'               => $team,
+            'conference_ranking' => $conferenceRanking
+        ]);
+    }
+
+    /**
      * @Route("/{slug}/statistics", name="collegefootball_team_statistics")
      */
     public function statisticsAction(Team $team)

@@ -112,7 +112,7 @@
                             <a href="{{ path('collegefootball_team_show', {'slug': team_details.team.slug}) }}" class="list-group-item">
                                 <h4 class="list-group-item-heading">
                                     <div class="pull-right text-muted">
-                                        ({{ team_details.gamesWon }} &mdash; {{ team_details.gamesPlayed }})
+                                        ({{ team_details.gamesWon }} &mdash; {{ team_details.gamesPlayed - team_details.gamesWon }})
                                     </div>
                                     <img src="{{ team_details.team.imageLocation }}" style="width: 35px;">
                                     {{ team_details.team.currentRanking ? '#' ~ team_details.team.currentRanking.apRank }} {{ team_details.team.nameShort }}
