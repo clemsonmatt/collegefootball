@@ -2,8 +2,9 @@
 
 namespace CollegeFootball\TeamBundle\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
 use CollegeFootball\TeamBundle\Entity\Team;
@@ -160,5 +161,34 @@ class TeamController extends Controller
         return $this->render('CollegeFootballTeamBundle:Team:statistics.html.twig', [
             'team' => $team,
         ]);
+    }
+
+    /**
+     * @Route("/search", name="collegefootball_team_search")
+     */
+    public function searchAction(Request $request)
+    {
+        $searchName = $request->query->get('searchName');
+
+        $em         = $this->getDoctrine()->getManager();
+        $repository = $em->getRepository('CollegeFootballTeamBundle:Team');
+        $teams      = $repository->createQueryBuilder('t')
+            ->where('t.name LIKE :searchName')
+            ->setParameter('searchName', '%'.$searchName.'%')
+            ->getQuery()
+            ->getResult();
+
+        $data = [];
+        foreach ($teams as $team) {
+            $route = $this->generateUrl('collegefootball_team_show', ['slug' => $team->getSlug()]);
+
+            $data[] = [
+                'route' => $route,
+                'name'  => $team->getName(),
+            ];
+        }
+
+        $response = ['code' => 100, 'success' => true, 'data' => $data];
+        return new JsonResponse($response);
     }
 }

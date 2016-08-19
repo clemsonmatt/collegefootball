@@ -147,6 +147,31 @@
                 window.location.href = route;
             });
 
+            /* team search */
+            $('#js-team-search').on('keyup', function() {
+                var searchText = $(this).val();
+                var searchList = $('#js-team-search-list');
+
+                if (searchText == "") {
+                    searchList.hide();
+                    return 0;
+                }
+
+                $.getJSON("{{ path('collegefootball_team_search') }}", {
+                    format: "json",
+                    searchName: searchText
+                })
+                .done(function(data){
+                    searchList.empty();
+                    searchList.show();
+
+                    $.each(data.data, function(index, value){
+                        var listGroupItem = '<a href="' + value.route + '" class="list-group-item">' + value.name + '</a>';
+                        searchList.append(listGroupItem);
+                    });
+                });
+            });
+
 
             /* modal confirmation */
             $(document).ready(function(){

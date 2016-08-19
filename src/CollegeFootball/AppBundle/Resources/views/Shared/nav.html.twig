@@ -7,7 +7,10 @@
         </div>
 
         <div style="margin: 85px 15px 20px 15px;">
-            <input class="form-control" placeholder="Search Teams...">
+            <input class="form-control" placeholder="Search Teams..." id="js-team-search" name="searchName">
+            <ul class="list-group" id="js-team-search-list" style="display: none; z-index: 999;">
+
+            </ul>
         </div>
 
         {% set primary_navigation = knp_menu_get('CollegeFootballAppBundle:Builder:mainMenu') %}
