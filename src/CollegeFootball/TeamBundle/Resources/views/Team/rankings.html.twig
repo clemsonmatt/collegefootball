@@ -37,10 +37,18 @@
                             {{ team_details.gamesWon }} &mdash; {{ team_details.gamesPlayed - team_details.gamesWon }}
                         </td>
                         <td style="text-align: center;">
-                            {{ team_details.team.currentRanking ? team_details.team.currentRanking.apRank : 'NR' }}
+                            {% if team_details.team.currentRanking %}
+                                {{ team_details.team.currentRanking.apRank}}
+                            {% else %}
+                                &mdash;
+                            {% endif %}
                         </td>
                         <td style="text-align: center;">
-                            {{ team_details.team.currentRanking ? team_details.team.currentRanking.coachesPollRank : 'NR' }}
+                            {% if team_details.team.currentRanking %}
+                                {{ team_details.team.currentRanking.coachesPollRank}}
+                            {% else %}
+                                &mdash;
+                            {% endif %}
                         </td>
                     </tr>
                 {% endfor %}

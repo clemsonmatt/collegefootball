@@ -38,20 +38,15 @@
 
             {# header #}
             <div id="header">
-                {% block page_header_actions %}
-                    {% if page_header_action_list is defined and page_header_action_list|length > 0 %}
-                        <a href="#" class="btn-round btn-round-default list-item-header pull-right" style="margin-top: 15px;">
-                            {{ icon('grid') }}
-                        </a>
-                        <div class="list-item-header-options" style="display: none;">
-                            {% for list_item in page_header_action_list %}
-                                <a href="{{ list_item.path }}" class="btn-round btn-round-default btn-round-md pull-right" style="margin-top: 24px; margin-right: 15px;" data-toggle="tooltip" title="{{ list_item.name }}">
-                                    {{ icon(list_item.icon) }}
-                                </a>
-                            {% endfor %}
-                        </div>
-                    {% endif %}
-                {% endblock %}
+                <div id="header-user" class="pull-right btn-group">
+                    <a href="#" class="dropdown-toggle pull-right" data-toggle="dropdown">
+                        {{ app.user.username }} <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu" style="margin-top: 1px;">
+                        <li><a href="#">Profile</a></li>
+                        <li><a href="/logout">Logout</a></li>
+                    </ul>
+                </div>
 
                 {% block page_title %}
                     {{ page_title_header|default('Title Needed') }}

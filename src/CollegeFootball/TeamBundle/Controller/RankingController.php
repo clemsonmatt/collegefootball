@@ -19,16 +19,20 @@ class RankingController extends Controller
      */
     public function indexAction(Week $week = null)
     {
-        $em         = $this->getDoctrine()->getManager();
-        $repository = $em->getRepository('CollegeFootballAppBundle:Week');
-
-        if (! $week) {
-            $weeks = $repository->findBy(['season' => date('Y')], ['endDate' => 'ASC']);
-            $week  = $weeks[0];
+        $season = null;
+        if ($week) {
+            $season = $week->getSeason();
+            $week   = $week->getNumber();
         } else {
-            $weeks = $repository->findBy(['season' => $week->getSeason()], ['endDate' => 'ASC']);
+            $week = null;
         }
 
+        $weekService = $this->get('collegefootball.team.week');
+        $weekResult  = $weekService->currentWeek($season, $week, true);
+        $week        = $weekResult['week'];
+        $weeks       = $weekResult['seasonWeeks'];
+
+        $em         = $this->getDoctrine()->getManager();
         $repository = $em->getRepository('CollegeFootballTeamBundle:Ranking');
         $apRankings = $repository->findBy([
             'week' => $week,
@@ -63,8 +67,10 @@ class RankingController extends Controller
             $em = $this->getDoctrine()->getManager();
 
             foreach ($form['rankings']->getData() as $ranking) {
-                $ranking->setWeek($week);
-                $em->persist($ranking);
+                if ($ranking->getTeam()) {
+                    $ranking->setWeek($week);
+                    $em->persist($ranking);
+                }
             }
 
             $em->flush();

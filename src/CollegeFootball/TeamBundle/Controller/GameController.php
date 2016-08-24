@@ -21,39 +21,12 @@ class GameController extends Controller
      */
     public function indexAction($season = null, $week = null)
     {
-        $em = $this->getDoctrine()->getManager();
+        $result      = $this->get('collegefootball.team.week')->currentWeek($season, $week);
+        $week        = $result['week'];
+        $season      = $result['season'];
+        $seasonWeeks = $result['seasonWeeks'];
 
-        if (! $season) {
-            $season = date('Y');
-        }
-
-        $repository  = $em->getRepository('CollegeFootballAppBundle:Week');
-        $seasonWeeks = $repository->createQueryBuilder('w')
-            ->where('w.season = :season')
-            ->andWhere('w.number > 0')
-            ->orderBy('w.endDate', 'ASC')
-            ->setParameter('season', $season)
-            ->getQuery()
-            ->getResult();
-
-        if ($week) {
-            $week = $repository->findOneBy([
-                'season' => $season,
-                'number' => $week,
-            ], [
-                'endDate' => 'ASC'
-            ]);
-        } else {
-            $week = $seasonWeeks[1];
-
-            foreach ($seasonWeeks as $singleWeek) {
-                if ($singleWeek->getEndDate() > date('Y-m-d') && $singleWeek->getNumber() != 0) {
-                    $week = $singleWeek;
-                    break;
-                }
-            }
-        }
-
+        $em         = $this->getDoctrine()->getManager();
         $repository = $em->getRepository('CollegeFootballTeamBundle:Game');
         $games      = $repository->createQueryBuilder('g')
             ->where('g.date >= :startDate')

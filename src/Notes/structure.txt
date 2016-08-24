@@ -7,6 +7,8 @@ AppBundle
         Default -- show dashboard with upcomming games / scoreboard / rankings / gameday / predictions
         Ranking -- manage rankings by week
         Gameday -- manage gameday location and predictions
+        Security -- handle login/out
+        Manage -- change permissions for a person / view people
     Entity
         Bowl
         GameDay
@@ -28,11 +30,14 @@ AppBundle
             first_name
             last_name
             password
+            favorite_team
         Prediction
             person_id
             game_id
             winner
             over_under
+            winner_score
+            loser_score
 
 TeamBundle
     Controller

@@ -7,12 +7,6 @@
 {% block content %}
     <div class="row">
         <div class="col-lg-8">
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    Upcomming Games
-                </div>
-            </div>
-
             {% set current_date = null %}
             {% for game in games %}
                 {% if game.date != current_date %}
@@ -53,17 +47,12 @@
                         </div>
                     </div>
                 </div>
+                {% if loop.last %}<br><br>{% endif %}
             {% endfor %}
         </div>
         <div class="col-lg-4">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <div class="pull-right">
-                        <a href="#" class="btn btn-primary btn-xs">
-                            {{ icon('refresh') }}
-                            Coaches Poll
-                        </a>
-                    </div>
                     AP Top 25
                 </div>
                 <ul class="list-group">

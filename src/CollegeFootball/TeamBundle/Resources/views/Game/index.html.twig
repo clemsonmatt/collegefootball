@@ -49,7 +49,7 @@
                         <center class="text-muted" style="margin-top: 20px;">
                             {{ game.location }}
                             <hr style="margin: 5px 60px;">
-                            {{ game.date|date('m/d') }} @ {{ game.time|date('h:i') }}
+                            {{ game.date|date('m/d') }} @ {{ game.time|default('TBD') }}
                         </center>
                     </div>
                     <div class="col-md-4">

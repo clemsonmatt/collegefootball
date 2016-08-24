@@ -1,3 +1,13 @@
 app:
     resource: "@CollegeFootballAppBundle/Resources/config/routing.yml"
     schemes:  [http]
+
+login:
+    path: /login
+    defaults: { _controller: CollegeFootballAppBundle:Security:login }
+
+login_check:
+    path: /login_check
+
+logout:
+    path: /logout

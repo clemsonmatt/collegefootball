@@ -1,0 +1,70 @@
+{% extends 'CollegeFootballAppBundle:Gameday:layout.html.twig' %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-lg-5 col-md-4 col-sm-3">
+            <div class="pull-right" style="margin-top: 100px;">
+                <img src="{{ asset(gameday.game.homeTeam.imageLocation) }}" style="width: 100px; float: left; padding-right: 15px; border-right: 1px solid #{{ gameday.game.homeTeam.primaryColor }};">
+                <h3 style="color: #{{ gameday.game.homeTeam.primaryColor }}; margin-left: 110px; line-height: 1.3em; margin-bottom: 0px; padding-bottom: 0px;">
+                    <a href="{{ path('collegefootball_team_show', {'slug': gameday.game.homeTeam.slug}) }}" style="color: inherit;">
+                        <span class="visible-lg">{{ gameday.game.homeTeam }}</span>
+                    </a>
+                </h3>
+            </div>
+        </div>
+        <div class="col-lg-2 col-md-4 col-sm-6">
+            <center>
+                <img src="{{ asset('/uploads/GameDayLogo.png') }}" style="max-width: 100%;">
+                <hr>
+                <div class="text-muted">
+                    {{ gameday.game.location }}
+                </div>
+            </center>
+        </div>
+        <div class="col-lg-5 col-md-4 col-sm-3">
+            <div style="margin-top: 100px; float: left;">
+                <img src="{{ asset(gameday.game.awayTeam.imageLocation) }}" style="width: 100px; float: right; padding-left: 15px; border-left: 1px solid #{{ gameday.game.awayTeam.primaryColor }};">
+                <h3 style="color: #{{ gameday.game.awayTeam.primaryColor }}; margin-right: 110px; line-height: 1.3em; margin-bottom: 0px; padding-bottom: 0px; text-align: right;">
+                    <a href="{{ path('collegefootball_team_show', {'slug': gameday.game.awayTeam.slug}) }}" style="color: inherit;">
+                        <span class="visible-lg">{{ gameday.game.awayTeam }}</span>
+                    </a>
+                </h3>
+            </div>
+        </div>
+    </div>
+
+    <div class="row" style="margin-top: 40px;">
+        <div class="col-lg-3 col-md-6">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    Lee Corso
+                </div>
+
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    Kirk Herbstreit
+                </div>
+
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    Desmond Howard
+                </div>
+
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    The Bear
+                </div>
+
+            </div>
+        </div>
+    </div>
+{% endblock %}
