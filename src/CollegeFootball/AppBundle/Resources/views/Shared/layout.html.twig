@@ -43,7 +43,7 @@
                         {{ app.user.username }} <span class="caret"></span>
                     </a>
                     <ul class="dropdown-menu" style="margin-top: 1px;">
-                        <li><a href="#">Profile</a></li>
+                        <li><a href="{{ path('collegefootball_person_show', {'username': app.user.username}) }}">Profile</a></li>
                         <li><a href="/logout">Logout</a></li>
                     </ul>
                 </div>

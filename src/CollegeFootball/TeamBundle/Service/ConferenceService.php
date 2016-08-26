@@ -13,6 +13,8 @@ use CollegeFootball\TeamBundle\Entity\Team;
 */
 class ConferenceService
 {
+    private $em;
+
     /**
      * @DI\InjectParams({
      *      "em" = @DI\Inject("doctrine.orm.entity_manager")

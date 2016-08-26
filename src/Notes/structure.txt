@@ -8,18 +8,14 @@ AppBundle
         Ranking -- manage rankings by week
         Gameday -- manage gameday location and predictions
         Security -- handle login/out
-        Manage -- change permissions for a person / view people
+        Person -- view user profile / make predictions
+            - Can only view self unless manage role
+        Prediction -- view top games and see %'s for predicted winners
     Entity
         Bowl
         GameDay
             date
-            location
             game
-        GameDayPrediction
-            name
-            game
-            winner
-            prediction
         Week
             season
             week_number

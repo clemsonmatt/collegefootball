@@ -31,14 +31,13 @@
                     Details
                 </div>
                 <div class="panel-body">
-                    <dl>
-                        <dt>Date</dt>
-                        <dd>{{ game.date|date('m/d') }}</dd>
-                        <dt>Time</dt>
-                        <dd>{{ game.time ? game.time|date('h:i') : 'TBD' }}</dd>
-                        <dt>Location</dt>
-                        <dd>{{ game.location }}</dd>
-                    </dl>
+                    <center>
+                        {{ game.date|date('D. M, j') }}
+                        @
+                        {{ game.time|default('TBD') }}
+                        <hr style="margin: 10px 45px;">
+                        {{ game.location }}
+                    </center>
                 </div>
             </div>
             <div class="panel panel-default">
@@ -46,12 +45,19 @@
                     Odds
                 </div>
                 <div class="panel-body">
-                    <dl>
+                    <dl class="dl-spaced">
                         <dt>Spread</dt>
                         <dd>{{ game.spread|default('&mdash;')|raw }}</dd>
                         <dt>Predicted Winner</dt>
                         <dd>{{ game.predictedWinner|default('&mdash;')|raw }}</dd>
+                    </dl>
+                    <hr>
+                    <dl class="dl-spaced">
                         <dt>Gameday Prediction</dt>
+                        <dd>&mdash;</dd>
+                        <dt>Pick'em Winner</dt>
+                        <dd>&mdash;</dd>
+                        <dt>Your Pick</dt>
                         <dd>&mdash;</dd>
                     </dl>
                 </div>
