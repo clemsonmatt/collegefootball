@@ -49,28 +49,26 @@ class PersonController extends Controller
             ->getResult();
 
 
-        // $query = 'SELECT t.slug
-        //     FROM collegefootball.prediction p
-        //     JOIN collegefootball.person person on p.person_id = person.id
-        //     JOIN collegefootball.team t on p.team_id = t.id
-        //     JOIN collegefootball.game g on p.game_id = g.id
-        //     WHERE person.username = :username
-        //     AND g.date >= :startDate
-        //     AND g.date <= :endDate
-        //     ORDER BY g.date, g.time
-        // ';
-
-        // $statement = $em->getConnection()->prepare($query);
-        // $statement->bindValue('username', $person->getUsername());
-        // $statement->bindValue('startDate', $week->getStartDate()->format('y-m-d'));
-        // $statement->bindValue('endDate', $week->getEndDate()->format('y-m-d'));
-        // $statement->execute();
-        // $predictedWeekWinners = $statement->fetchAll();
+        $repository           = $em->getRepository('CollegeFootballAppBundle:Prediction');
+        $predictedWeekWinners = $repository->createQueryBuilder('p')
+            ->select('t.slug')
+            ->join('p.person', 'person')
+            ->join('p.team', 't')
+            ->join('p.game', 'g')
+            ->where('person.username = :username')
+            ->andWhere('g.date >= :startDate')
+            ->andWhere('g.date <= :endDate')
+            ->orderBy('g.date, g.time')
+            ->setParameter('username', $person->getUsername())
+            ->setParameter('startDate', $week->getStartDate())
+            ->setParameter('endDate', $week->getEndDate())
+            ->getQuery()
+            ->getResult();
 
         $weekWinners = [];
-        // foreach ($predictedWeekWinners as $weekWinner) {
-        //     $weekWinners[] = $weekWinner['slug'];
-        // }
+        foreach ($predictedWeekWinners as $weekWinner) {
+            $weekWinners[] = $weekWinner['slug'];
+        }
 
         $pickemService = $this->get('collegefootball.app.pickem');
         $gamePicks     = $pickemService->picksByWeek($week);
