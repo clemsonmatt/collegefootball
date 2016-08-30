@@ -62,7 +62,13 @@
                 <table class="table table-striped table-hover">
                     <thead>
                         <th>Time</th>
-                        <th>Matchup</th>
+                        <th></th>
+                        <th>
+                            <div class="pull-right">
+                                Final
+                            </div>
+                            Matchup
+                        </th>
                         <th>% Picked</th>
                         <th width="1%;">Pick</th>
                         <th width="1%;"></th>
@@ -74,6 +80,20 @@
                                 {{ game.time|default('TBD') }}
                             </td>
                             <td>
+                                <h2 style="margin-top: 0px;" class="text-muted">
+                                    {% if game.winningTeam %}
+                                        {{ icon('locked') }}
+                                    {% else %}
+                                        <span class="text-primary">{{ icon('unlocked') }}</span>
+                                    {% endif %}
+                                </h2>
+                            </td>
+                            <td>
+                                <div class="pull-right text-muted">
+                                    {% if game.winningTeam %}
+                                        {{ game.stats.awayStats.pointsFinal }}
+                                    {% endif %}
+                                </div>
                                 <img src="{{ game.awayTeam.imageLocation }}" style="max-height: 15px;">
                                 <a href="{{ path('collegefootball_team_show', {'slug': game.awayTeam.slug}) }}">
                                     {{ game.awayTeam }}
@@ -82,6 +102,11 @@
                                     </span>
                                 </a>
                                 <hr style="margin: 5px 0px;">
+                                <div class="pull-right text-muted">
+                                    {% if game.winningTeam %}
+                                        {{ game.stats.homeStats.pointsFinal }}
+                                    {% endif %}
+                                </div>
                                 <img src="{{ game.homeTeam.imageLocation }}" style="max-height: 15px;">
                                 <a href="{{ path('collegefootball_team_show', {'slug': game.homeTeam.slug}) }}">
                                     {{ game.homeTeam }}
@@ -110,23 +135,52 @@
                             </td>
                             <td>
                                 <center>
-                                    <div class="btn-group" data-toggle="buttons">
-                                        <label class="btn js-btn-winner btn-default btn-xxs {% if game.awayTeam.slug in week_winners %} btn-primary {% endif %}" style="margin: 0px 0px 5px 0px;" data-game="{{ game.id }}" data-home-away="away">
-                                            <input type="radio" name="game-winner-{{ game.id }}" data-url="{{ path('collegefootball_person_prediction', {'username': person.username, 'game': game.id, 'slug': game.awayTeam.slug}) }}" autocomplete="off" {% if game.awayTeam.slug in week_winners %} checked="checked" {% endif %}>
-                                            <div id="js-away-{{ game.id }}" style="{{ game.awayTeam.slug not in week_winners ? 'display: none;' }}">
-                                                {{ icon('checkmark') }}
-                                            </div>
-                                        </label>
-                                    </div>
-                                    <hr style="margin: 0px;">
-                                    <div class="btn-group" data-toggle="buttons">
-                                        <label class="btn js-btn-winner btn-default btn-xxs {% if game.homeTeam.slug in week_winners %} btn-primary {% endif %}" style="margin: 5px 0px;" data-game="{{ game.id }}" data-home-away="home">
-                                            <input type="radio" name="game-winner-{{ game.id }}" data-url="{{ path('collegefootball_person_prediction', {'username': person.username, 'game': game.id, 'slug': game.homeTeam.slug}) }}" autocomplete="off" {% if game.homeTeam.slug in week_winners %} checked="checked" {% endif %}>
-                                            <div id="js-home-{{ game.id }}" style="{{ game.homeTeam.slug not in week_winners ? 'display: none;' }}">
-                                                {{ icon('checkmark') }}
-                                            </div>
-                                        </label>
-                                    </div>
+                                    {% if game.winningTeam %}
+                                        {% set is_winner = game.winningTeam == game.awayTeam and game.awayTeam.slug in week_winners %}
+                                        {% set is_loser  = game.winningTeam == game.awayTeam and game.winningTeam.slug not in week_winners %}
+
+                                        <div class="btn-group" data-toggle="buttons">
+                                            <label class="btn btn-default btn-xxs {% if is_winner %} btn-success {% elseif is_loser %} btn-danger {% endif %}" style="margin: 0px 0px 5px 0px;">
+                                                {% if is_winner %}
+                                                    {{ icon('checkmark') }}
+                                                {% elseif is_loser %}
+                                                    {{ icon('close') }}
+                                                {% endif %}
+                                            </label>
+                                        </div>
+                                        <hr style="margin: 0px;">
+
+                                        {% set is_winner = game.winningTeam == game.homeTeam and game.homeTeam.slug in week_winners %}
+                                        {% set is_loser  = game.winningTeam == game.homeTeam and game.winningTeam.slug not in week_winners %}
+
+                                        <div class="btn-group" data-toggle="buttons">
+                                            <label class="btn btn-default btn-xxs {% if is_winner %} btn-success {% elseif is_loser %} btn-danger {% endif %}" style="margin: 5px 0px;">
+                                                {% if is_winner %}
+                                                    {{ icon('checkmark') }}
+                                                {% elseif is_loser %}
+                                                    {{ icon('close') }}
+                                                {% endif %}
+                                            </label>
+                                        </div>
+                                    {% else %}
+                                        <div class="btn-group" data-toggle="buttons">
+                                            <label class="btn js-btn-winner btn-default btn-xxs {% if game.awayTeam.slug in week_winners %} btn-primary {% endif %}" style="margin: 0px 0px 5px 0px;" data-game="{{ game.id }}" data-home-away="away">
+                                                <input type="radio" name="game-winner-{{ game.id }}" data-url="{{ path('collegefootball_person_prediction', {'username': person.username, 'game': game.id, 'slug': game.awayTeam.slug}) }}" autocomplete="off" {% if game.awayTeam.slug in week_winners %} checked="checked" {% endif %}>
+                                                <div id="js-away-{{ game.id }}" style="{{ game.awayTeam.slug not in week_winners ? 'display: none;' }}">
+                                                    {{ icon('checkmark') }}
+                                                </div>
+                                            </label>
+                                        </div>
+                                        <hr style="margin: 0px;">
+                                        <div class="btn-group" data-toggle="buttons">
+                                            <label class="btn js-btn-winner btn-default btn-xxs {% if game.homeTeam.slug in week_winners %} btn-primary {% endif %}" style="margin: 5px 0px;" data-game="{{ game.id }}" data-home-away="home">
+                                                <input type="radio" name="game-winner-{{ game.id }}" data-url="{{ path('collegefootball_person_prediction', {'username': person.username, 'game': game.id, 'slug': game.homeTeam.slug}) }}" autocomplete="off" {% if game.homeTeam.slug in week_winners %} checked="checked" {% endif %}>
+                                                <div id="js-home-{{ game.id }}" style="{{ game.homeTeam.slug not in week_winners ? 'display: none;' }}">
+                                                    {{ icon('checkmark') }}
+                                                </div>
+                                            </label>
+                                        </div>
+                                    {% endif %}
                                 </center>
                             </td>
                             <td>

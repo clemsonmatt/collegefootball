@@ -33,6 +33,13 @@
             <div class="panel-body">
                 <div class="row">
                     <div class="col-md-4">
+                        {% if game.winningTeam and game.winningTeam == game.homeTeam %}
+                            <div style="position: absolute;">
+                                <h1 style="font-size: 3.0em; margin-top: -10px; margin-left: -10px; background-color: #fff; border-radius: 3.0em; padding: 0px 5px;" class="text-success">
+                                    {{ icon('checkmark-circled') }}
+                                </h1>
+                            </div>
+                        {% endif %}
                         <div class="hidden-lg">
                             <img src="{{ asset(game.homeTeam.imageLocation) }}" style="width: 100px; float: left;">
                         </div>
@@ -53,6 +60,15 @@
                         </center>
                     </div>
                     <div class="col-md-4">
+                        {% if game.winningTeam and game.winningTeam == game.awayTeam %}
+                            <div class="pull-right" style="margin-right: 40px;">
+                                <div style="position: absolute;">
+                                    <h1 style="font-size: 3.0em; margin-top: -10px; background-color: #fff; border-radius: 3.0em; padding: 0px 5px;" class="text-success">
+                                        {{ icon('checkmark-circled') }}
+                                    </h1>
+                                </div>
+                            </div>
+                        {% endif %}
                         <div class="hidden-lg">
                             <img src="{{ asset(game.awayTeam.imageLocation) }}" style="width: 100px; float: right;">
                         </div>
