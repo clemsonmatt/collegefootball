@@ -77,11 +77,17 @@
                                 <img src="{{ game.awayTeam.imageLocation }}" style="max-height: 15px;">
                                 <a href="{{ path('collegefootball_team_show', {'slug': game.awayTeam.slug}) }}">
                                     {{ game.awayTeam }}
+                                    <span class="text-muted">
+                                        {{ game.spread and game.predictedWinner == 'Away' ? '(-' ~ game.spread ~ ')' }}
+                                    </span>
                                 </a>
                                 <hr style="margin: 5px 0px;">
                                 <img src="{{ game.homeTeam.imageLocation }}" style="max-height: 15px;">
                                 <a href="{{ path('collegefootball_team_show', {'slug': game.homeTeam.slug}) }}">
                                     {{ game.homeTeam }}
+                                    <span class="text-muted">
+                                        {{ game.spread and game.predictedWinner == 'Home' ? '(-' ~ game.spread ~ ')' }}
+                                    </span>
                                 </a>
                             </td>
                             <td>
