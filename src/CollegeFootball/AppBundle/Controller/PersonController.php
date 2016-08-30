@@ -45,6 +45,7 @@ class PersonController extends Controller
             ->orderBy('g.date, g.time')
             ->setParameter('startDate', $week->getStartDate())
             ->setParameter('endDate', $week->getEndDate())
+            ->setMaxResults(5)
             ->getQuery()
             ->getResult();
 
