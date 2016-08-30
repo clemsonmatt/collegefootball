@@ -50,8 +50,28 @@ class GameController extends Controller
      */
     public function showAction(Game $game)
     {
+        $em         = $this->getDoctrine()->getManager();
+        $repository = $em->getRepository('CollegeFootballAppBundle:Week');
+        $week       = $repository->createQueryBuilder('w')
+            ->where('w.startDate <= :date')
+            ->andWhere('w.endDate >= :date')
+            ->setParameter('date', $game->getDate())
+            ->getQuery()
+            ->getSingleResult();
+
+        $pickemService   = $this->get('collegefootball.app.pickem');
+        $gamePredictions = $pickemService->picksByWeek($week, $game);
+
+        $repository = $em->getRepository('CollegeFootballAppBundle:Prediction');
+        $userPrediction = $repository->findOneBy([
+            'person' => $this->getUser(),
+            'game'   => $game,
+        ]);
+
         return $this->render('CollegeFootballTeamBundle:Game:show.html.twig', [
-            'game' => $game,
+            'game'             => $game,
+            'game_predictions' => $gamePredictions,
+            'user_prediction'  => $userPrediction,
         ]);
     }
 

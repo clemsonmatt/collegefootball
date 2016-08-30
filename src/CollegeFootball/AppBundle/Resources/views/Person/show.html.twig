@@ -75,10 +75,14 @@
                             </td>
                             <td>
                                 <img src="{{ game.awayTeam.imageLocation }}" style="max-height: 15px;">
-                                <a href="{{ path('collegefootball_team_show', {'slug': game.awayTeam.slug}) }}">{{ game.awayTeam }}</a>
+                                <a href="{{ path('collegefootball_team_show', {'slug': game.awayTeam.slug}) }}">
+                                    {{ game.awayTeam }}
+                                </a>
                                 <hr style="margin: 5px 0px;">
                                 <img src="{{ game.homeTeam.imageLocation }}" style="max-height: 15px;">
-                                <a href="{{ path('collegefootball_team_show', {'slug': game.homeTeam.slug}) }}">{{ game.homeTeam }}</a>
+                                <a href="{{ path('collegefootball_team_show', {'slug': game.homeTeam.slug}) }}">
+                                    {{ game.homeTeam }}
+                                </a>
                             </td>
                             <td>
                                 {% if game.id in game_picks|keys %}

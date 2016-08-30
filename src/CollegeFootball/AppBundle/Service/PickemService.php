@@ -6,6 +6,7 @@ use Doctrine\ORM\EntityManager;
 use JMS\DiExtraBundle\Annotation as DI;
 
 use CollegeFootball\AppBundle\Entity\Week;
+use CollegeFootball\TeamBundle\Entity\Game;
 
 /**
 * @DI\Service("collegefootball.app.pickem")
@@ -24,7 +25,7 @@ class PickemService
         $this->em = $em;
     }
 
-    public function picksByWeek(Week $week)
+    public function picksByWeek(Week $week, Game $game = null)
     {
         $repository        = $this->em->getRepository('CollegeFootballAppBundle:Prediction');
         $predictionsByWeek = $repository->createQueryBuilder('p')
@@ -32,8 +33,14 @@ class PickemService
             ->where('g.date >= :startDate')
             ->andWhere('g.date <= :endDate')
             ->setParameter('startDate', $week->getStartDate())
-            ->setParameter('endDate', $week->getEndDate())
-            ->getQuery()
+            ->setParameter('endDate', $week->getEndDate());
+
+        if ($game) {
+            $predictionsByWeek = $predictionsByWeek->andWhere('g = :game')
+                ->setParameter('game', $game);
+        }
+
+        $predictionsByWeek = $predictionsByWeek->getQuery()
             ->getResult();
 
         $gamePredictions = [];

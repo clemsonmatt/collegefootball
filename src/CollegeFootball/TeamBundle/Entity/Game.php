@@ -62,7 +62,7 @@ class Game
     private $location;
 
     /**
-     * @ORM\Column(name="spread", type="integer", nullable=true)
+     * @ORM\Column(name="spread", type="decimal", precision=3, scale=1, nullable=true)
      */
     private $spread;
 

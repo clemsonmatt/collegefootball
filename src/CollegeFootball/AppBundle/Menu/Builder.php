@@ -39,10 +39,6 @@ class Builder implements ContainerAwareInterface
             'route' => 'collegefootball_gameday_index',
         ]);
 
-        $menu->addChild('Pick\'em', [
-            'uri' => '#'
-        ]);
-
         return $menu;
     }
 }

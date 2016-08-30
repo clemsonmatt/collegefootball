@@ -59,7 +59,7 @@ class GameType extends AbstractType
             'required' => false,
         ]);
 
-        $builder->add('spread', SymfonyTypes\IntegerType::class, [
+        $builder->add('spread', SymfonyTypes\TextType::class, [
             'required' => false,
         ]);
 

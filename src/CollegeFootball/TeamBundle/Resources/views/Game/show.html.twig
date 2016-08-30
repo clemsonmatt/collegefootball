@@ -49,16 +49,43 @@
                         <dt>Spread</dt>
                         <dd>{{ game.spread|default('&mdash;')|raw }}</dd>
                         <dt>Predicted Winner</dt>
-                        <dd>{{ game.predictedWinner|default('&mdash;')|raw }}</dd>
+                        <dd>
+                            {% if game.predictedWinner %}
+                                {% if game.predictedWinner == 'Home' %}
+                                    {{ game.homeTeam }}
+                                {% else %}
+                                    {{ game.awayTeam }}
+                                {% endif %}
+                            {% else %}
+                                &mdash;
+                            {% endif %}
+                        </dd>
                     </dl>
                     <hr>
                     <dl class="dl-spaced">
-                        <dt>Gameday Prediction</dt>
-                        <dd>&mdash;</dd>
-                        <dt>Pick'em Winner</dt>
-                        <dd>&mdash;</dd>
+                        <dt>Pick'em Results</dt>
+                        <dd>
+                            {% if game.id in game_predictions|keys %}
+                                {% set pick_total = game_predictions[game.id].awayCount + game_predictions[game.id].homeCount %}
+                                {{ game.awayTeam }}
+                                <div class="progress" style="border: none; height: 15px; margin-bottom: 0px;">
+                                    <div class="progress-bar progress-bar-striped" role="progressbar" style="width: {{ (game_predictions[game.id].awayCount / pick_total) * 100 }}%;">
+                                    </div>
+                                </div>
+                                <hr style="margin: 5px 0px;">
+                                {{ game.homeTeam }}
+                                <div class="progress" style="border: none; height: 15px; margin-bottom: 0px;">
+                                    <div class="progress-bar progress-bar-striped" role="progressbar" style="width: {{ (game_predictions[game.id].homeCount / pick_total) * 100 }}%;">
+                                    </div>
+                                </div>
+                            {% else %}
+                                &mdash;
+                            {% endif %}
+                        </dd>
                         <dt>Your Pick</dt>
-                        <dd>&mdash;</dd>
+                        <dd>
+                            {{ user_prediction.team|default('&mdash;')|raw }}
+                        </dd>
                     </dl>
                 </div>
             </div>
