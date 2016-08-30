@@ -48,31 +48,29 @@ class PersonController extends Controller
             ->getQuery()
             ->getResult();
 
-        die(dump($games));
 
+        // $query = 'SELECT t.slug
+        //     FROM collegefootball.prediction p
+        //     JOIN collegefootball.person person on p.person_id = person.id
+        //     JOIN collegefootball.team t on p.team_id = t.id
+        //     JOIN collegefootball.game g on p.game_id = g.id
+        //     WHERE person.username = :username
+        //     AND g.date >= :startDate
+        //     AND g.date <= :endDate
+        //     ORDER BY g.date, g.time
+        // ';
 
-        $query = 'SELECT t.slug
-            FROM collegefootball.prediction p
-            JOIN collegefootball.person person on p.person_id = person.id
-            JOIN collegefootball.team t on p.team_id = t.id
-            JOIN collegefootball.game g on p.game_id = g.id
-            WHERE person.username = :username
-            AND g.date >= :startDate
-            AND g.date <= :endDate
-            ORDER BY g.date, g.time
-        ';
-
-        $statement = $em->getConnection()->prepare($query);
-        $statement->bindValue('username', $person->getUsername());
-        $statement->bindValue('startDate', $week->getStartDate()->format('y-m-d'));
-        $statement->bindValue('endDate', $week->getEndDate()->format('y-m-d'));
-        $statement->execute();
-        $predictedWeekWinners = $statement->fetchAll();
+        // $statement = $em->getConnection()->prepare($query);
+        // $statement->bindValue('username', $person->getUsername());
+        // $statement->bindValue('startDate', $week->getStartDate()->format('y-m-d'));
+        // $statement->bindValue('endDate', $week->getEndDate()->format('y-m-d'));
+        // $statement->execute();
+        // $predictedWeekWinners = $statement->fetchAll();
 
         $weekWinners = [];
-        foreach ($predictedWeekWinners as $weekWinner) {
-            $weekWinners[] = $weekWinner['slug'];
-        }
+        // foreach ($predictedWeekWinners as $weekWinner) {
+        //     $weekWinners[] = $weekWinner['slug'];
+        // }
 
         $pickemService = $this->get('collegefootball.app.pickem');
         $gamePicks     = $pickemService->picksByWeek($week);
