@@ -12,6 +12,8 @@ class Builder implements ContainerAwareInterface
 
     public function mainMenu(FactoryInterface $factory, array $options)
     {
+        $authorizationChecker = $this->container->get('security.authorization_checker');
+
         $menu = $factory->createItem('root', [
             'childrenAttributes' => [
                 'id'    => 'side-menu',
@@ -38,6 +40,12 @@ class Builder implements ContainerAwareInterface
         $menu->addChild('Gameday', [
             'route' => 'collegefootball_gameday_index',
         ]);
+
+        if ($authorizationChecker->isGranted('ROLE_MANAGE')) {
+            $menu->addChild('People', [
+                'route' => 'collegefootball_manage_people',
+            ]);
+        }
 
         return $menu;
     }
