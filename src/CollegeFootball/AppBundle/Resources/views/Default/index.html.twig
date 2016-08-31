@@ -19,6 +19,13 @@
                         <div class="row">
                             <div class="col-md-4">
                                 <center>
+                                    {% if game.winningTeam and game.winningTeam == game.homeTeam %}
+                                        <div style="position: absolute;">
+                                            <h1 style="font-size: 3.0em; margin-top: -10px; background-color: #fff; border-radius: 3.0em; padding: 0px 5px;" class="text-success">
+                                                {{ icon('checkmark-circled') }}
+                                            </h1>
+                                        </div>
+                                    {% endif %}
                                     <img src="{{ asset(game.homeTeam.imageLocation) }}" style="width: 40px;">
                                     <h5 style="color: #{{ game.homeTeam.primaryColor }};">
                                         <a href="{{ path('collegefootball_team_show', {'slug': game.homeTeam.slug}) }}" style="color: inherit;">
@@ -29,13 +36,31 @@
                             </div>
                             <div class="col-md-4">
                                 <center class="text-muted" style="margin-top: 15px; font-size: 0.8em;">
-                                    {{ game.location }}
-                                    <hr style="margin: 5px 60px;">
-                                    {{ game.date|date('m/d') }} @ {{ game.time }}
+                                    {% if game.winningTeam %}
+                                        Final
+                                        <h4>
+                                            {{ game.stats.homeStats.pointsFinal }}
+                                            &mdash;
+                                            {{ game.stats.awayStats.pointsFinal }}
+                                        </h4>
+                                    {% else %}
+                                        {{ game.location }}
+                                        <hr style="margin: 5px 60px;">
+                                        {{ game.date|date('m/d') }} @ {{ game.time }}
+                                    {% endif %}
                                 </center>
                             </div>
                             <div class="col-md-4">
                                 <center>
+                                    {% if game.winningTeam and game.winningTeam == game.awayTeam %}
+                                        <div class="pull-right" style="margin-right: 50px;">
+                                            <div style="position: absolute;">
+                                                <h1 style="font-size: 3.0em; margin-top: -10px; background-color: #fff; border-radius: 3.0em; padding: 0px 5px;" class="text-success">
+                                                    {{ icon('checkmark-circled') }}
+                                                </h1>
+                                            </div>
+                                        </div>
+                                    {% endif %}
                                     <img src="{{ asset(game.awayTeam.imageLocation) }}" style="width: 40px;">
                                     <h5 style="color: #{{ game.awayTeam.primaryColor }};">
                                         <a href="{{ path('collegefootball_team_show', {'slug': game.awayTeam.slug}) }}" style="color: inherit;">
