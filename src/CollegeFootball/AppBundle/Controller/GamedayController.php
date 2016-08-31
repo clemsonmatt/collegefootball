@@ -3,6 +3,7 @@
 namespace CollegeFootball\AppBundle\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -36,6 +37,7 @@ class GamedayController extends Controller
 
     /**
      * @Route("/{week}/add", name="collegefootball_gameday_add")
+     * @Security("is_granted('ROLE_MANAGE')")
      */
     public function addAction(Week $week, Request $request)
     {

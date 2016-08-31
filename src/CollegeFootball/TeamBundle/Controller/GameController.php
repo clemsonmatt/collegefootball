@@ -2,8 +2,9 @@
 
 namespace CollegeFootball\TeamBundle\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 
 use CollegeFootball\TeamBundle\Entity\Game;
@@ -78,6 +79,7 @@ class GameController extends Controller
     /**
      * @Route("/add", name="collegefootball_team_game_add")
      * @Route("/add/{slug}/team", name="collegefootball_team_game_add_team")
+     * @Security("is_granted('ROLE_MANAGE')")
      */
     public function addAction(Request $request, Team $team = null)
     {
@@ -120,6 +122,7 @@ class GameController extends Controller
 
     /**
      * @Route("/{game}/edit", name="collegefootball_team_game_edit")
+     * @Security("is_granted('ROLE_MANAGE')")
      */
     public function editAction(Game $game, Request $request)
     {
@@ -145,6 +148,7 @@ class GameController extends Controller
 
     /**
      * @Route("/{game}/remove", name="collegefootball_team_game_remove")
+     * @Security("is_granted('ROLE_MANAGE')")
      */
     public function removeAction(Game $game)
     {
@@ -158,6 +162,7 @@ class GameController extends Controller
 
     /**
      * @Route("/team/{slug}/game/{game}/outcome", name="collegefootball_team_game_outcome")
+     * @Security("is_granted('ROLE_MANAGE')")
      */
     public function outcomeAction(Team $team, Game $game)
     {

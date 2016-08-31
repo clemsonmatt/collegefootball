@@ -2,8 +2,9 @@
 
 namespace CollegeFootball\TeamBundle\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 
 use CollegeFootball\AppBundle\Entity\Week;
@@ -56,6 +57,7 @@ class RankingController extends Controller
 
     /**
      * @Route("/{week}/add", name="collegefootball_team_ranking_add")
+     * @Security("is_granted('ROLE_MANAGE')")
      */
     public function addAction(Week $week, Request $request)
     {

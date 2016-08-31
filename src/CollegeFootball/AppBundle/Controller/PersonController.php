@@ -4,6 +4,7 @@ namespace CollegeFootball\AppBundle\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -20,15 +21,8 @@ use CollegeFootball\TeamBundle\Entity\Team;
 class PersonController extends Controller
 {
     /**
-     * @Route("/")
-     */
-    public function indexAction()
-    {
-        return $this->render('.html.twig');
-    }
-
-    /**
      * @Route("/{username}/show/{week}", name="collegefootball_person_show")
+     * @Security("user == person or is_granted('ROLE_MANAGE')")
      */
     public function showAction(Person $person, Week $week = null)
     {
@@ -85,9 +79,20 @@ class PersonController extends Controller
 
     /**
      * @Route("/{username}/game/{game}/winner/{slug}", name="collegefootball_person_prediction")
+     * @Security("user == person or is_granted('ROLE_MANAGE')")
      */
     public function gamePredictionAction(Person $person, Game $game, Team $team, Request $request)
     {
+        $now = new \DateTime("now");
+
+        /* make sure game hasn't started */
+        if ($game->getDate() <= $now) {
+            if ($game->getDate() < $now || ($game->getDate() == $now && $game->getTime() < $now)) {
+                $response = ['code' => 100, 'error' => true, 'errorMessage' => 'Cannot pick after game has begun.'];
+                return new JsonResponse($response);
+            }
+        }
+
         $em         = $this->getDoctrine()->getManager();
         $repository = $em->getRepository('CollegeFootballAppBundle:Prediction');
         $prediction = $repository->findOneBy([

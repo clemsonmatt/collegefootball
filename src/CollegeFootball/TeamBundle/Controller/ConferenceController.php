@@ -2,8 +2,9 @@
 
 namespace CollegeFootball\TeamBundle\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 
 use CollegeFootball\TeamBundle\Entity\Conference;
@@ -42,6 +43,7 @@ class ConferenceController extends Controller
 
     /**
      * @Route("/add", name="collegefootball_team_conference_add")
+     * @Security("is_granted('ROLE_MANAGE')")
      */
     public function addAction(Request $request)
     {
@@ -68,6 +70,7 @@ class ConferenceController extends Controller
 
     /**
      * @Route("/{slug}/edit", name="collegefootball_team_conference_edit")
+     * @Security("is_granted('ROLE_MANAGE')")
      */
     public function editAction(Conference $conference, Request $request)
     {
@@ -93,6 +96,7 @@ class ConferenceController extends Controller
 
     /**
      * @Route("/{slug}/remove", name="collegefootball_team_conference_remove")
+     * @Security("is_granted('ROLE_MANAGE')")
      */
     public function removeAction(Conference $conference)
     {

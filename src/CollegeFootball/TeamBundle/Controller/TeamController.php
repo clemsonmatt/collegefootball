@@ -3,6 +3,7 @@
 namespace CollegeFootball\TeamBundle\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -50,6 +51,7 @@ class TeamController extends Controller
 
     /**
      * @Route("/add", name="collegefootball_team_add")
+     * @Security("is_granted('ROLE_MANAGE')")
      */
     public function addAction(Request $request)
     {
@@ -82,6 +84,7 @@ class TeamController extends Controller
 
     /**
      * @Route("/{slug}/edit", name="collegefootball_team_edit")
+     * @Security("is_granted('ROLE_MANAGE')")
      */
     public function editAction(Team $team, Request $request)
     {
@@ -113,6 +116,7 @@ class TeamController extends Controller
 
     /**
      * @Route("/{slug}/remove", name="collegefootball_team_remove")
+     * @Security("is_granted('ROLE_MANAGE')")
      */
     public function removeAction(Team $team)
     {

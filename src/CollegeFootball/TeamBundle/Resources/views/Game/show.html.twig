@@ -112,20 +112,22 @@
             </div>
         </div>
         <div class="col-md-8">
-            <h3>
-                Winner:
-                {% if not game.winningTeam %}
-                    <a href="{{ path('collegefootball_team_game_outcome', {'slug': game.homeTeam.slug, 'game': game.id}) }}" class="btn btn-default btn-xs" style="color: #{{ game.homeTeam.primaryColor }}" data-confirm-action data-confirm-title="mark {{ game.homeTeam.nameShort }} as the winner">
-                        {{ game.homeTeam.nameShort }}
-                    </a>
-                    <a href="{{ path('collegefootball_team_game_outcome', {'slug': game.awayTeam.slug, 'game': game.id}) }}" class="btn btn-default btn-xs" style="color: #{{ game.awayTeam.primaryColor }}" data-confirm-action data-confirm-title="mark {{ game.awayTeam.nameShort }} as the winner">
-                        {{ game.awayTeam.nameShort }}
-                    </a>
-                {% else %}
-                    <span style="color: #{{ game.winningTeam.primaryColor }}">{{ game.winningTeam }}</span>
-                {% endif %}
-            </h3>
-            <br>
+            {% if is_granted('ROLE_MANAGE') %}
+                <h3>
+                    Winner:
+                    {% if not game.winningTeam %}
+                        <a href="{{ path('collegefootball_team_game_outcome', {'slug': game.homeTeam.slug, 'game': game.id}) }}" class="btn btn-default btn-xs" style="color: #{{ game.homeTeam.primaryColor }}" data-confirm-action data-confirm-title="mark {{ game.homeTeam.nameShort }} as the winner">
+                            {{ game.homeTeam.nameShort }}
+                        </a>
+                        <a href="{{ path('collegefootball_team_game_outcome', {'slug': game.awayTeam.slug, 'game': game.id}) }}" class="btn btn-default btn-xs" style="color: #{{ game.awayTeam.primaryColor }}" data-confirm-action data-confirm-title="mark {{ game.awayTeam.nameShort }} as the winner">
+                            {{ game.awayTeam.nameShort }}
+                        </a>
+                    {% else %}
+                        <span style="color: #{{ game.winningTeam.primaryColor }}">{{ game.winningTeam }}</span>
+                    {% endif %}
+                </h3>
+                <br>
+            {% endif %}
 
             <div class="panel panel-default">
                 <div class="panel-heading">
@@ -412,12 +414,16 @@
                             <td>{{ game.stats.awayStats.twoPtConversionMade|default('&mdash;')|raw }}</td>
                         </tr>
                     </table>
-                {% else %}
+                {% elseif is_granted('ROLE_MANAGE') %}
                     <div class="panel-body">
                         <a href="{{ path('collegefootball_team_game_stats_add', {'game': game.id}) }}" class="btn btn-primary">
                             {{ icon('plus') }}
                             Add Stats
                         </a>
+                    </div>
+                {% else %}
+                    <div class="panel-body">
+                        <span class="text-muted">No stats available</span>
                     </div>
                 {% endif %}
             </div>

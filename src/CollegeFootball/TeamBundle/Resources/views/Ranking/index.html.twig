@@ -4,9 +4,11 @@
     <legend>
         <h2>
             <div class="btn-group pull-right">
-                <a href="{{ path('collegefootball_team_ranking_add', {'week': week.id}) }}" class="btn btn-sm btn-primary">
-                    {{ icon('edit') }}
-                </a>
+                {% if is_granted('ROLE_MANAGE') %}
+                    <a href="{{ path('collegefootball_team_ranking_add', {'week': week.id}) }}" class="btn btn-sm btn-primary">
+                        {{ icon('edit') }}
+                    </a>
+                {% endif %}
                 <button type="button" class="btn btn-sm btn-primary dropdown-toggle" data-toggle="dropdown">
                     {{ icon('calendar') }}
                     {{ week }}

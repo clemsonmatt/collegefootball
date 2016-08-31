@@ -2,8 +2,9 @@
 
 namespace CollegeFootball\TeamBundle\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 
 use CollegeFootball\TeamBundle\Entity\Game;
@@ -16,6 +17,7 @@ class GameStatsController extends Controller
 {
     /**
      * @Route("/add", name="collegefootball_team_game_stats_add")
+     * @Security("is_granted('ROLE_MANAGE')")
      */
     public function addAction(Game $game, Request $request)
     {

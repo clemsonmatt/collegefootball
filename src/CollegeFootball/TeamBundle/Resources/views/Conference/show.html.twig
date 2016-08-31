@@ -4,10 +4,12 @@
     <div class="panel panel-default">
         <div class="panel-heading">
             <div class="pull-right">
-                <a href="{{ path('collegefootball_team_conference_edit', {'slug': conference.slug}) }}" class="btn btn-primary btn-xs">
-                    {{ icon('edit') }}
-                    Edit
-                </a>
+                {% if is_granted('ROLE_MANAGE') %}
+                    <a href="{{ path('collegefootball_team_conference_edit', {'slug': conference.slug}) }}" class="btn btn-primary btn-xs">
+                        {{ icon('edit') }}
+                        Edit
+                    </a>
+                {% endif %}
             </div>
             <a href="{{ path('collegefootball_team_conference_index') }}">
                 Conferences
