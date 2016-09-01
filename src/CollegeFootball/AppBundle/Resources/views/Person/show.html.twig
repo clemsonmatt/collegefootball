@@ -5,14 +5,14 @@
         <div class="col-lg-4">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    {% if app.user == person %}
+                    {#% if app.user == person or is_granted('ROLE_MANAGE') %}
                         <div class="pull-right">
                             <a href="#" class="btn btn-xs btn-primary">
                                 {{ icon('compose') }}
                                 Edit
                             </a>
                         </div>
-                    {% endif %}
+                    {% endif %#}
                     Profile
                 </div>
                 <div class="panel-body">
@@ -34,15 +34,14 @@
                     Pick'em Stats
                 </div>
                 <div class="panel-body">
-                    Number of total points
-                    Graph of win/lose
+                    <span class="text-muted">Comming soon</span>
                 </div>
             </div>
         </div>
         <div class="col-lg-8">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <div class="pull-right btn-group">
+                    {#<div class="pull-right btn-group">
                         <button type="button" class="btn btn-xs btn-primary dropdown-toggle" data-toggle="dropdown">
                             {{ icon('calendar') }}
                             {{ week }}
@@ -57,7 +56,7 @@
                                 </li>
                             {% endfor %}
                         </ul>
-                    </div>
+                    </div>#}
                     Pick'em
                 </div>
                 <table class="table table-striped table-hover">

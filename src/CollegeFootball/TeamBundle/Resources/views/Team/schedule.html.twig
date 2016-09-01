@@ -6,10 +6,12 @@
     <div class="panel panel-default">
         <div class="panel-heading">
             <div class="pull-right">
-                <a href="{{ path('collegefootball_team_game_add_team', {'slug': team.slug}) }}" class="btn btn-primary btn-xs">
-                    {{ icon('plus') }}
-                    Add Game
-                </a>
+                {% if is_granted('ROLE_MANAGE') %}
+                    <a href="{{ path('collegefootball_team_game_add_team', {'slug': team.slug}) }}" class="btn btn-primary btn-xs">
+                        {{ icon('plus') }}
+                        Add Game
+                    </a>
+                {% endif %}
             </div>
             {{ "now"|date('Y') }} Schedule
         </div>

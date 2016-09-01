@@ -20,14 +20,16 @@
             {% set primary_navigation = knp_menu_get('CollegeFootballTeamBundle:Builder:teamMenu', [], {'team': team}) %}
             {{ knp_menu_render(primary_navigation, {'currentClass': 'active', 'depth': 2}) }}
 
-            <ul class="nav navbar-nav navbar-right">
-                <li>
-                    <a href="{{ path('collegefootball_team_edit', {'slug': team.slug}) }}">
-                        {{ icon('compose') }}
-                        Edit
-                    </a>
-                </li>
-            </ul>
+            {% if is_granted('ROLE_MANAGE') %}
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="{{ path('collegefootball_team_edit', {'slug': team.slug}) }}">
+                            {{ icon('compose') }}
+                            Edit
+                        </a>
+                    </li>
+                </ul>
+            {% endif %}
         </div>
     </div>
 </nav>
