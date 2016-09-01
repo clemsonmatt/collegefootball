@@ -54,9 +54,18 @@
                     </div>
                     <div class="col-md-4">
                         <center class="text-muted" style="margin-top: 20px;">
-                            {{ game.location }}
-                            <hr style="margin: 5px 60px;">
-                            {{ game.date|date('m/d') }} @ {{ game.time|default('TBD') }}
+                            {% if game.winningTeam %}
+                                Final
+                                <h4>
+                                    {{ game.stats.homeStats.pointsFinal }}
+                                    &mdash;
+                                    {{ game.stats.awayStats.pointsFinal }}
+                                </h4>
+                            {% else %}
+                                {{ game.location }}
+                                <hr style="margin: 5px 60px;">
+                                {{ game.date|date('m/d') }} @ {{ game.time }}
+                            {% endif %}
                         </center>
                     </div>
                     <div class="col-md-4">
