@@ -38,9 +38,9 @@ class Builder implements ContainerAwareInterface
             'routeParameters' => ['slug' => $options['team']->getSlug()]
         ])->setAttribute('icon', 'stats-bars');
 
-        $menu->addChild('Roster', [
-            'uri' => '#'
-        ])->setAttribute('icon', 'clipboard');
+        // $menu->addChild('Roster', [
+        //     'uri' => '#'
+        // ])->setAttribute('icon', 'clipboard');
 
         return $menu;
     }

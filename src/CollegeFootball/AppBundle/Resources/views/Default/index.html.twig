@@ -17,7 +17,7 @@
                 <div class="panel panel-default panel-click" data-url="{{ path('collegefootball_team_game_show', {'game': game.id}) }}" style="margin-bottom: 0px;">
                     <div class="panel-body">
                         <div class="row">
-                            <div class="col-md-4">
+                            <div class="col-sm-4">
                                 <center>
                                     {% if game.winningTeam and game.winningTeam == game.homeTeam %}
                                         <div style="position: absolute;">
@@ -34,7 +34,7 @@
                                     </h5>
                                 </center>
                             </div>
-                            <div class="col-md-4">
+                            <div class="col-sm-4">
                                 <center class="text-muted" style="margin-top: 15px; font-size: 0.8em;">
                                     {% if game.winningTeam %}
                                         Final
@@ -50,7 +50,7 @@
                                     {% endif %}
                                 </center>
                             </div>
-                            <div class="col-md-4">
+                            <div class="col-sm-4">
                                 <center>
                                     {% if game.winningTeam and game.winningTeam == game.awayTeam %}
                                         <div class="pull-right" style="margin-right: 50px;">
