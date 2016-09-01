@@ -86,8 +86,8 @@ class PersonController extends Controller
         $now = new \DateTime("now");
 
         /* make sure game hasn't started */
-        if ($game->getDate() <= $now) {
-            if ($game->getDate() < $now || ($game->getDate() == $now && $game->getTime() < $now)) {
+        if ($game->getDate()->format('U') <= $now->format('U')) {
+            if ($game->getDate()->format('Y-m-d') < $now->format('Y-m-d') || ($game->getDate()->format('Y-m-d') == $now->format('Y-m-d') && $game->getTime() < $now->format('h:i A'))) {
                 $response = ['code' => 100, 'error' => true, 'errorMessage' => 'Cannot pick after game has begun.'];
                 return new JsonResponse($response);
             }
