@@ -13,12 +13,18 @@ class Builder implements ContainerAwareInterface
     public function mainMenu(FactoryInterface $factory, array $options)
     {
         $authorizationChecker = $this->container->get('security.authorization_checker');
+        $user                 = $this->container->get('security.token_storage')->getToken()->getUser();
 
         $menu = $factory->createItem('root', [
             'childrenAttributes' => [
                 'id'    => 'side-menu',
                 'class' => 'nav',
             ],
+        ]);
+
+        $menu->addChild('My Profile', [
+            'route'           => 'collegefootball_person_show',
+            'routeParameters' => ['username' => $user->getUsername()],
         ]);
 
         $menu->addChild('Scoreboard', [
