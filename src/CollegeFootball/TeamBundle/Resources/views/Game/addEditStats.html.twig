@@ -17,28 +17,28 @@
             <div class="col-lg-6">
                 <div class="panel panel-default">
                     <div class="panel-heading" style="padding-bottom: 0px;">
-                        <img src="{{ asset(game.homeTeam.imageLocation) }}" style="width: 100px; float: left; padding-right: 15px; border-right: 1px solid #{{ game.homeTeam.primaryColor }};">
-                        <h2 style="color: #{{ game.homeTeam.primaryColor }}; margin-left: 110px; line-height: 2.3em; margin-bottom: 0px; padding-bottom: 0px;">
-                            {{ game.homeTeam.name }}
+                        <img src="{{ asset(game.awayTeam.imageLocation) }}" style="width: 100px; float: left; padding-right: 15px; border-right: 1px solid #{{ game.awayTeam.primaryColor }};">
+                        <h3 style="color: #{{ game.awayTeam.primaryColor }}; margin-left: 110px; line-height: 3.0em; margin-bottom: 0px; padding-bottom: 0px;">
+                            {{ game.awayTeam.name }}
                             <small style="color: #ccc;">Home</small>
-                        </h2>
+                        </h3>
                     </div>
                     <div class="panel-body">
-                        {{ macros.statForm(form.stats.children.homeStats) }}
+                        {{ macros.statForm(form.stats.children.awayStats) }}
                     </div>
                 </div>
             </div>
             <div class="col-lg-6">
                 <div class="panel panel-default">
                     <div class="panel-heading" style="padding-bottom: 0px;">
-                        <img src="{{ asset(game.awayTeam.imageLocation) }}" style="width: 100px; float: left; padding-right: 15px; border-right: 1px solid #{{ game.awayTeam.primaryColor }};">
-                        <h2 style="color: #{{ game.awayTeam.primaryColor }}; margin-left: 110px; line-height: 2.3em; margin-bottom: 0px; padding-bottom: 0px;">
-                            {{ game.awayTeam.name }}
+                        <img src="{{ asset(game.homeTeam.imageLocation) }}" style="width: 100px; float: left; padding-right: 15px; border-right: 1px solid #{{ game.homeTeam.primaryColor }};">
+                        <h3 style="color: #{{ game.homeTeam.primaryColor }}; margin-left: 110px; line-height: 3.0em; margin-bottom: 0px; padding-bottom: 0px;">
+                            {{ game.homeTeam.name }}
                             <small style="color: #ccc;">Away</small>
-                        </h2>
+                        </h3>
                     </div>
                     <div class="panel-body">
-                        {{ macros.statForm(form.stats.children.awayStats) }}
+                        {{ macros.statForm(form.stats.children.homeStats) }}
                     </div>
                 </div>
             </div>
@@ -82,15 +82,27 @@
             {{ form_widget(stats.pointsFourth, {'attr': {'class': 'form-control'}}) }}
         </div>
     </div>
+    <div class="form-group row">
+        <label class="col-md-3 control-label">{{ form_label(stats.ot1) }}</label>
+        <div class="col-md-9">
+            {{ form_widget(stats.ot1, {'attr': {'class': 'form-control'}}) }}
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-md-3 control-label">{{ form_label(stats.ot2) }}</label>
+        <div class="col-md-9">
+            {{ form_widget(stats.ot2, {'attr': {'class': 'form-control'}}) }}
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-md-3 control-label">{{ form_label(stats.ot3) }}</label>
+        <div class="col-md-9">
+            {{ form_widget(stats.ot3, {'attr': {'class': 'form-control'}}) }}
+        </div>
+    </div>
     <hr>
 
     <h4>Total Offense</h4>
-    <div class="form-group row">
-        <label class="col-md-3 control-label">{{ form_label(stats.totalOffensePlays) }}</label>
-        <div class="col-md-9">
-            {{ form_widget(stats.totalOffensePlays, {'attr': {'class': 'form-control'}}) }}
-        </div>
-    </div>
     <div class="form-group row">
         <label class="col-md-3 control-label">{{ form_label(stats.totalOffenseYards) }}</label>
         <div class="col-md-9">
@@ -149,48 +161,6 @@
         <label class="col-md-3 control-label">{{ form_label(stats.passingInterceptions) }}</label>
         <div class="col-md-9">
             {{ form_widget(stats.passingInterceptions, {'attr': {'class': 'form-control'}}) }}
-        </div>
-    </div>
-    <hr>
-
-    <h4>Total Defense</h4>
-    <div class="form-group row">
-        <label class="col-md-3 control-label">{{ form_label(stats.totalDefensePassesBrokenUp) }}</label>
-        <div class="col-md-9">
-            {{ form_widget(stats.totalDefensePassesBrokenUp, {'attr': {'class': 'form-control'}}) }}
-        </div>
-    </div>
-    <div class="form-group row">
-        <label class="col-md-3 control-label">{{ form_label(stats.totalDefenseQBHurries) }}</label>
-        <div class="col-md-9">
-            {{ form_widget(stats.totalDefenseQBHurries, {'attr': {'class': 'form-control'}}) }}
-        </div>
-    </div>
-    <div class="form-group row">
-        <label class="col-md-3 control-label">{{ form_label(stats.totalDefenseFumblesForced) }}</label>
-        <div class="col-md-9">
-            {{ form_widget(stats.totalDefenseFumblesForced, {'attr': {'class': 'form-control'}}) }}
-        </div>
-    </div>
-    <div class="form-group row">
-        <label class="col-md-3 control-label">{{ form_label(stats.totalDefenseKickPuntBlock) }}</label>
-        <div class="col-md-9">
-            {{ form_widget(stats.totalDefenseKickPuntBlock, {'attr': {'class': 'form-control'}}) }}
-        </div>
-    </div>
-    <hr>
-
-    <h4>Sacks</h4>
-    <div class="form-group row">
-        <label class="col-md-3 control-label">{{ form_label(stats.sackCount) }}</label>
-        <div class="col-md-9">
-            {{ form_widget(stats.sackCount, {'attr': {'class': 'form-control'}}) }}
-        </div>
-    </div>
-    <div class="form-group row">
-        <label class="col-md-3 control-label">{{ form_label(stats.sackYards) }}</label>
-        <div class="col-md-9">
-            {{ form_widget(stats.sackYards, {'attr': {'class': 'form-control'}}) }}
         </div>
     </div>
     <hr>
@@ -320,27 +290,6 @@
         <label class="col-md-3 control-label">{{ form_label(stats.fourthDownConversions) }}</label>
         <div class="col-md-9">
             {{ form_widget(stats.fourthDownConversions, {'attr': {'class': 'form-control'}}) }}
-        </div>
-    </div>
-    <hr>
-
-    <h4>Red Zone</h4>
-    <div class="form-group row">
-        <label class="col-md-3 control-label">{{ form_label(stats.redZoneAttempts) }}</label>
-        <div class="col-md-9">
-            {{ form_widget(stats.redZoneAttempts, {'attr': {'class': 'form-control'}}) }}
-        </div>
-    </div>
-    <div class="form-group row">
-        <label class="col-md-3 control-label">{{ form_label(stats.redZoneScores) }}</label>
-        <div class="col-md-9">
-            {{ form_widget(stats.redZoneScores, {'attr': {'class': 'form-control'}}) }}
-        </div>
-    </div>
-    <div class="form-group row">
-        <label class="col-md-3 control-label">{{ form_label(stats.redZonePoints) }}</label>
-        <div class="col-md-9">
-            {{ form_widget(stats.redZonePoints, {'attr': {'class': 'form-control'}}) }}
         </div>
     </div>
     <hr>

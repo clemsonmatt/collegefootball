@@ -20,7 +20,11 @@ class TeamStatsType extends AbstractType
         $builder->add('pointsSecond', SymfonyTypes\IntegerType::class, ['label' => '2nd quarter']);
         $builder->add('pointsThird', SymfonyTypes\IntegerType::class, ['label' => '3rd quarter']);
         $builder->add('pointsFourth', SymfonyTypes\IntegerType::class, ['label' => '4th quarter']);
-        /* -- OT NEEDED -- */
+
+        /* OT */
+        $builder->add('ot1', SymfonyTypes\IntegerType::class, ['label' => '1st OT', 'required' => false]);
+        $builder->add('ot2', SymfonyTypes\IntegerType::class, ['label' => '2nd OT', 'required' => false]);
+        $builder->add('ot3', SymfonyTypes\IntegerType::class, ['label' => '3rd OT', 'required' => false]);
 
         /* rushing */
         $builder->add('rushingYards', SymfonyTypes\IntegerType::class, ['label' => 'Yards']);
@@ -35,18 +39,7 @@ class TeamStatsType extends AbstractType
         $builder->add('passingInterceptions', SymfonyTypes\IntegerType::class, ['label' => 'Interceptions']);
 
         /* total offense */
-        $builder->add('totalOffensePlays', SymfonyTypes\IntegerType::class, ['label' => 'Plays']);
         $builder->add('totalOffenseYards', SymfonyTypes\IntegerType::class, ['label' => 'Yards']);
-
-        /* sacks */
-        $builder->add('sackCount', SymfonyTypes\IntegerType::class, ['label' => 'Count']);
-        $builder->add('sackYards', SymfonyTypes\IntegerType::class, ['label' => 'Yards']);
-
-        /* total defense */
-        $builder->add('totalDefensePassesBrokenUp', SymfonyTypes\IntegerType::class, ['label' => 'Passes Broken Up']);
-        $builder->add('totalDefenseQBHurries', SymfonyTypes\IntegerType::class, ['label' => 'QB Hurries']);
-        $builder->add('totalDefenseFumblesForced', SymfonyTypes\IntegerType::class, ['label' => 'Fumbles Forced']);
-        $builder->add('totalDefenseKickPuntBlock', SymfonyTypes\IntegerType::class, ['label' => 'Kicks/Punts Blocked']);
 
         /* punt returns */
         $builder->add('puntReturnCount', SymfonyTypes\IntegerType::class, ['label' => 'Count']);
@@ -70,7 +63,7 @@ class TeamStatsType extends AbstractType
         $builder->add('penaltyYards', SymfonyTypes\IntegerType::class, ['label' => 'Yards']);
 
         /* time of possession */
-        $builder->add('timeOfPossession', SymfonyTypes\IntegerType::class, ['label' => 'T.O.P.']);
+        $builder->add('timeOfPossession', SymfonyTypes\TextType::class, ['label' => 'T.O.P.']);
 
         /* 3rd downs */
         $builder->add('thirdDownAttempts', SymfonyTypes\IntegerType::class, ['label' => 'Attempts']);
@@ -79,11 +72,6 @@ class TeamStatsType extends AbstractType
         /* 4th downs */
         $builder->add('fourthDownAttempts', SymfonyTypes\IntegerType::class, ['label' => 'Attempts']);
         $builder->add('fourthDownConversions', SymfonyTypes\IntegerType::class, ['label' => 'Conversions']);
-
-        /* red zone */
-        $builder->add('redZoneAttempts', SymfonyTypes\IntegerType::class, ['label' => 'Attempts']);
-        $builder->add('redZoneScores', SymfonyTypes\IntegerType::class, ['label' => 'Scores']);
-        $builder->add('redZonePoints', SymfonyTypes\IntegerType::class, ['label' => 'Points']);
 
         /* field goals */
         $builder->add('fieldGoalAttempts', SymfonyTypes\IntegerType::class, ['label' => 'Attempts']);
