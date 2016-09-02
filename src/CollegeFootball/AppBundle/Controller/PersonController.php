@@ -8,10 +8,12 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Security\Core\Encoder\BCryptPasswordEncoder;
 
 use CollegeFootball\AppBundle\Entity\Person;
 use CollegeFootball\AppBundle\Entity\Prediction;
 use CollegeFootball\AppBundle\Entity\Week;
+use CollegeFootball\AppBundle\Form\Type\PersonType;
 use CollegeFootball\TeamBundle\Entity\Game;
 use CollegeFootball\TeamBundle\Entity\Team;
 
@@ -74,6 +76,80 @@ class PersonController extends Controller
             'games'        => $games,
             'week_winners' => $weekWinners,
             'game_picks'   => $gamePicks,
+        ]);
+    }
+
+    /**
+     * @Route("/{username}/edit", name="collegefootball_person_edit")
+     * @Security("user == person or is_granted('ROLE_MANAGE')")
+     */
+    public function editAction(Person $person, Request $request)
+    {
+        $form = $this->createForm(PersonType::class, $person, [
+            'show_password' => false,
+        ]);
+
+        $form->handleRequest($request);
+
+        if ($form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $em->flush();
+
+            return $this->redirectToRoute('collegefootball_person_show', [
+                'username' => $person->getUsername(),
+            ]);
+        }
+
+        return $this->render('CollegeFootballAppBundle:Person:edit.html.twig', [
+            'form'    => $form->createView(),
+            'person'  => $person,
+            'heading' => 'Edit Profile',
+        ]);
+    }
+
+    /**
+     * @Route("/{username}/change-password", name="collegefootball_person_change_password")
+     * @Security("user == person or is_granted('ROLE_MANAGE')")
+     */
+    public function changePasswordAction(Person $person, Request $request)
+    {
+        $currentPassword = $person->getPassword();
+
+        $form = $this->createForm(PersonType::class, $person, [
+            'only_password' => true,
+        ]);
+
+        $form->handleRequest($request);
+
+        if ($form->isValid()) {
+            $passwordEncoder = $this->get('security.password_encoder');
+            $basePasswordEncoder = new BCryptPasswordEncoder(13);
+
+            /* check current password matches */
+            if (! $basePasswordEncoder->isPasswordValid($currentPassword, $form['currentPassword']->getData(), $person->getSalt())) {
+                $this->addFlash('warning', 'Current password must match');
+                return $this->redirectToRoute('collegefootball_person_change_password', [
+                    'username' => $person->getUsername(),
+                ]);
+            }
+
+            $password = $passwordEncoder->encodePassword($person, $person->getPassword());
+            $person->setPassword($password);
+
+            $em = $this->getDoctrine()->getManager();
+            $em->flush();
+
+            $this->addFlash('success', 'Password changed');
+
+            return $this->redirectToRoute('collegefootball_person_show', [
+                'username' => $person->getUsername(),
+            ]);
+        }
+
+        return $this->render('CollegeFootballAppBundle:Person:edit.html.twig', [
+            'form'    => $form->createView(),
+            'person'  => $person,
+            'heading' => 'Change Password',
         ]);
     }
 

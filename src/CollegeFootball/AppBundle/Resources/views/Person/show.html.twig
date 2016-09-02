@@ -5,14 +5,14 @@
         <div class="col-lg-4">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    {#% if app.user == person or is_granted('ROLE_MANAGE') %}
+                    {% if app.user == person or is_granted('ROLE_MANAGE') %}
                         <div class="pull-right">
-                            <a href="#" class="btn btn-xs btn-primary">
+                            <a href="{{ path('collegefootball_person_edit', {'username': person.username}) }}" class="btn btn-xs btn-primary">
                                 {{ icon('compose') }}
                                 Edit
                             </a>
                         </div>
-                    {% endif %#}
+                    {% endif %}
                     Profile
                 </div>
                 <div class="panel-body">
@@ -24,7 +24,16 @@
                         <dt>Username</dt>
                         <dd>{{ person.username }}</dd>
                         <dt>My Team</dt>
-                        <dd>Not Set</dd>
+                        <dd>
+                            {% if person.team %}
+                                {{ person.team.name }}
+                            {% else %}
+                                <span class="text-muted">Not set</span>
+                                <a href="{{ path('collegefootball_person_edit', {'username': person.username}) }}" style="margin-left: 10px;">
+                                    {{ icon('compose') }}
+                                </a>
+                            {% endif %}
+                        </dd>
                     </dl>
                 </div>
             </div>

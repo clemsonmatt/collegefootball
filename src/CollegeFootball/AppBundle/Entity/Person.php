@@ -8,6 +8,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Security\Core\User\AdvancedUserInterface;
 
 use CollegeFootball\AppBundle\Traits\TimestampableTrait;
+use CollegeFootball\TeamBundle\Entity\Team;
 
 /**
  * @ORM\Entity()
@@ -32,6 +33,13 @@ class Person implements AdvancedUserInterface
 
     /**
      * @ORM\Column(name="username", type="string", length=255)
+     * @Assert\Length(
+     *     min = 4,
+     *     minMessage = "Username should be at least 4 chars long",
+     *     max = 50,
+     *     maxMessage = "Username should be no more than 50 chars long"
+     * )
+     * @Assert\NotBlank()
      */
     private $username;
 
@@ -43,23 +51,33 @@ class Person implements AdvancedUserInterface
      *     max = 255,
      *     maxMessage = "Password should be no more than 255 chars long"
      * )
+     * @Assert\NotBlank()
      */
     private $password;
 
     /**
      * @ORM\Column(name="first_name", type="string", length=255)
+     * @Assert\NotBlank()
      */
     private $firstName;
 
     /**
      * @ORM\Column(name="last_name", type="string", length=255)
+     * @Assert\NotBlank()
      */
     private $lastName;
 
     /**
      * @ORM\Column(name="email", type="string", length=255, nullable=true)
+     * @Assert\NotBlank()
      */
     private $email;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="CollegeFootball\TeamBundle\Entity\Team")
+     * @ORM\JoinColumn(name="team_id", referencedColumnName="id", nullable=true)
+     */
+    private $team;
 
     /**
      * @ORM\Column(name="roles", type="array")
@@ -114,6 +132,8 @@ class Person implements AdvancedUserInterface
      */
     public function setUsername($username)
     {
+        $username = strtolower($username);
+
         $this->username = $username;
 
         return $this;
@@ -209,6 +229,29 @@ class Person implements AdvancedUserInterface
     public function getEmail()
     {
         return $this->email;
+    }
+
+    /**
+     * Set team
+     *
+     * @param Team $team
+     * @return Person
+     */
+    public function setTeam(Team $team)
+    {
+        $this->team = $team;
+
+        return $this;
+    }
+
+    /**
+     * Get team
+     *
+     * @return Team
+     */
+    public function getTeam()
+    {
+        return $this->team;
     }
 
     /**
