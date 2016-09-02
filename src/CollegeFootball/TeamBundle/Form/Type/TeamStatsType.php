@@ -54,7 +54,7 @@ class TeamStatsType extends AbstractType
         $builder->add('interceptionCount', SymfonyTypes\IntegerType::class);
         $builder->add('interceptionYards', SymfonyTypes\IntegerType::class);
         $builder->add('interceptionTd', SymfonyTypes\IntegerType::class);
-        $builder->add('fumbleCount', SymfonyTypes\IntegerType::class);
+        $builder->add('fumbleCount', SymfonyTypes\IntegerType::class, ['label' => 'Fumbles Recovered']);
         $builder->add('fumbleYards', SymfonyTypes\IntegerType::class);
         $builder->add('fumbleTd', SymfonyTypes\IntegerType::class);
 
