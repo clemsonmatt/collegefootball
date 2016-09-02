@@ -3,6 +3,12 @@
 {% block content %}
     <div class="panel panel-default">
         <div class="panel-heading">
+            <div class="pull-right">
+                <a href="{{ path('collegefootball_manage_people_add') }}" class="btn btn-xs btn-primary">
+                    {{ icon('plus') }}
+                    Add Person
+                </a>
+            </div>
             People
         </div>
         <table class="table table-striped table-hover">
@@ -19,7 +25,13 @@
                     <td>{{ person.lastName }}</td>
                     <td>{{ person.username }}</td>
                     <td>{{ person.email|default('&mdash;')|raw }}</td>
-                    <td>{{ person.team|default('&mdash;')|raw }}</td>
+                    <td>
+                        {% if person.team %}
+                            {{ person.team.name }}
+                        {% else %}
+                            &mdash;
+                        {% endif %}
+                    </td>
                 </tr>
             {% endfor %}
         </table>

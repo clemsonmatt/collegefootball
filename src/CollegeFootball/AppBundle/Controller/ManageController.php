@@ -7,6 +7,9 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 
+use CollegeFootball\AppBundle\Entity\Person;
+use CollegeFootball\AppBundle\Form\Type\PersonType;
+
 /**
  * @Route("/manage")
  * @Security("is_granted('ROLE_MANAGE')")
@@ -14,7 +17,7 @@ use Symfony\Component\HttpFoundation\Request;
 class ManageController extends Controller
 {
     /**
-     * @Route("/people/", name="collegefootball_manage_people")
+     * @Route("/people", name="collegefootball_manage_people")
      */
     public function indexAction()
     {
@@ -24,6 +27,32 @@ class ManageController extends Controller
 
         return $this->render('CollegeFootballAppBundle:Manage:people.html.twig', [
             'people' => $people,
+        ]);
+    }
+
+    /**
+     * @Route("/people/add", name="collegefootball_manage_people_add")
+     */
+    public function addPersonAction(Request $request)
+    {
+        $person = new Person();
+
+        $form = $this->createForm(PersonType::class, $person, [
+            'show_password' => false,
+        ]);
+
+        $form->handleRequest($request);
+
+        if ($form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($person);
+            $em->flush();
+
+            return $this->redirectToRoute('collegefootball_manage_people');
+        }
+
+        return $this->render('CollegeFootballAppBundle:Manage:addPerson.html.twig', [
+            'form' => $form->createView(),
         ]);
     }
 }

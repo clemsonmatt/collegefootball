@@ -20,7 +20,7 @@
                         <dt>Name</dt>
                         <dd>{{ person }}</dd>
                         <dt>Email</dt>
-                        <dd>{{ person.email }}</dd>
+                        <dd>{{ person.email|default('&mdash;')|raw }}</dd>
                         <dt>Username</dt>
                         <dd>{{ person.username }}</dd>
                         <dt>My Team</dt>

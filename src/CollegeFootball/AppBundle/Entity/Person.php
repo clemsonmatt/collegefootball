@@ -51,7 +51,6 @@ class Person implements AdvancedUserInterface
      *     max = 255,
      *     maxMessage = "Password should be no more than 255 chars long"
      * )
-     * @Assert\NotBlank()
      */
     private $password;
 
@@ -69,7 +68,6 @@ class Person implements AdvancedUserInterface
 
     /**
      * @ORM\Column(name="email", type="string", length=255, nullable=true)
-     * @Assert\NotBlank()
      */
     private $email;
 
@@ -214,7 +212,7 @@ class Person implements AdvancedUserInterface
      * @param string $email
      * @return Person
      */
-    public function setEmail($email)
+    public function setEmail($email = null)
     {
         $this->email = $email;
 

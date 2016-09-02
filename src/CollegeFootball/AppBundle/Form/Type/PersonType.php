@@ -30,8 +30,9 @@ class PersonType extends AbstractType
             ]);
 
             $builder->add('email', SymfonyTypes\EmailType::class, [
-                'label' => false,
-                'attr'  => ['placeholder' => 'Email'],
+                'label'    => false,
+                'attr'     => ['placeholder' => 'Email'],
+                'required' => false,
             ]);
 
             $builder->add('username', SymfonyTypes\TextType::class, [
@@ -72,6 +73,7 @@ class PersonType extends AbstractType
                         ->addOrderBy('t.name', 'ASC');
                 },
                 'group_by' => 'conference',
+                'required' => false,
             ]);
         }
     }
