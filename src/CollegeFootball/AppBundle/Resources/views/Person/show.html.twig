@@ -86,7 +86,7 @@
                         <tr>
                             <td style="padding: 15px 5px 5px 15px;" class="text-muted">
                                 {{ game.date|date('D. M, j') }}<br>
-                                {{ game.time|default('TBD') }}
+                                {{ game.time ? game.time|date('h:i A') : 'TBD' }}
                             </td>
                             <td>
                                 <h2 style="margin: 5px 0px 0px 0px;" class="text-muted">
@@ -275,7 +275,6 @@
                     },
                     startAngle: -90,
                     endAngle: 90
-                    // center: ['50%', '75%']
                 }
             },
             series: [{

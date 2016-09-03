@@ -42,7 +42,7 @@
                             </a>
                         {% endif %}
                     </td>
-                    <td>{{ game.time|default('TBD') }}</td>
+                    <td>{{ game.time ? game.time|date('h:i A') : 'TBD' }}</td>
                     <td>{{ game.location }}</td>
                     <td>&mdash;</td>
                     <td>&mdash;</td>

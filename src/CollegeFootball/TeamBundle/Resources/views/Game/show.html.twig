@@ -34,7 +34,7 @@
                     <center>
                         {{ game.location }}
                         <hr style="margin: 5px 60px;">
-                        {{ game.date|date('m/d') }} @ {{ game.time }}
+                        {{ game.date|date('m/d') }} @ {{ game.time ? game.time|date('h:i A') : 'TBD' }}
                     </center>
                 </div>
             </div>

@@ -81,7 +81,7 @@
 
                             {{ next_game.location }}
                             <hr style="margin: 5px 60px;">
-                            {{ next_game.date|date('m/d') }} @ {{ next_game.time }}
+                            {{ next_game.date|date('m/d') }} @ {{ next_game.time ? next_game.time|date('h:i A') : 'TBD' }}
                         </center>
                         <br>
                     {% else %}
