@@ -90,9 +90,8 @@
                             </td>
                             <td>
                                 <h2 style="margin: 5px 0px 0px 0px;" class="text-muted">
-                                    {% if game.winningTeam or game.date|date('Y-m-d') < "now"|date('Y-m-d') or (game.date|date('Y-m-d') == "now"|date('Y-m-d') and game.time|date("h:i A") < "now"|date("h:i A")) %}
+                                    {% if game.winningTeam or game.date|date('Y-m-d') < "now"|date('Y-m-d') or (game.date|date('Y-m-d') == "now"|date('Y-m-d') and game.time|date("U") < "now"|date("U")) %}
                                         {{ icon('locked') }}
-                                        {{ "now"|date("h:i A") }}
                                     {% else %}
                                         <span class="text-primary">{{ icon('unlocked') }}</span>
                                     {% endif %}
