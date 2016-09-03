@@ -42,8 +42,8 @@
                 <div class="panel-heading">
                     Pick'em Stats
                 </div>
-                <div class="panel-body">
-                    <span class="text-muted">Comming soon</span>
+                <div class="panel-body" style="height: 250px; overflow-y: hidden;">
+                    <div id="js-pickem-stats" data-wins="{{ person.predictionWins() }}" data-losses="{{ person.predictionLosses() }}" style="width: 100%; margin: 0px;"></div>
                 </div>
             </div>
         </div>
@@ -208,7 +208,13 @@
 {% block javascripts %}
     {{ parent() }}
 
+    <script src="{{ asset('bundles/collegefootballapp/js/highcharts/highcharts.js') }}"></script>
+
     <script type="text/javascript">
+        Highcharts.setOptions({
+            colors: ['#43dc7a', '#f04124']
+        });
+
         $('.js-btn-winner').on('click', function(event, state) {
             var url = $(this).children().attr('data-url');
             var btn = $(this);
@@ -236,6 +242,51 @@
                 },
                 "json"
             );
+        });
+
+        $('#js-pickem-stats').highcharts({
+            chart: {
+                plotBackgroundColor: null,
+                plotBorderWidth: 0,
+                plotShadow: false,
+                marginTop: 0,
+                marginLeft: 0,
+                marginRight: 0
+            },
+            title: {
+                text: 'Win/Loss',
+                align: 'center',
+                verticalAlign: 'middle',
+                y: -10
+            },
+            tooltip: {
+                pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+            },
+            plotOptions: {
+                pie: {
+                    dataLabels: {
+                        enabled: true,
+                        distance: -35,
+                        style: {
+                            fontWeight: 'bold',
+                            color: 'white',
+                            textShadow: '0px 1px 2px black'
+                        }
+                    },
+                    startAngle: -90,
+                    endAngle: 90
+                    // center: ['50%', '75%']
+                }
+            },
+            series: [{
+                type: 'pie',
+                name: 'Win/Loss',
+                innerSize: '50%',
+                data: [
+                    ['Wins',   $('#js-pickem-stats').data('wins')],
+                    ['Losses', $('#js-pickem-stats').data('losses')],
+                ]
+            }]
         });
     </script>
 {% endblock %}

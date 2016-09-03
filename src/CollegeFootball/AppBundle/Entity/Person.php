@@ -24,6 +24,32 @@ class Person implements AdvancedUserInterface
         return $this->firstName.' '.$this->lastName;
     }
 
+    public function getPredictionWins()
+    {
+        $wins = 0;
+
+        foreach ($this->predictions as $prediction) {
+            if ($prediction->getGame()->getWinningTeam() == $prediction->getTeam()) {
+                $wins++;
+            }
+        }
+
+        return $wins;
+    }
+
+    public function getPredictionLosses()
+    {
+        $losses = 0;
+
+        foreach ($this->predictions as $prediction) {
+            if ($prediction->getGame()->getWinningTeam() && $prediction->getGame()->getWinningTeam() != $prediction->getTeam()) {
+                $losses++;
+            }
+        }
+
+        return $losses;
+    }
+
     /**
      * @ORM\Id()
      * @ORM\Column(type="integer")
@@ -76,6 +102,11 @@ class Person implements AdvancedUserInterface
      * @ORM\JoinColumn(name="team_id", referencedColumnName="id", nullable=true)
      */
     private $team;
+
+    /**
+     * @ORM\OneToMany(targetEntity="Prediction", mappedBy="person")
+     */
+    private $predictions;
 
     /**
      * @ORM\Column(name="roles", type="array")
@@ -250,6 +281,29 @@ class Person implements AdvancedUserInterface
     public function getTeam()
     {
         return $this->team;
+    }
+
+    /**
+     * Set predictions
+     *
+     * @param Prediction $predictions
+     * @return Person
+     */
+    public function setPredictions($predictions)
+    {
+        $this->predictions = $predictions;
+
+        return $this;
+    }
+
+    /**
+     * Get predictions
+     *
+     * @return Prediction
+     */
+    public function getPredictions()
+    {
+        return $this->predictions;
     }
 
     /**

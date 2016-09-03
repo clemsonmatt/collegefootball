@@ -28,7 +28,7 @@ class Prediction
     protected $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Person")
+     * @ORM\ManyToOne(targetEntity="Person", inversedBy="predictions")
      * @ORM\JoinColumn(name="person_id", referencedColumnName="id")
      */
     private $person;
