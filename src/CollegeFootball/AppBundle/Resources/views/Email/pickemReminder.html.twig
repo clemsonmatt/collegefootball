@@ -7,22 +7,16 @@
 
     <hr style="margin-top: 30px; margin-bottom: 10px; border: 0; border-top: 1px solid #eeeeee;">
 
-    <div style="padding: 5px 20px 5px 20px; color: #ccc;">
-        <table>
-            <thead>
-                <th>Username</th>
-                <th>Pick'em Status</th>
-            </thead>
-            <tr>
-                <td>
-                    <a href="{{ url('collegefootball_person_show', {'username': person.username}) }}">
-                        {{ person.username }}
-                    </a>
-                </td>
-                <td>
-                    {{ pickem_predictions|number_format(2) }} %
-                </td>
-            </tr>
-        </table>
+    <h4><center>Pick'em Stats</center></h4>
+    <div class="c100 p{{ pickem_predictions|number_format(0) }} center">
+        <span>{{ pickem_predictions|number_format(1) }}%</span>
+        <div class="slice">
+            <div class="bar"></div>
+            <div class="fill"></div>
+        </div>
     </div>
+    <br>
+    <a href="{{ url('collegefootball_person_show', {'username': person.username}) }}">
+        Click here to make your picks
+    </a>
 {% endblock %}

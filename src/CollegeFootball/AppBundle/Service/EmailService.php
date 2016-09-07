@@ -44,7 +44,7 @@ class EmailService
 
         foreach ($people as $person) {
             $correct           = $person->getPredictionWins();
-            $pickemPredictions = $correct / ($correct + $person->getPredictionLosses());
+            $pickemPredictions = ($correct / ($correct + $person->getPredictionLosses())) * 100;
 
             $template = $this->templating->render('CollegeFootballAppBundle:Email:pickemReminder.html.twig', [
                 'person'             => $person,
