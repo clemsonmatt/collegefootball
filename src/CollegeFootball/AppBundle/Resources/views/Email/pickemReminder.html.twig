@@ -1,0 +1,28 @@
+{% extends 'CollegeFootballAppBundle:Email:layout.html.twig' %}
+
+{% block message %}
+    Hey, {{ person }}
+    <br><br>
+    Just a friendly reminder to complete your weekly college football pick'em predictions.
+
+    <hr style="margin-top: 30px; margin-bottom: 10px; border: 0; border-top: 1px solid #eeeeee;">
+
+    <div style="padding: 5px 20px 5px 20px; color: #ccc;">
+        <table>
+            <thead>
+                <th>Username</th>
+                <th>Pick'em Status</th>
+            </thead>
+            <tr>
+                <td>
+                    <a href="{{ url('collegefootball_person_show', {'username': person.username}) }}">
+                        {{ person.username }}
+                    </a>
+                </td>
+                <td>
+                    {{ pickem_predictions|number_format(2) }} %
+                </td>
+            </tr>
+        </table>
+    </div>
+{% endblock %}

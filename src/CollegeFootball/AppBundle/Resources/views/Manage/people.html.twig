@@ -3,7 +3,11 @@
 {% block content %}
     <div class="panel panel-default">
         <div class="panel-heading">
-            <div class="pull-right">
+            <div class="btn-group pull-right">
+                <a href="{{ path('collegefootball_manage_pickem_reminder_email') }}" class="btn btn-xs btn-default" data-confirm-action data-confirm-title="Send Pick'em Reminder Email">
+                    {{ icon('email') }}
+                    Send Pick'em Reminder
+                </a>
                 <a href="{{ path('collegefootball_manage_people_add') }}" class="btn btn-xs btn-primary">
                     {{ icon('plus') }}
                     Add Person

@@ -55,4 +55,16 @@ class ManageController extends Controller
             'form' => $form->createView(),
         ]);
     }
+
+    /**
+     * @Route("/pickem-reminder-email", name="collegefootball_manage_pickem_reminder_email")
+     */
+    public function pickemReminderEmailAction()
+    {
+        $emailService = $this->get('collegefootball.app.email');
+        $emailService->sendPickemReminder();
+
+        $this->addFlash('success', 'Pickem reminder sent');
+        return $this->redirectToRoute('collegefootball_manage_people');
+    }
 }
