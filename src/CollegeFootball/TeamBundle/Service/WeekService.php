@@ -49,8 +49,10 @@ class WeekService
         } else {
             $week = $seasonWeeks[0];
 
+            $today = new \DateTime("now");
+
             foreach ($seasonWeeks as $singleWeek) {
-                if ($singleWeek->getEndDate() > date('Y-m-d')) {
+                if ($singleWeek->getEndDate()->format('U') > $today->format('U')) {
                     $week = $singleWeek;
                     break;
                 }
