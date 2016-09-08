@@ -39,6 +39,19 @@ class TeamController extends Controller
         $repository = $em->getRepository('CollegeFootballTeamBundle:Game');
         $games      = $repository->findGamesByTeam($team);
 
+        $weekService = $this->get('collegefootball.team.week');
+        $currentWeek = $weekService->currentWeek()['week'];
+
+        $nextGame = $repository->createQueryBuilder('g')
+            ->where('g.date >= :startDate')
+            ->andWhere('g.date <= :endDate')
+            ->andWhere('g.homeTeam = :team OR g.awayTeam = :team')
+            ->setParameter('startDate', $currentWeek->getStartDate())
+            ->setParameter('endDate', $currentWeek->getEndDate())
+            ->setParameter('team', $team)
+            ->getQuery()
+            ->getSingleResult();
+
         $conferenceService = $this->get('collegefootball.team.conference');
         $conferenceRanking = $conferenceService->teamRankInConference($team->getConference());
 
@@ -46,6 +59,7 @@ class TeamController extends Controller
             'team'               => $team,
             'games'              => $games,
             'conference_ranking' => $conferenceRanking,
+            'next_game'          => $nextGame,
         ]);
     }
 

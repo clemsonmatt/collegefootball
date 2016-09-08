@@ -38,7 +38,6 @@ class EmailService
         $repository = $this->em->getRepository('CollegeFootballAppBundle:Person');
         $people     = $repository->createQueryBuilder('p')
             ->where('p.email IS NOT NULL')
-            ->andWhere("p.firstName = 'Matt'")
             ->getQuery()
             ->getResult();
 
