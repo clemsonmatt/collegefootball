@@ -19,6 +19,17 @@ class Ranking
         return (string)$this->team;
     }
 
+    public function isCurrentWeek()
+    {
+        $today = new \DateTime("now");
+
+        if ($this->week->getStartDate()->format('U') <= $today->format('U') && $this->week->getEndDate()->format('U') >= $today->format('U')) {
+            return true;
+        }
+
+        return false;
+    }
+
     /**
      * @ORM\Id()
      * @ORM\Column(type="integer")

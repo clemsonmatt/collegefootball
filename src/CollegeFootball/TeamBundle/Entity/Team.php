@@ -104,7 +104,9 @@ class Team
     public function currentRanking()
     {
         if (count($this->rankings)) {
-            return $this->rankings->last();
+            if ($this->rankings->last()->isCurrentWeek()) {
+                return $this->rankings->last();
+            }
         }
 
         return null;
