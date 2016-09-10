@@ -189,7 +189,7 @@ class PersonController extends Controller
         $em->persist($prediction);
         $em->flush();
 
-        $response = ['code' => 100, 'success' => true, 'data' => ['person' => (string)$person, 'game' => (string)$game, 'team' => (string)$team]];
+        $response = ['code' => 100, 'success' => true, 'data' => ['person' => (string)$person, 'game' => (string)$game, 'team' => (string)$team, 'now' => $now->format('h:i A')]];
         return new JsonResponse($response);
     }
 }
