@@ -163,7 +163,7 @@ class PersonController extends Controller
 
         /* make sure game hasn't started */
         if ($game->getDate()->format('U') <= $now->format('U')) {
-            if ($game->getDate()->format('Y-m-d') < $now->format('Y-m-d') || ($game->getDate()->format('Y-m-d') == $now->format('Y-m-d') && $game->getTime() < $now->format('h:i A'))) {
+            if ($game->getDate()->format('Y-m-d') < $now->format('Y-m-d') || ($game->getDate()->format('Y-m-d') == $now->format('Y-m-d') && date('U', strtotime($game->getTime())) < $now->format('U'))) {
                 $response = ['code' => 100, 'error' => true, 'errorMessage' => 'Cannot pick after game has begun.'];
                 return new JsonResponse($response);
             }
