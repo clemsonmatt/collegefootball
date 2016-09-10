@@ -160,10 +160,12 @@ class PersonController extends Controller
     public function gamePredictionAction(Person $person, Game $game, Team $team, Request $request)
     {
         $now = new \DateTime("now");
+        $now = $now->modify('-4 hours');
 
         /* make sure game hasn't started */
         if ($game->getDate()->format('U') <= $now->format('U')) {
-            if ($game->getDate()->format('Y-m-d') < $now->format('Y-m-d') || ($game->getDate()->format('Y-m-d') == $now->format('Y-m-d') && date('U', strtotime($game->getTime())) < $now->format('U'))) {
+            $gameTime = new \DateTime($game->getTime());
+            if ($game->getDate()->format('Y-m-d') < $now->format('Y-m-d') || ($game->getDate()->format('Y-m-d') == $now->format('Y-m-d') && $gameTime->format('U') < $now->format('U'))) {
                 $response = ['code' => 100, 'error' => true, 'errorMessage' => 'Cannot pick after game has begun.'];
                 return new JsonResponse($response);
             }
