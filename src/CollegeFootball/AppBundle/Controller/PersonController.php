@@ -23,15 +23,16 @@ use CollegeFootball\TeamBundle\Entity\Team;
 class PersonController extends Controller
 {
     /**
-     * @Route("/{username}/show/{week}", name="collegefootball_person_show")
+     * @Route("/{username}/show", name="collegefootball_person_show")
+     * @Route("/{username}/show/{season}/week/{week}", name="collegefootball_person_show_week")
      * @Security("user == person or is_granted('ROLE_MANAGE')")
      */
-    public function showAction(Person $person, Week $week = null)
+    public function showAction(Person $person, $season = null, $week = null)
     {
-        $weekService = $this->get('collegefootball.team.week');
-        $weekResult  = $weekService->currentWeek();
-
-        $week = $weekResult['week'];
+        $result      = $this->get('collegefootball.team.week')->currentWeek($season, $week);
+        $week        = $result['week'];
+        $season      = $result['season'];
+        $seasonWeeks = $result['seasonWeeks'];
 
         $em         = $this->getDoctrine()->getManager();
         $repository = $em->getRepository('CollegeFootballTeamBundle:Game');
@@ -72,7 +73,8 @@ class PersonController extends Controller
         return $this->render('CollegeFootballAppBundle:Person:show.html.twig', [
             'person'       => $person,
             'week'         => $week,
-            'weeks'        => $weekResult['seasonWeeks'],
+            'season_weeks' => $seasonWeeks,
+            'season'       => $season,
             'games'        => $games,
             'week_winners' => $weekWinners,
             'game_picks'   => $gamePicks,
