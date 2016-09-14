@@ -58,11 +58,13 @@
                         </button>
                         <ul class="dropdown-menu dropdown-menu-right">
                             {% for season_week in season_weeks %}
-                                <li>
-                                    <a href="{{ path('collegefootball_person_show_week', {'username': person.username, 'season': season, 'week': season_week.number}) }}">
-                                        {{ season_week }}
-                                    </a>
-                                </li>
+                                {% if season_week.startDate|date('U') <= "now"|date('U') %}
+                                    <li>
+                                        <a href="{{ path('collegefootball_person_show_week', {'username': person.username, 'season': season, 'week': season_week.number}) }}">
+                                            {{ season_week }}
+                                        </a>
+                                    </li>
+                                {% endif %}
                             {% endfor %}
                         </ul>
                     </div>

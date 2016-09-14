@@ -34,6 +34,18 @@ class PersonController extends Controller
         $season      = $result['season'];
         $seasonWeeks = $result['seasonWeeks'];
 
+        /* can't view future weeks */
+        $today = new \DateTime("now");
+
+        if ($week->getStartDate()->format('U') > $today->format('U')) {
+            $this->addFlash('warning', 'Cannot view future weeks');
+
+            $result      = $this->get('collegefootball.team.week')->currentWeek();
+            $week        = $result['week'];
+            $season      = $result['season'];
+            $seasonWeeks = $result['seasonWeeks'];
+        }
+
         $em         = $this->getDoctrine()->getManager();
         $repository = $em->getRepository('CollegeFootballTeamBundle:Game');
         $games      = $repository->createQueryBuilder('g')
