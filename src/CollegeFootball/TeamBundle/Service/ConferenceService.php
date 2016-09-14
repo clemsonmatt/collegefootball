@@ -29,11 +29,14 @@ class ConferenceService
     {
         $subConferences = $conference->teamsBySubConference();
 
-        $rankedTeams = [];
+        $rankedTeams      = [];
+        $hasSubConference = false;
 
         /* rank the teams with win/loss */
         foreach ($subConferences as $subConference => $subConferenceTeams) {
             if (is_array($subConferenceTeams)) {
+                $hasSubConference = true;
+
                 foreach ($subConferenceTeams as $team) {
                     $rankedTeams = $this->getTeamRanking($team, $rankedTeams);
                 }
@@ -44,7 +47,17 @@ class ConferenceService
 
         krsort($rankedTeams);
 
-        return $rankedTeams;
+        /* now if there are sub-conferences, sort by those */
+        $rankedBySubConference = [];
+        $usedTeams             = [];
+
+        foreach ($rankedTeams as $points => $rankedPointTeams) {
+            foreach ($rankedPointTeams as $rankedTeam) {
+                $rankedBySubConference[$rankedTeam['subConference']][] = $rankedTeam;
+            }
+        }
+
+        return $rankedBySubConference;
     }
 
     private function getTeamRanking(Team $team, $rankedTeams)
