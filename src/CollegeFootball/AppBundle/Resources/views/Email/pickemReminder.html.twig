@@ -7,7 +7,7 @@
 
     <hr style="margin-top: 30px; margin-bottom: 10px; border: 0; border-top: 1px solid #eeeeee;">
 
-    <h4><center>Pick'em Stats</center></h4>
+    {#<h4><center>Pick'em Stats</center></h4>
     <div class="c100 p{{ pickem_predictions|number_format(0) }} center">
         <span>{{ pickem_predictions|number_format(1) }}%</span>
         <div class="slice">
@@ -15,8 +15,8 @@
             <div class="fill"></div>
         </div>
     </div>
-    <br>
-    <a href="{{ url('collegefootball_person_show', {'username': person.username}) }}">
+    <br>#}
+    <a href="{{ 'http://college-football.herokuapp.com/person/' ~ person.username ~ '/show' }}">
         Click here to make your picks
     </a>
 {% endblock %}

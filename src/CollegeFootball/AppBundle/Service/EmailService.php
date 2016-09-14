@@ -38,12 +38,16 @@ class EmailService
         $repository = $this->em->getRepository('CollegeFootballAppBundle:Person');
         $people     = $repository->createQueryBuilder('p')
             ->where('p.email IS NOT NULL')
+            // ->andWhere("p.firstName = 'Matt'")
             ->getQuery()
             ->getResult();
 
         foreach ($people as $person) {
             $correct           = $person->getPredictionWins();
             $pickemPredictions = ($correct / ($correct + $person->getPredictionLosses())) * 100;
+
+            // dump($correct);
+            // die(dump($pickemPredictions));
 
             $template = $this->templating->render('CollegeFootballAppBundle:Email:pickemReminder.html.twig', [
                 'person'             => $person,
