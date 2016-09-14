@@ -12,23 +12,10 @@ class DefaultController extends Controller
      */
     public function indexAction()
     {
-        $season = date('Y');
-        $today  = new \DateTime("now");
+        $weekResult = $this->get('collegefootball.team.week')->currentWeek();
+        $week       = $weekResult['week'];
 
-        $em          = $this->getDoctrine()->getManager();
-        $repository  = $em->getRepository('CollegeFootballAppBundle:Week');
-        $seasonWeeks = $repository->createQueryBuilder('w')
-            ->where('w.season = :season')
-            ->andWhere('w.number > 0')
-            ->andWhere('w.endDate >= :today')
-            ->orderBy('w.endDate', 'ASC')
-            ->setParameter('season', $season)
-            ->setParameter('today', $today)
-            ->getQuery()
-            ->getResult();
-
-        $week = $seasonWeeks[0];
-
+        $em         = $this->getDoctrine()->getManager();
         $repository = $em->getRepository('CollegeFootballTeamBundle:Game');
         $games      = $repository->createQueryBuilder('g')
             ->where('g.date >= :startDate')
@@ -48,18 +35,6 @@ class DefaultController extends Controller
         }
 
         /* rankings */
-        $repository = $em->getRepository('CollegeFootballAppBundle:Week');
-        $weeks = $repository->createQueryBuilder('w')
-            ->where('w.season = :season')
-            ->andWhere('w.endDate < :currentWeek')
-            ->orderBy('w.endDate', 'ASC')
-            ->setParameter('season', date('Y'))
-            ->setParameter('currentWeek', $week->getStartDate())
-            ->getQuery()
-            ->getResult();
-
-        $week = $weeks[0];
-
         $repository = $em->getRepository('CollegeFootballTeamBundle:Ranking');
         $apRankings = $repository->findBy([
             'week' => $week,
@@ -67,16 +42,9 @@ class DefaultController extends Controller
             'apRank' => 'ASC',
         ]);
 
-        $coachesPollRankings = $repository->findBy([
-            'week' => $week,
-        ], [
-            'coachesPollRank' => 'ASC',
-        ]);
-
         return $this->render('CollegeFootballAppBundle:Default:index.html.twig', [
-            'games'            => $topGames,
-            'ap_rankings'      => $apRankings,
-            'coaches_rankings' => $coachesPollRankings,
+            'games'       => $topGames,
+            'ap_rankings' => $apRankings,
         ]);
     }
 }
