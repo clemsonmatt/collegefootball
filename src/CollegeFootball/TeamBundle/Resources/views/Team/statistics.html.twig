@@ -7,34 +7,272 @@
         <div class="col-lg-4">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    Total Offense
-                </div>
-            </div>
-        </div>
-        <div class="col-lg-4">
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    Total Defense
-                </div>
-            </div>
-        </div>
-        <div class="col-lg-4">
-            <div class="panel panel-default">
-                <div class="panel-heading">
                     Points
                 </div>
+                <table class="table table-striped table-bordered table-hover stats-table">
+                    <thead>
+                        <th>Stat</th>
+                        <th style="text-align: center;">{{ team.nameShort }}</th>
+                        <th style="text-align: center;">Opponent</th>
+                    </thead>
+                    <tr>
+                        <th>Final</th>
+                        <td>{{ stats.team.pointsFinal }}</td>
+                        <td>{{ stats.opponent.pointsFinal }}</td>
+                    </tr>
+                    <tr>
+                        <th>1st Quarter</th>
+                        <td>{{ stats.team.pointsFirst }}</td>
+                        <td>{{ stats.opponent.pointsFirst }}</td>
+                    </tr>
+                    <tr>
+                        <th>2nd Quarter</th>
+                        <td>{{ stats.team.pointsSecond }}</td>
+                        <td>{{ stats.opponent.pointsSecond }}</td>
+                    </tr>
+                    <tr>
+                        <th>3rd Quarter</th>
+                        <td>{{ stats.team.pointsThird }}</td>
+                        <td>{{ stats.opponent.pointsThird }}</td>
+                    </tr>
+                    <tr>
+                        <th>4th Quarter</th>
+                        <td>{{ stats.team.pointsFourth }}</td>
+                        <td>{{ stats.opponent.pointsFourth }}</td>
+                    </tr>
+                </table>
             </div>
+        </div>
+        <div class="col-lg-4">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    Offense
+                </div>
+                <table class="table table-striped table-bordered table-hover stats-table">
+                    <thead>
+                        <th>Stat</th>
+                        <th style="text-align: center;">{{ team.nameShort }}</th>
+                        <th style="text-align: center;">Opponent</th>
+                    </thead>
+                    <tr><th colspan="3" class="tr-header">Total Offense</th></tr>
+                    <tr>
+                        <th>Yards</th>
+                        <td>{{ stats.team.totalOffenseYards }}</td>
+                        <td>{{ stats.opponent.totalOffenseYards }}</td>
+                    </tr>
 
+                    <tr>
+                        <th class="tr-header">Rushing</th>
+                        <td class="tr-header">
+                            {{ (stats.team.rushingYards / stats.team.rushingAttempts)|number_format(2) }} yds / carry
+                        </td>
+                        <td class="tr-header">
+                            {{ (stats.opponent.rushingYards / stats.opponent.rushingAttempts)|number_format(2) }} yds / carry
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Yards</th>
+                        <td>{{ stats.team.rushingYards }}</td>
+                        <td>{{ stats.opponent.rushingYards }}</td>
+                    </tr>
+                    <tr>
+                        <th>Attempts</th>
+                        <td>{{ stats.team.rushingAttempts }}</td>
+                        <td>{{ stats.opponent.rushingAttempts }}</td>
+                    </tr>
+                    <tr>
+                        <th>TD</th>
+                        <td>{{ stats.team.rushingTd }}</td>
+                        <td>{{ stats.opponent.rushingTd }}</td>
+                    </tr>
+
+                    <tr>
+                        <th class="tr-header">Passing</th>
+                        <td class="tr-header">
+                            {{ ((stats.team.passingCompletions / stats.team.passingAttempts) * 100)|number_format(2) }} %
+                        </td>
+                        <td class="tr-header">
+                            {{ ((stats.opponent.passingCompletions / stats.opponent.passingAttempts) * 100)|number_format(2) }} %
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Yards</th>
+                        <td>{{ stats.team.passingYards }}</td>
+                        <td>{{ stats.opponent.passingYards }}</td>
+                    </tr>
+                    <tr>
+                        <th>Attempts</th>
+                        <td>{{ stats.team.passingAttempts }}</td>
+                        <td>{{ stats.opponent.passingAttempts }}</td>
+                    </tr>
+                    <tr>
+                        <th>Completions</th>
+                        <td>{{ stats.team.passingCompletions }}</td>
+                        <td>{{ stats.opponent.passingCompletions }}</td>
+                    </tr>
+                    <tr>
+                        <th>TD</th>
+                        <td>{{ stats.team.passingTd }}</td>
+                        <td>{{ stats.opponent.passingTd }}</td>
+                    </tr>
+                    <tr>
+                        <th>Interceptions</th>
+                        <td>{{ stats.team.passingInterceptions }}</td>
+                        <td>{{ stats.opponent.passingInterceptions }}</td>
+                    </tr>
+
+                    <tr>
+                        <th class="tr-header">3rd Downs</th>
+                        <td class="tr-header">
+                            {{ ((stats.team.thirdDownConversions / stats.team.thirdDownAttempts) * 100)|number_format(2) }} %
+                        </td>
+                        <td class="tr-header">
+                            {{ ((stats.opponent.thirdDownConversions / stats.opponent.thirdDownAttempts) * 100)|number_format(2) }} %
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Attempts</th>
+                        <td>{{ stats.team.thirdDownAttempts }}</td>
+                        <td>{{ stats.opponent.thirdDownAttempts }}</td>
+                    </tr>
+                    <tr>
+                        <th>Conversions</th>
+                        <td>{{ stats.team.thirdDownConversions }}</td>
+                        <td>{{ stats.opponent.thirdDownConversions }}</td>
+                    </tr>
+
+                    <tr>
+                        <th class="tr-header">4th Downs</th>
+                        <td class="tr-header">
+                            {{ ((stats.team.fourthDownConversions / stats.team.fourthDownAttempts) * 100)|number_format(2) }} %
+                        </td>
+                        <td class="tr-header">
+                            {{ ((stats.opponent.fourthDownConversions / stats.opponent.fourthDownAttempts) * 100)|number_format(2) }} %
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Attempts</th>
+                        <td>{{ stats.team.fourthDownAttempts }}</td>
+                        <td>{{ stats.opponent.fourthDownAttempts }}</td>
+                    </tr>
+                    <tr>
+                        <th>Conversions</th>
+                        <td>{{ stats.team.fourthDownConversions }}</td>
+                        <td>{{ stats.opponent.fourthDownConversions }}</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div class="col-lg-4">
             <div class="panel panel-default">
                 <div class="panel-heading">
                     Kicking
                 </div>
+                <table class="table table-striped table-bordered table-hover stats-table">
+                    <thead>
+                        <th>Stat</th>
+                        <th style="text-align: center;">{{ team.nameShort }}</th>
+                        <th style="text-align: center;">Opponent</th>
+                    </thead>
+                    <tr><th colspan="3" class="tr-header">Punts</th></tr>
+                    <tr>
+                        <th>Count</th>
+                        <td>{{ stats.team.puntCount }}</td>
+                        <td>{{ stats.opponent.puntCount }}</td>
+                    </tr>
+                    <tr>
+                        <th>Yards</th>
+                        <td>{{ stats.team.puntYards }}</td>
+                        <td>{{ stats.opponent.puntYards }}</td>
+                    </tr>
+
+                    <tr><th colspan="3" class="tr-header">Field Goals</th></tr>
+                    <tr>
+                        <th>Attempts</th>
+                        <td>{{ stats.team.fieldGoalAttempts }}</td>
+                        <td>{{ stats.opponent.fieldGoalAttempts }}</td>
+                    </tr>
+                    <tr>
+                        <th>Made</th>
+                        <td>{{ stats.team.fieldGoalMade }}</td>
+                        <td>{{ stats.opponent.fieldGoalMade }}</td>
+                    </tr>
+
+                    <tr><th colspan="3" class="tr-header">Point after TD</th></tr>
+                    <tr>
+                        <th>Attempts</th>
+                        <td>{{ stats.team.patAttempts }}</td>
+                        <td>{{ stats.opponent.patAttempts }}</td>
+                    </tr>
+                    <tr>
+                        <th>Made</th>
+                        <td>{{ stats.team.patMade }}</td>
+                        <td>{{ stats.opponent.patMade }}</td>
+                    </tr>
+                </table>
             </div>
 
             <div class="panel panel-default">
                 <div class="panel-heading">
                     Other
                 </div>
+                <table class="table table-striped table-bordered table-hover stats-table">
+                    <thead>
+                        <th>Stat</th>
+                        <th style="text-align: center;">{{ team.nameShort }}</th>
+                        <th style="text-align: center;">Opponent</th>
+                    </thead>
+                    <tr><th colspan="3" class="tr-header">Punt Returns</th></tr>
+                    <tr>
+                        <th>Count</th>
+                        <td>{{ stats.team.puntReturnCount }}</td>
+                        <td>{{ stats.opponent.puntReturnCount }}</td>
+                    </tr>
+                    <tr>
+                        <th>Yards</th>
+                        <td>{{ stats.team.puntReturnYards }}</td>
+                        <td>{{ stats.opponent.puntReturnYards }}</td>
+                    </tr>
+                    <tr>
+                        <th>TD</th>
+                        <td>{{ stats.team.puntReturnTd }}</td>
+                        <td>{{ stats.opponent.puntReturnTd }}</td>
+                    </tr>
+
+                    <tr><th colspan="3" class="tr-header">Turnovers</th></tr>
+                    <tr>
+                        <th>Interceptions</th>
+                        <td>{{ stats.team.interceptionCount }}</td>
+                        <td>{{ stats.opponent.interceptionCount }}</td>
+                    </tr>
+                    <tr>
+                        <th>Interception Yards</th>
+                        <td>{{ stats.team.interceptionYards }}</td>
+                        <td>{{ stats.opponent.interceptionYards }}</td>
+                    </tr>
+                    <tr>
+                        <th>Interception TD</th>
+                        <td>{{ stats.team.interceptionTd }}</td>
+                        <td>{{ stats.opponent.interceptionTd }}</td>
+                    </tr>
+                    <tr>
+                        <th>Fumbles Recovered</th>
+                        <td>{{ stats.team.fumbleCount }}</td>
+                        <td>{{ stats.opponent.fumbleCount }}</td>
+                    </tr>
+
+                    <tr><th colspan="3" class="tr-header">Penalties</th></tr>
+                    <tr>
+                        <th>Count</th>
+                        <td>{{ stats.team.penaltyCount }}</td>
+                        <td>{{ stats.opponent.penaltyCount }}</td>
+                    </tr>
+                    <tr>
+                        <th>Yards</th>
+                        <td>{{ stats.team.penaltyYards }}</td>
+                        <td>{{ stats.opponent.penaltyYards }}</td>
+                    </tr>
+                </table>
             </div>
         </div>
     </div>

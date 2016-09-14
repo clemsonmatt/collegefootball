@@ -176,8 +176,12 @@ class TeamController extends Controller
      */
     public function statisticsAction(Team $team)
     {
+        $statsService = $this->get('collegefootball.team.stats');
+        $stats        = $statsService->statsForTeam($team);
+
         return $this->render('CollegeFootballTeamBundle:Team:statistics.html.twig', [
-            'team' => $team,
+            'team'  => $team,
+            'stats' => $stats,
         ]);
     }
 

@@ -10,6 +10,8 @@ use JMS\DiExtraBundle\Annotation as DI;
 */
 class WeekService
 {
+    private $em;
+
     /**
      * @DI\InjectParams({
      *      "em" = @DI\Inject("doctrine.orm.entity_manager")

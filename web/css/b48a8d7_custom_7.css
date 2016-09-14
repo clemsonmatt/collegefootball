@@ -1,5 +1,6 @@
 .tr-header {
     background: #374046;
+    border-color: #374046 !important;
     color: #dee9ef;
 }
 .stats-table td {
