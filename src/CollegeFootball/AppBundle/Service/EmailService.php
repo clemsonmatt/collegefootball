@@ -46,9 +46,6 @@ class EmailService
             $correct           = $person->getPredictionWins();
             $pickemPredictions = ($correct / ($correct + $person->getPredictionLosses())) * 100;
 
-            // dump($correct);
-            // die(dump($pickemPredictions));
-
             $template = $this->templating->render('CollegeFootballAppBundle:Email:pickemReminder.html.twig', [
                 'person'             => $person,
                 'pickem_predictions' => $pickemPredictions,
