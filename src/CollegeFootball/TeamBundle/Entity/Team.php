@@ -26,7 +26,7 @@ class Team
 
     public function __toString()
     {
-        if ($this->currentRanking()) {
+        if ($this->currentRanking() && $this->currentRanking()->getApRank()) {
             return '#'.$this->currentRanking()->getApRank().' '.$this->name;
         }
 
