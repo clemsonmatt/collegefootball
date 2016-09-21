@@ -33,45 +33,85 @@
         </div>
     </div>
 
-    <div class="row" style="margin-top: 40px;">
-        <div class="col-lg-3 col-sm-6">
+    <br>
+    <legend><h2 class="text-muted">Gameday Picks</h2></legend>
+    <div class="row">
+        <div class="col-lg-4 col-sm-6">
             <div class="panel panel-default">
                 <div class="panel-heading">
                     Lee Corso
                 </div>
-                <div class="panel-body">
-                    <span class="text-muted">No picks</span>
-                </div>
+                <ul class="list-group">
+                    {% for pick in gameday_picks.leecorso %}
+                        {% set picked_home_team = pick.game.homeTeam.slug == pick.winnerSlug %}
+
+                        <a href="{{ path('collegefootball_team_game_show', {'game': pick.game.id}) }}" class="list-group-item text-center" style="padding: 0px;">
+                            <h4 class="list-group-item-header {{ picked_home_team ? 'text-success' : 'text-muted' }}">
+                                {{ picked_home_team ? icon('checkmark-circled') }}
+                                {{ pick.game.homeTeam }}
+                            </h4>
+                            <span style="color: #ccc;">&mdash; vs &mdash;</span>
+                            <h4 class="list-group-item-header {{ not picked_home_team ? 'text-success' : 'text-muted' }}">
+                                {{ not picked_home_team ? icon('checkmark-circled') }}
+                                {{ pick.game.awayTeam }}
+                            </h4>
+                        </a>
+                    {% else %}
+                        <li class="list-group-item text-muted">No picks</li>
+                    {% endfor %}
+                </ul>
             </div>
         </div>
-        <div class="col-lg-3 col-sm-6">
+        <div class="col-lg-4 col-sm-6">
             <div class="panel panel-default">
                 <div class="panel-heading">
                     Kirk Herbstreit
                 </div>
-                <div class="panel-body">
-                    <span class="text-muted">No picks</span>
-                </div>
+                <ul class="list-group">
+                    {% for pick in gameday_picks.kirkherbstreit %}
+                        {% set picked_home_team = pick.game.homeTeam.slug == pick.winnerSlug %}
+
+                        <a href="{{ path('collegefootball_team_game_show', {'game': pick.game.id}) }}" class="list-group-item text-center" style="padding: 0px;">
+                            <h4 class="list-group-item-header {{ picked_home_team ? 'text-success' : 'text-muted' }}">
+                                {{ picked_home_team ? icon('checkmark-circled') }}
+                                {{ pick.game.homeTeam }}
+                            </h4>
+                            <span style="color: #ccc;">&mdash; vs &mdash;</span>
+                            <h4 class="list-group-item-header {{ not picked_home_team ? 'text-success' : 'text-muted' }}">
+                                {{ not picked_home_team ? icon('checkmark-circled') }}
+                                {{ pick.game.awayTeam }}
+                            </h4>
+                        </a>
+                    {% else %}
+                        <li class="list-group-item text-muted">No picks</li>
+                    {% endfor %}
+                </ul>
             </div>
         </div>
-        <div class="col-lg-3 col-sm-6">
+        <div class="col-lg-4 col-sm-6">
             <div class="panel panel-default">
                 <div class="panel-heading">
                     Desmond Howard
                 </div>
-                <div class="panel-body">
-                    <span class="text-muted">No picks</span>
-                </div>
-            </div>
-        </div>
-        <div class="col-lg-3 col-sm-6">
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    The Bear
-                </div>
-                <div class="panel-body">
-                    <span class="text-muted">No picks</span>
-                </div>
+                <ul class="list-group">
+                    {% for pick in gameday_picks.desmondhoward %}
+                        {% set picked_home_team = pick.game.homeTeam.slug == pick.winnerSlug %}
+
+                        <a href="{{ path('collegefootball_team_game_show', {'game': pick.game.id}) }}" class="list-group-item text-center" style="padding: 0px;">
+                            <h4 class="list-group-item-header {{ picked_home_team ? 'text-success' : 'text-muted' }}">
+                                {{ picked_home_team ? icon('checkmark-circled') }}
+                                {{ pick.game.homeTeam }}
+                            </h4>
+                            <span style="color: #ccc;">&mdash; vs &mdash;</span>
+                            <h4 class="list-group-item-header {{ not picked_home_team ? 'text-success' : 'text-muted' }}">
+                                {{ not picked_home_team ? icon('checkmark-circled') }}
+                                {{ pick.game.awayTeam }}
+                            </h4>
+                        </a>
+                    {% else %}
+                        <li class="list-group-item text-muted">No picks</li>
+                    {% endfor %}
+                </ul>
             </div>
         </div>
     </div>

@@ -29,9 +29,13 @@ class GamedayController extends Controller
         $repository = $em->getRepository('CollegeFootballAppBundle:Gameday');
         $gameday    = $repository->findOneByWeek($week);
 
+        $pickemService = $this->get('collegefootball.app.pickem');
+        $gamedayPicks  = $pickemService->gamedayWeekPicks($week);
+
         return $this->render('CollegeFootballAppBundle:Gameday:index.html.twig', [
-            'week'    => $week,
-            'gameday' => $gameday,
+            'week'          => $week,
+            'gameday'       => $gameday,
+            'gameday_picks' => $gamedayPicks,
         ]);
     }
 
