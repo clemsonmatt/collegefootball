@@ -1,0 +1,54 @@
+{% extends 'CollegeFootballTeamBundle:Game:layout.html.twig' %}
+
+{% block content %}
+    <legend>
+        <h2>
+            <div class="btn-group pull-right">
+                <button type="button" class="btn btn-sm btn-primary dropdown-toggle" data-toggle="dropdown">
+                    {{ icon('calendar') }}
+                    {{ week }}
+                    <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu dropdown-menu-right">
+                    {% for season_week in season_weeks %}
+                        <li>
+                            <a href="{{ path('collegefootball_team_game_stats_index_week', {'season': season, 'week': season_week.number}) }}">
+                                {{ season_week }}
+                            </a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+            {{ week }} Needing Stats
+        </h2>
+    </legend>
+
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            {{ games|length }} Games Needing Stats
+        </div>
+        <table class="table table-striped table-condensed table-hover">
+            <thead>
+                <th>Home</th>
+                <th>Away</th>
+                <th style="width: 1%;"></th>
+            </thead>
+            {% for game in games %}
+                <tr>
+                    <td>{{ game.homeTeam.nameShort }}</td>
+                    <td>{{ game.awayTeam.nameShort }}</td>
+                    <td>
+                        <a href="{{ path('collegefootball_team_game_stats_add', {'game': game.id}) }}" class="btn btn-xxs btn-primary">
+                            {{ icon('compose') }}
+                            Edit
+                        </a>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="3" class="text-muted">None</td>
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
+{% endblock %}

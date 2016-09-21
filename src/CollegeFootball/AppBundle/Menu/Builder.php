@@ -48,6 +48,10 @@ class Builder implements ContainerAwareInterface
         ]);
 
         if ($authorizationChecker->isGranted('ROLE_MANAGE')) {
+            $menu->addChild('Game Stats', [
+                'route' => 'collegefootball_team_game_stats_index',
+            ]);
+
             $menu->addChild('People', [
                 'route' => 'collegefootball_manage_people',
             ]);
