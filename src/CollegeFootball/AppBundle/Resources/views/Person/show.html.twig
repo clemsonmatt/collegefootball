@@ -63,6 +63,31 @@
                     {% endif %}
                 </div>
             </div>
+
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    Pick'em Leaderboard
+                </div>
+                <div class="panel-body">
+                    <h4 class="text-center">
+                        #{{ current_rank }} {{ person.username }} &mdash; {{ ((person.predictionWins / (person.predictionWins + person.predictionLosses)) * 100)|number_format(1) }}%
+                    </h4>
+                </div>
+                <table class="table table-striped table-hover">
+                    <thead>
+                        <th class="text-center">Rank</th>
+                        <th>Username</th>
+                        <th class="text-center">Score</th>
+                    </thead>
+                    {% for person_rank in people_rank %}
+                        <tr>
+                            <td class="text-center">{{ loop.index }}</td>
+                            <td>{{ person_rank.username }}</td>
+                            <td class="text-center">{{ person_rank.score }}%</td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            </div>
         </div>
         <div class="col-lg-8">
             <div class="panel panel-default">

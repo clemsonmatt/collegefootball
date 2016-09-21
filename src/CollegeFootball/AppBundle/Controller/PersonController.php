@@ -94,6 +94,9 @@ class PersonController extends Controller
             }
         }
 
+        /* leaderboard */
+        $leaderboard = $pickemService->leaderboardRank($person);
+
         return $this->render('CollegeFootballAppBundle:Person:show.html.twig', [
             'person'          => $person,
             'week'            => $week,
@@ -104,6 +107,8 @@ class PersonController extends Controller
             'game_picks'      => $gamePicks,
             'week_win_picks'  => $weekWinPicks,
             'week_lose_picks' => $weekLosePicks,
+            'people_rank'     => $leaderboard['peopleByRank'],
+            'current_rank'    => $leaderboard['currentRank'],
         ]);
     }
 
