@@ -64,7 +64,7 @@
                     Upcomming Game
                 </div>
                 <div class="panel-body">
-                    {% if games|length %}
+                    {% if games|length and next_game %}
                         <center>
                             {% if next_game.homeTeam == team %}
                                 <h4>
@@ -83,6 +83,8 @@
                             {{ next_game.date|date('m/d') }} @ {{ next_game.time ? next_game.time|date('h:i A') : 'TBD' }}
                         </center>
                         <br>
+                    {% elseif games|length %}
+                        <span class="text-muted">Off Week</span>
                     {% else %}
                         <span class="text-muted">None</span>
                     {% endif %}

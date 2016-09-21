@@ -50,7 +50,7 @@ class TeamController extends Controller
             ->setParameter('endDate', $currentWeek->getEndDate())
             ->setParameter('team', $team)
             ->getQuery()
-            ->getSingleResult();
+            ->getOneOrNullResult();
 
         $conferenceService = $this->get('collegefootball.team.conference');
         $conferenceRanking = $conferenceService->teamRankInConference($team->getConference());
