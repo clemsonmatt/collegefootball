@@ -217,7 +217,7 @@
                                         </div>
                                     {% else %}
                                         <div class="btn-group" data-toggle="buttons">
-                                            <label class="btn js-btn-winner btn-default btn-xxs {% if game.awayTeam.slug in week_winners %} btn-primary {% endif %}" style="margin: 0px 0px 5px 0px;" data-game="{{ game.id }}" data-home-away="away">
+                                            <label class="btn js-btn-winner btn-default btn-xxs {% if game.awayTeam.slug in week_winners %} btn-primary {% endif %}" style="font-size: 9px; margin: 0px 0px 6px 0px;" data-game="{{ game.id }}" data-home-away="away">
                                                 <input type="radio" name="game-winner-{{ game.id }}" data-url="{{ path('collegefootball_person_prediction', {'username': person.username, 'game': game.id, 'slug': game.awayTeam.slug}) }}" autocomplete="off" {% if game.awayTeam.slug in week_winners %} checked="checked" {% endif %}>
                                                 <div id="js-away-{{ game.id }}" style="{{ game.awayTeam.slug not in week_winners ? 'display: none;' }}">
                                                     {{ icon('checkmark') }}
@@ -226,7 +226,7 @@
                                         </div>
                                         <hr style="margin: 0px;">
                                         <div class="btn-group" data-toggle="buttons">
-                                            <label class="btn js-btn-winner btn-default btn-xxs {% if game.homeTeam.slug in week_winners %} btn-primary {% endif %}" style="margin: 5px 0px;" data-game="{{ game.id }}" data-home-away="home">
+                                            <label class="btn js-btn-winner btn-default btn-xxs {% if game.homeTeam.slug in week_winners %} btn-primary {% endif %}" style="font-size: 9px; margin: 6px 0px;" data-game="{{ game.id }}" data-home-away="home">
                                                 <input type="radio" name="game-winner-{{ game.id }}" data-url="{{ path('collegefootball_person_prediction', {'username': person.username, 'game': game.id, 'slug': game.homeTeam.slug}) }}" autocomplete="off" {% if game.homeTeam.slug in week_winners %} checked="checked" {% endif %}>
                                                 <div id="js-home-{{ game.id }}" style="{{ game.homeTeam.slug not in week_winners ? 'display: none;' }}">
                                                     {{ icon('checkmark') }}
