@@ -82,14 +82,28 @@ class PersonController extends Controller
         $pickemService = $this->get('collegefootball.app.pickem');
         $gamePicks     = $pickemService->picksByWeek($week);
 
+        /* find games won/lost this week */
+        $weekWinPicks  = 0;
+        $weekLosePicks = 0;
+        foreach ($games as $game) {
+            $winningTeam = $game->getWinningTeam();
+            if ($winningTeam && in_array($winningTeam->getSlug(), $weekWinners)) {
+                $weekWinPicks++;
+            } elseif ($winningTeam) {
+                $weekLosePicks++;
+            }
+        }
+
         return $this->render('CollegeFootballAppBundle:Person:show.html.twig', [
-            'person'       => $person,
-            'week'         => $week,
-            'season_weeks' => $seasonWeeks,
-            'season'       => $season,
-            'games'        => $games,
-            'week_winners' => $weekWinners,
-            'game_picks'   => $gamePicks,
+            'person'          => $person,
+            'week'            => $week,
+            'season_weeks'    => $seasonWeeks,
+            'season'          => $season,
+            'games'           => $games,
+            'week_winners'    => $weekWinners,
+            'game_picks'      => $gamePicks,
+            'week_win_picks'  => $weekWinPicks,
+            'week_lose_picks' => $weekLosePicks,
         ]);
     }
 

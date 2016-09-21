@@ -42,8 +42,25 @@
                 <div class="panel-heading">
                     Pick'em Stats
                 </div>
-                <div class="panel-body" style="height: 250px; overflow-y: hidden;">
-                    <div id="js-pickem-stats" data-wins="{{ person.predictionWins() }}" data-losses="{{ person.predictionLosses() }}" style="width: 100%; margin: 0px;"></div>
+                <div class="panel-body">
+                    <h4>Season Picks</h4>
+                    <center>
+                        <div id="js-pickem-stats" data-wins="{{ person.predictionWins() }}" data-losses="{{ person.predictionLosses() }}"></div>
+                    </center>
+                    <hr>
+                    <h4>{{ week }} Picks</h4>
+                    {% if (week_win_picks + week_lose_picks) %}
+                        <div class="progress">
+                            <div class="progress-bar progress-bar-striped progress-bar-success" data-toggle="tooltip" title="{{ ((week_win_picks / (week_win_picks + week_lose_picks)) * 100)|number_format(1) }}%" style="line-height: 16px; width: {{ (week_win_picks / (week_win_picks + week_lose_picks)) * 100 }}%;">
+                                {{ week_win_picks }}
+                            </div>
+                            <div class="progress-bar progress-bar-striped progress-bar-danger" data-toggle="tooltip" title="{{ ((week_lose_picks / (week_win_picks + week_lose_picks)) * 100)|number_format(1) }}%" style="line-height: 16px; width: {{ (week_lose_picks / (week_win_picks + week_lose_picks)) * 100 }}%;">
+                                {{ week_lose_picks }}
+                            </div>
+                        </div>
+                    {% else %}
+                        <span class="text-muted">None</span>
+                    {% endif %}
                 </div>
             </div>
         </div>
@@ -214,7 +231,7 @@
 
     <script type="text/javascript">
         Highcharts.setOptions({
-            colors: ['#43dc7a', '#f04124']
+            colors: ['#43cc6a', '#f04124']
         });
 
         $('.js-btn-winner').on('click', function(event, state) {
@@ -252,15 +269,30 @@
                 plotBackgroundColor: null,
                 plotBorderWidth: 0,
                 plotShadow: false,
-                marginTop: 0,
-                marginLeft: 0,
-                marginRight: 0
+                spacingBottom: -250,
+                spacingTop: -150,
+                spacingLeft: 0,
+                spacingRight: 0,
+
+                // Explicitly tell the width and height of a chart
+                width: 265,
+                height: 150
+                // marginTop: 0,
+                // marginLeft: 0,
+                // marginRight: 0
             },
             title: {
-                text: 'Win/Loss',
+                text: false,
+                style: {
+                    fontSize: 14,
+                },
                 align: 'center',
                 verticalAlign: 'middle',
-                y: -10
+                y: 0,
+                x: -7
+            },
+            credits: {
+                enabled: false
             },
             tooltip: {
                 pointFormat: '{series.name}: <b>{point.y} ({point.percentage:.1f}%)</b>'
@@ -269,9 +301,9 @@
                 pie: {
                     dataLabels: {
                         enabled: true,
-                        distance: -35,
+                        distance: -25,
                         style: {
-                            fontWeight: 'bold',
+                            // fontWeight: 'bold',
                             color: 'white',
                             textShadow: '0px 1px 2px black'
                         }
