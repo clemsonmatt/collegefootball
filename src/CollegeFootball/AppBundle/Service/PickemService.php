@@ -5,6 +5,7 @@ namespace CollegeFootball\AppBundle\Service;
 use Doctrine\ORM\EntityManager;
 use JMS\DiExtraBundle\Annotation as DI;
 
+use CollegeFootball\AppBundle\Entity\Person;
 use CollegeFootball\AppBundle\Entity\Week;
 use CollegeFootball\TeamBundle\Entity\Game;
 
@@ -74,5 +75,60 @@ class PickemService
         }
 
         return $gamePredictions;
+    }
+
+    public function leaderboardRank(Person $user)
+    {
+        /* find all people */
+        $repository = $this->em->getRepository('CollegeFootballAppBundle:Person');
+        $people     = $repository->createQueryBuilder('p')
+            ->where('p.email IS NOT NULL')
+            ->getQuery()
+            ->getResult();
+
+        /* get score and username */
+        $peopleByRank = [];
+
+        foreach ($people as $person) {
+            $score = ($person->getPredictionWins() / ($person->getPredictionWins() + $person->getPredictionLosses())) * 100;
+            $score = round($score, 1);
+
+            $sortingScores[] = $score;
+
+            $peopleByRank[] = [
+                'score'    => $score,
+                'username' => $person->getUsername()
+            ];
+        }
+
+        /* sort the scores */
+        rsort($sortingScores);
+
+        /* sort the people by the sorted scores */
+        $sortedPeopleByRank = [];
+
+        foreach ($sortingScores as $score) {
+            foreach ($peopleByRank as $ranking) {
+                if ($score == $ranking['score']) {
+                    $sortedPeopleByRank[] = $ranking;
+                }
+            }
+        }
+
+        /* get the current user rank */
+        $currentRank = null;
+
+        foreach ($sortedPeopleByRank as $rank => $sortedPerson) {
+            if ($sortedPerson['username'] == $user->getUsername()) {
+                $currentRank = $rank + 1;
+                break;
+            }
+        }
+
+
+        return [
+            'peopleByRank' => $sortedPeopleByRank,
+            'currentRank'  => $currentRank,
+        ];
     }
 }
