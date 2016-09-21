@@ -35,17 +35,21 @@ class RankingController extends Controller
 
         $em         = $this->getDoctrine()->getManager();
         $repository = $em->getRepository('CollegeFootballTeamBundle:Ranking');
-        $apRankings = $repository->findBy([
-            'week' => $week,
-        ], [
-            'apRank' => 'ASC',
-        ]);
+        $apRankings = $repository->createQueryBuilder('r')
+            ->where('r.apRank IS NOT NULL')
+            ->andWhere('r.week = :week')
+            ->orderBy('r.apRank')
+            ->setParameter('week', $week)
+            ->getQuery()
+            ->getResult();
 
-        $coachesPollRankings = $repository->findBy([
-            'week' => $week,
-        ], [
-            'coachesPollRank' => 'ASC',
-        ]);
+        $coachesPollRankings = $repository->createQueryBuilder('r')
+            ->where('r.coachesPollRank IS NOT NULL')
+            ->andWhere('r.week = :week')
+            ->orderBy('r.coachesPollRank')
+            ->setParameter('week', $week)
+            ->getQuery()
+            ->getResult();
 
         return $this->render('CollegeFootballTeamBundle:Ranking:index.html.twig', [
             'ap_rankings'           => $apRankings,

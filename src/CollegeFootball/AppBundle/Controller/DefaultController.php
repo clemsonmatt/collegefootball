@@ -36,11 +36,13 @@ class DefaultController extends Controller
 
         /* rankings */
         $repository = $em->getRepository('CollegeFootballTeamBundle:Ranking');
-        $apRankings = $repository->findBy([
-            'week' => $week,
-        ], [
-            'apRank' => 'ASC',
-        ]);
+        $apRankings = $repository->createQueryBuilder('r')
+            ->where('r.apRank IS NOT NULL')
+            ->andWhere('r.week = :week')
+            ->orderBy('r.apRank')
+            ->setParameter('week', $week)
+            ->getQuery()
+            ->getResult();
 
         return $this->render('CollegeFootballAppBundle:Default:index.html.twig', [
             'games'       => $topGames,
