@@ -31,12 +31,23 @@
             <thead>
                 <th>Home</th>
                 <th>Away</th>
+                <th>Winner</th>
                 <th style="width: 1%;"></th>
             </thead>
             {% for game in games %}
                 <tr>
                     <td>{{ game.homeTeam.nameShort }}</td>
                     <td>{{ game.awayTeam.nameShort }}</td>
+                    <td>
+                        {% if game.winningTeam %}
+                            {{ game.winningTeam.nameShort }}
+                            <span class="text-muted">
+                                ({{ game.stats.homeStats.pointsFinal }} &ndash; {{ game.stats.awayStats.pointsFinal }})
+                            </span>
+                        {% else %}
+                            &mdash;
+                        {% endif %}
+                    </td>
                     <td>
                         <a href="{{ path('collegefootball_team_game_stats_add', {'game': game.id}) }}" class="btn btn-xxs btn-primary">
                             {{ icon('compose') }}
