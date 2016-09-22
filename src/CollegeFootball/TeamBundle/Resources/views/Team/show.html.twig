@@ -46,10 +46,10 @@
                                 </div>
                                 {% if game.homeTeam == team %}
                                     <img src="{{ game.awayTeam.imageLocation }}" style="width: 35px;">
-                                    vs {{ game.awayTeam.currentRanking ? '#' ~ game.awayTeam.currentRanking.apRank }} {{ game.awayTeam.nameShort }}
+                                    vs {{ game.awayTeam.rankingNameShort }}
                                 {% else %}
                                     <img src="{{ game.homeTeam.imageLocation }}" style="width: 35px;">
-                                    @ {{ game.homeTeam.currentRanking ? '#' ~ game.homeTeam.currentRanking.apRank }} {{ game.homeTeam.nameShort }}
+                                    @ {{ game.homeTeam.rankingNameShort }}
                                 {% endif %}
                             </h4>
                         </a>
@@ -69,12 +69,12 @@
                             {% if next_game.homeTeam == team %}
                                 <h4>
                                     <img src="{{ next_game.awayTeam.imageLocation }}" style="width: 35px;">
-                                    vs {{ next_game.awayTeam.currentRanking ? '#' ~ next_game.awayTeam.currentRanking.apRank }} {{ next_game.awayTeam.nameShort }}
+                                    vs {{ next_game.awayTeam.rankingNameShort }}
                                 </h4>
                             {% else %}
                                 <h4>
                                     <img src="{{ next_game.homeTeam.imageLocation }}" style="width: 35px;">
-                                    @ {{ next_game.homeTeam.currentRanking ? '#' ~ next_game.homeTeam.currentRanking.apRank }} {{ next_game.homeTeam.nameShort }}
+                                    @ {{ next_game.homeTeam.rankingNameShort }}
                                 </h4>
                             {% endif %}
 
@@ -116,7 +116,7 @@
                                         ({{ team_details.gamesWon }} &ndash; {{ team_details.gamesPlayed - team_details.gamesWon }})
                                     </div>
                                     <img src="{{ team_details.team.imageLocation }}" style="width: 35px;">
-                                    {{ team_details.team.currentRanking ? '#' ~ team_details.team.currentRanking.apRank }} {{ team_details.team.nameShort }}
+                                    {{ team_details.team.rankingNameShort }}
                                 </h4>
                             </a>
                         {% endfor %}
