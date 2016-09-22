@@ -98,13 +98,41 @@
                 <div class="panel-body">
                     <dl class="dl-spaced">
                         <dt>Lee Corso</dt>
-                        <dd>&mdash;</dd>
+                        <dd>
+                            {% if 'leecorso' in gameday_picks|keys %}
+                                {% if gameday_picks.leecorso.0.winnerSlug == game.homeTeam.slug %}
+                                    {{ game.homeTeam.nameShort }}
+                                {% else %}
+                                    {{ game.awayTeam.nameShort }}
+                                {% endif %}
+                            {% else %}
+                                &mdash;
+                            {% endif %}
+                        </dd>
                         <dt>Kirk Herbstreit</dt>
-                        <dd>&mdash;</dd>
+                        <dd>
+                            {% if 'kirkherbstreit' in gameday_picks|keys %}
+                                {% if gameday_picks.kirkherbstreit.0.winnerSlug == game.homeTeam.slug %}
+                                    {{ game.homeTeam.nameShort }}
+                                {% else %}
+                                    {{ game.awayTeam.nameShort }}
+                                {% endif %}
+                            {% else %}
+                                &mdash;
+                            {% endif %}
+                        </dd>
                         <dt>Desmond Howard</dt>
-                        <dd>&mdash;</dd>
-                        <dt>The Bear</dt>
-                        <dd>&mdash;</dd>
+                        <dd>
+                            {% if 'desmondhoward' in gameday_picks|keys %}
+                                {% if gameday_picks.desmondhoward.0.winnerSlug == game.homeTeam.slug %}
+                                    {{ game.homeTeam.nameShort }}
+                                {% else %}
+                                    {{ game.awayTeam.nameShort }}
+                                {% endif %}
+                            {% else %}
+                                &mdash;
+                            {% endif %}
+                        </dd>
                     </dl>
                 </div>
             </div>

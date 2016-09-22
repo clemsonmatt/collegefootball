@@ -103,17 +103,21 @@ class PickemService
         return $weekWinners;
     }
 
-    public function gamedayWeekPicks(Week $week)
+    public function gamedayWeekPicks(Week $week, Game $game = null)
     {
-        $repository = $this->em->getRepository('CollegeFootballTeamBundle:Game');
-        $games      = $repository->createQueryBuilder('g')
-            ->where('g.date >= :startDate')
-            ->andWhere('g.date <= :endDate')
-            ->orderBy('g.date, g.time')
-            ->setParameter('startDate', $week->getStartDate())
-            ->setParameter('endDate', $week->getEndDate())
-            ->getQuery()
-            ->getResult();
+        if (! $game) {
+            $repository = $this->em->getRepository('CollegeFootballTeamBundle:Game');
+            $games      = $repository->createQueryBuilder('g')
+                ->where('g.date >= :startDate')
+                ->andWhere('g.date <= :endDate')
+                ->orderBy('g.date, g.time')
+                ->setParameter('startDate', $week->getStartDate())
+                ->setParameter('endDate', $week->getEndDate())
+                ->getQuery()
+                ->getResult();
+        } else {
+            $games[] = $game;
+        }
 
         $repository = $this->em->getRepository('CollegeFootballAppBundle:Person');
         $people     = $repository->findByUsername(['desmondhoward', 'leecorso', 'kirkherbstreit']);
