@@ -77,6 +77,73 @@ class PickemService
         return $gamePredictions;
     }
 
+    public function predictedWeekWinnersByPerson(Person $person, Week $week)
+    {
+        $repository           = $this->em->getRepository('CollegeFootballAppBundle:Prediction');
+        $predictedWeekWinners = $repository->createQueryBuilder('p')
+            ->select('t.slug')
+            ->join('p.person', 'person')
+            ->join('p.team', 't')
+            ->join('p.game', 'g')
+            ->where('person.username = :username')
+            ->andWhere('g.date >= :startDate')
+            ->andWhere('g.date <= :endDate')
+            ->orderBy('g.date, g.time')
+            ->setParameter('username', $person->getUsername())
+            ->setParameter('startDate', $week->getStartDate())
+            ->setParameter('endDate', $week->getEndDate())
+            ->getQuery()
+            ->getResult();
+
+        $weekWinners = [];
+        foreach ($predictedWeekWinners as $weekWinner) {
+            $weekWinners[] = $weekWinner['slug'];
+        }
+
+        return $weekWinners;
+    }
+
+    public function gamedayWeekPicks(Week $week, Game $game = null)
+    {
+        if (! $game) {
+            $repository = $this->em->getRepository('CollegeFootballTeamBundle:Game');
+            $games      = $repository->createQueryBuilder('g')
+                ->where('g.date >= :startDate')
+                ->andWhere('g.date <= :endDate')
+                ->orderBy('g.date, g.time')
+                ->setParameter('startDate', $week->getStartDate())
+                ->setParameter('endDate', $week->getEndDate())
+                ->getQuery()
+                ->getResult();
+        } else {
+            $games[] = $game;
+        }
+
+        $repository = $this->em->getRepository('CollegeFootballAppBundle:Person');
+        $people     = $repository->findByUsername(['desmondhoward', 'leecorso', 'kirkherbstreit']);
+
+        foreach ($people as $person) {
+            $weekWinners[$person->getUsername()] = $this->predictedWeekWinnersByPerson($person, $week);
+        }
+
+        $gamedayPicks = [];
+
+        foreach ($games as $game) {
+            foreach ($weekWinners as $username => $predictedWinners) {
+                foreach ($predictedWinners as $predictedWinnerSlug) {
+                    if ($game->getHomeTeam()->getSlug() == $predictedWinnerSlug || $game->getAwayTeam()->getSlug() == $predictedWinnerSlug) {
+                        $gamedayPicks[$username][] = [
+                            'game'       => $game,
+                            'winnerSlug' => $predictedWinnerSlug,
+                        ];
+                    }
+                }
+            }
+        }
+
+        return $gamedayPicks;
+    }
+
     public function leaderboardRank(Person $user)
     {
         /* find all people */

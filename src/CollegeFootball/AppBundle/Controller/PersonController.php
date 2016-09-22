@@ -58,28 +58,8 @@ class PersonController extends Controller
             ->getResult();
 
 
-        $repository           = $em->getRepository('CollegeFootballAppBundle:Prediction');
-        $predictedWeekWinners = $repository->createQueryBuilder('p')
-            ->select('t.slug')
-            ->join('p.person', 'person')
-            ->join('p.team', 't')
-            ->join('p.game', 'g')
-            ->where('person.username = :username')
-            ->andWhere('g.date >= :startDate')
-            ->andWhere('g.date <= :endDate')
-            ->orderBy('g.date, g.time')
-            ->setParameter('username', $person->getUsername())
-            ->setParameter('startDate', $week->getStartDate())
-            ->setParameter('endDate', $week->getEndDate())
-            ->getQuery()
-            ->getResult();
-
-        $weekWinners = [];
-        foreach ($predictedWeekWinners as $weekWinner) {
-            $weekWinners[] = $weekWinner['slug'];
-        }
-
         $pickemService = $this->get('collegefootball.app.pickem');
+        $weekWinners   = $pickemService->predictedWeekWinnersByPerson($person, $week);
         $gamePicks     = $pickemService->picksByWeek($week);
 
         /* find games won/lost this week */

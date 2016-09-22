@@ -33,45 +33,113 @@
         </div>
     </div>
 
-    <div class="row" style="margin-top: 40px;">
-        <div class="col-lg-3 col-sm-6">
+    <br>
+    <legend>
+        <h2 class="text-muted">
+            <div class="btn-group pull-right">
+                <button type="button" class="btn btn-sm btn-primary dropdown-toggle" data-toggle="dropdown">
+                    {{ icon('calendar') }}
+                    {{ week }}
+                    <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu dropdown-menu-right">
+                    {% for season_week in season_weeks %}
+                        {% if season_week.startDate|date('U') <= "now"|date('U') %}
+                            <li>
+                                <a href="{{ path('collegefootball_gameday_week', {'season': season, 'week': season_week.number}) }}">
+                                    {{ season_week }}
+                                </a>
+                            </li>
+                        {% endif %}
+                    {% endfor %}
+                </ul>
+            </div>
+            Gameday Picks
+        </h2>
+    </legend>
+    <div class="row">
+        <div class="col-lg-4 col-sm-6">
             <div class="panel panel-default">
                 <div class="panel-heading">
                     Lee Corso
                 </div>
-                <div class="panel-body">
-                    <span class="text-muted">No picks</span>
-                </div>
+                <ul class="list-group">
+                    {% if 'leecorso' in gameday_picks|keys %}
+                        {% for pick in gameday_picks.leecorso %}
+                            {% set picked_home_team = pick.game.homeTeam.slug == pick.winnerSlug %}
+
+                            <a href="{{ path('collegefootball_team_game_show', {'game': pick.game.id}) }}" class="list-group-item text-center" style="padding: 0px;">
+                                <h4 class="list-group-item-header {{ picked_home_team ? 'text-success' : 'text-muted' }}">
+                                    {{ picked_home_team ? icon('checkmark-circled') }}
+                                    {{ pick.game.homeTeam }}
+                                </h4>
+                                <span style="color: #ccc;">&mdash; vs &mdash;</span>
+                                <h4 class="list-group-item-header {{ not picked_home_team ? 'text-success' : 'text-muted' }}">
+                                    {{ not picked_home_team ? icon('checkmark-circled') }}
+                                    {{ pick.game.awayTeam }}
+                                </h4>
+                            </a>
+                        {% else %}
+                            <li class="list-group-item text-muted">No picks</li>
+                        {% endfor %}
+                    {% endif %}
+                </ul>
             </div>
         </div>
-        <div class="col-lg-3 col-sm-6">
+        <div class="col-lg-4 col-sm-6">
             <div class="panel panel-default">
                 <div class="panel-heading">
                     Kirk Herbstreit
                 </div>
-                <div class="panel-body">
-                    <span class="text-muted">No picks</span>
-                </div>
+                <ul class="list-group">
+                    {% if 'kirkherbstreit' in gameday_picks|keys %}
+                        {% for pick in gameday_picks.kirkherbstreit %}
+                            {% set picked_home_team = pick.game.homeTeam.slug == pick.winnerSlug %}
+
+                            <a href="{{ path('collegefootball_team_game_show', {'game': pick.game.id}) }}" class="list-group-item text-center" style="padding: 0px;">
+                                <h4 class="list-group-item-header {{ picked_home_team ? 'text-success' : 'text-muted' }}">
+                                    {{ picked_home_team ? icon('checkmark-circled') }}
+                                    {{ pick.game.homeTeam }}
+                                </h4>
+                                <span style="color: #ccc;">&mdash; vs &mdash;</span>
+                                <h4 class="list-group-item-header {{ not picked_home_team ? 'text-success' : 'text-muted' }}">
+                                    {{ not picked_home_team ? icon('checkmark-circled') }}
+                                    {{ pick.game.awayTeam }}
+                                </h4>
+                            </a>
+                        {% else %}
+                            <li class="list-group-item text-muted">No picks</li>
+                        {% endfor %}
+                    {% endif %}
+                </ul>
             </div>
         </div>
-        <div class="col-lg-3 col-sm-6">
+        <div class="col-lg-4 col-sm-6">
             <div class="panel panel-default">
                 <div class="panel-heading">
                     Desmond Howard
                 </div>
-                <div class="panel-body">
-                    <span class="text-muted">No picks</span>
-                </div>
-            </div>
-        </div>
-        <div class="col-lg-3 col-sm-6">
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    The Bear
-                </div>
-                <div class="panel-body">
-                    <span class="text-muted">No picks</span>
-                </div>
+                <ul class="list-group">
+                    {% if 'desmondhoward' in gameday_picks|keys %}
+                        {% for pick in gameday_picks.desmondhoward %}
+                            {% set picked_home_team = pick.game.homeTeam.slug == pick.winnerSlug %}
+
+                            <a href="{{ path('collegefootball_team_game_show', {'game': pick.game.id}) }}" class="list-group-item text-center" style="padding: 0px;">
+                                <h4 class="list-group-item-header {{ picked_home_team ? 'text-success' : 'text-muted' }}">
+                                    {{ picked_home_team ? icon('checkmark-circled') }}
+                                    {{ pick.game.homeTeam }}
+                                </h4>
+                                <span style="color: #ccc;">&mdash; vs &mdash;</span>
+                                <h4 class="list-group-item-header {{ not picked_home_team ? 'text-success' : 'text-muted' }}">
+                                    {{ not picked_home_team ? icon('checkmark-circled') }}
+                                    {{ pick.game.awayTeam }}
+                                </h4>
+                            </a>
+                        {% else %}
+                            <li class="list-group-item text-muted">No picks</li>
+                        {% endfor %}
+                    {% endif %}
+                </ul>
             </div>
         </div>
     </div>
