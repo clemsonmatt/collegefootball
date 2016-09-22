@@ -33,6 +33,15 @@ class Team
         return $this->name;
     }
 
+    public function rankingNameShort()
+    {
+        if ($this->currentRanking() && $this->currentRanking()->getApRank()) {
+            return '#'.$this->currentRanking()->getApRank().' '.$this->nameShort;
+        }
+
+        return $this->nameShort;
+    }
+
     public static function getStatesList()
     {
         return [
