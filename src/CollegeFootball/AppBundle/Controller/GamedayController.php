@@ -18,12 +18,15 @@ class GamedayController extends Controller
 {
     /**
      * @Route("/", name="collegefootball_gameday_index")
+     * @Route("/{season}/week/{week}", name="collegefootball_gameday_week")
      */
-    public function indexAction()
+    public function indexAction($season = null, $week = null)
     {
         $weekService = $this->get('collegefootball.team.week');
-        $weekResult  = $weekService->currentWeek();
+        $weekResult  = $weekService->currentWeek($season, $week);
         $week        = $weekResult['week'];
+        $season      = $weekResult['season'];
+        $seasonWeeks = $weekResult['seasonWeeks'];
 
         $em         = $this->getDoctrine()->getManager();
         $repository = $em->getRepository('CollegeFootballAppBundle:Gameday');
@@ -34,6 +37,8 @@ class GamedayController extends Controller
 
         return $this->render('CollegeFootballAppBundle:Gameday:index.html.twig', [
             'week'          => $week,
+            'season'        => $season,
+            'season_weeks'  => $seasonWeeks,
             'gameday'       => $gameday,
             'gameday_picks' => $gamedayPicks,
         ]);
