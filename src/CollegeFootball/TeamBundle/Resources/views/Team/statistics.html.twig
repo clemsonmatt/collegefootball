@@ -64,10 +64,10 @@
                     <tr>
                         <th class="tr-header">Rushing</th>
                         <td class="tr-header">
-                            {{ (stats.team.rushingYards / stats.team.rushingAttempts)|number_format(2) }} yds / carry
+                            {{ stats.team.rushingAttempts ? (stats.team.rushingYards / stats.team.rushingAttempts)|number_format(2) }} yds / carry
                         </td>
                         <td class="tr-header">
-                            {{ (stats.opponent.rushingYards / stats.opponent.rushingAttempts)|number_format(2) }} yds / carry
+                            {{ stats.opponent.rushingAttempts ? (stats.opponent.rushingYards / stats.opponent.rushingAttempts)|number_format(2) }} yds / carry
                         </td>
                     </tr>
                     <tr>
@@ -89,10 +89,10 @@
                     <tr>
                         <th class="tr-header">Passing</th>
                         <td class="tr-header">
-                            {{ ((stats.team.passingCompletions / stats.team.passingAttempts) * 100)|number_format(2) }} %
+                            {{ stats.team.passingAttempts ? ((stats.team.passingCompletions / stats.team.passingAttempts) * 100)|number_format(2) }} %
                         </td>
                         <td class="tr-header">
-                            {{ ((stats.opponent.passingCompletions / stats.opponent.passingAttempts) * 100)|number_format(2) }} %
+                            {{ stats.opponent.passingAttempts ? ((stats.opponent.passingCompletions / stats.opponent.passingAttempts) * 100)|number_format(2) }} %
                         </td>
                     </tr>
                     <tr>
@@ -124,10 +124,10 @@
                     <tr>
                         <th class="tr-header">3rd Downs</th>
                         <td class="tr-header">
-                            {{ ((stats.team.thirdDownConversions / stats.team.thirdDownAttempts) * 100)|number_format(2) }} %
+                            {{ stats.team.thirdDownAttempts ? ((stats.team.thirdDownConversions / stats.team.thirdDownAttempts) * 100)|number_format(2) }} %
                         </td>
                         <td class="tr-header">
-                            {{ ((stats.opponent.thirdDownConversions / stats.opponent.thirdDownAttempts) * 100)|number_format(2) }} %
+                            {{ stats.opponent.thirdDownAttempts ? ((stats.opponent.thirdDownConversions / stats.opponent.thirdDownAttempts) * 100)|number_format(2) }} %
                         </td>
                     </tr>
                     <tr>
@@ -144,10 +144,10 @@
                     <tr>
                         <th class="tr-header">4th Downs</th>
                         <td class="tr-header">
-                            {{ ((stats.team.fourthDownConversions / stats.team.fourthDownAttempts) * 100)|number_format(2) }} %
+                            {{ stats.team.fourthDownAttempts ? ((stats.team.fourthDownConversions / stats.team.fourthDownAttempts) * 100)|number_format(2) }} %
                         </td>
                         <td class="tr-header">
-                            {{ ((stats.opponent.fourthDownConversions / stats.opponent.fourthDownAttempts) * 100)|number_format(2) }} %
+                            {{ stats.opponent.fourthDownAttempts ? ((stats.opponent.fourthDownConversions / stats.opponent.fourthDownAttempts) * 100)|number_format(2) }} %
                         </td>
                     </tr>
                     <tr>
