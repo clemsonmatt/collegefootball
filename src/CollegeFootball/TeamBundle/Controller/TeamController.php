@@ -151,9 +151,21 @@ class TeamController extends Controller
         $repository = $em->getRepository('CollegeFootballTeamBundle:Game');
         $games      = $repository->findGamesByTeam($team);
 
+        $repository      = $em->getRepository('CollegeFootballAppBundle:Prediction');
+        $userPredictions = $repository->findBy([
+            'person' => $this->getUser(),
+            'game'   => $games,
+        ]);
+
+        $userPredictionsByGame = [];
+        foreach ($userPredictions as $userPrediction) {
+            $userPredictionsByGame[$userPrediction->getGame()->getId()] = $userPrediction->getTeam();
+        }
+
         return $this->render('CollegeFootballTeamBundle:Team:schedule.html.twig', [
-            'games' => $games,
-            'team'  => $team,
+            'games'            => $games,
+            'team'             => $team,
+            'user_predictions' => $userPredictionsByGame,
         ]);
     }
 

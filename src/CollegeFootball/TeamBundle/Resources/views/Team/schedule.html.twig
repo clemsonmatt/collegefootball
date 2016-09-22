@@ -44,8 +44,23 @@
                     </td>
                     <td>{{ game.time ? game.time|date('h:i A') : 'TBD' }}</td>
                     <td>{{ game.location }}</td>
-                    <td>&mdash;</td>
-                    <td>&mdash;</td>
+                    <td>
+                        {% if game.id in user_predictions|keys %}
+                            {{ user_predictions[game.id].nameShort }}
+                        {% else %}
+                            &mdash;
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if game.winningTeam %}
+                            {{ game.winningTeam.nameShort }}
+                            <span class="text-muted">
+                                ({{ game.stats.homeStats.pointsFinal }} &ndash; {{ game.stats.awayStats.pointsFinal }})
+                            </span>
+                        {% else %}
+                            &mdash;
+                        {% endif %}
+                    </td>
                 </tr>
             {% endfor %}
 {% endblock %}
