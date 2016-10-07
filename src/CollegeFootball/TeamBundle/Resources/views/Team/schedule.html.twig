@@ -53,7 +53,7 @@
                     </td>
                     <td>
                         {% if game.winningTeam %}
-                            {{ game.winningTeam.nameShort }}
+                            {{ game.winningTeam == team ? '<span class="text-success">W</span>' : '<span class="text-danger">L</span>' }}
                             <span class="text-muted">
                                 ({{ game.stats.homeStats.pointsFinal }} &ndash; {{ game.stats.awayStats.pointsFinal }})
                             </span>
