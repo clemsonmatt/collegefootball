@@ -176,13 +176,13 @@ class PersonController extends Controller
         $now = $now->modify('-4 hours');
 
         /* make sure game hasn't started */
-        if ($game->getDate()->format('U') <= $now->format('U')) {
-            $gameTime = new \DateTime($game->getTime());
-            if ($game->getDate()->format('Y-m-d') < $now->format('Y-m-d') || ($game->getDate()->format('Y-m-d') == $now->format('Y-m-d') && $gameTime->format('U') < $now->format('U'))) {
-                $response = ['code' => 100, 'error' => true, 'errorMessage' => 'Cannot pick after game has begun.'];
-                return new JsonResponse($response);
-            }
-        }
+        // if ($game->getDate()->format('U') <= $now->format('U')) {
+        //     $gameTime = new \DateTime($game->getTime());
+        //     if ($game->getDate()->format('Y-m-d') < $now->format('Y-m-d') || ($game->getDate()->format('Y-m-d') == $now->format('Y-m-d') && $gameTime->format('U') < $now->format('U'))) {
+        //         $response = ['code' => 100, 'error' => true, 'errorMessage' => 'Cannot pick after game has begun.'];
+        //         return new JsonResponse($response);
+        //     }
+        // }
 
         $em         = $this->getDoctrine()->getManager();
         $repository = $em->getRepository('CollegeFootballAppBundle:Prediction');
