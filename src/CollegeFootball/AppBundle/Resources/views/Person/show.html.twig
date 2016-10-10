@@ -78,12 +78,14 @@
                         <th class="text-center">Rank</th>
                         <th>Username</th>
                         <th class="text-center">Score</th>
+                        <th class="text-center">Win &ndash; Loss</th>
                     </thead>
                     {% for person_rank in people_rank %}
                         <tr>
                             <td class="text-center">{{ loop.index }}</td>
                             <td>{{ person_rank.username }}</td>
                             <td class="text-center">{{ person_rank.score }}%</td>
+                            <td class="text-center">({{ person_rank.wins }} &ndash; {{ person_rank.losses }})</td>
                         </tr>
                     {% endfor %}
                 </table>
