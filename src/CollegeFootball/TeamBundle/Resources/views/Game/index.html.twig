@@ -62,6 +62,11 @@
                                     {{ game.stats.awayStats.pointsFinal }}
                                 </h4>
                             {% else %}
+                                {% if is_granted('ROLE_MANAGE') %}
+                                    <a href="{{ path('collegefootball_team_game_edit', {'game': game.id}) }}" class=" pull-right">
+                                        {{ icon('compose') }}
+                                    </a>
+                                {% endif %}
                                 {{ game.location }}
                                 <hr style="margin: 5px 60px;">
                                 {{ game.date|date('m/d') }} @ {{ game.time ? game.time|date('h:i A') : 'TBD' }}
