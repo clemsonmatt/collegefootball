@@ -157,14 +157,19 @@ class PickemService
         $peopleByRank = [];
 
         foreach ($people as $person) {
-            $score = ($person->getPredictionWins() / ($person->getPredictionWins() + $person->getPredictionLosses())) * 100;
+            $predictionWins   = $person->getPredictionWins();
+            $predictionLosses = $person->getPredictionLosses();
+
+            $score = ($predictionWins / ($predictionWins + $predictionLosses)) * 100;
             $score = round($score, 1);
 
             $sortingScores[] = $score;
 
             $peopleByRank[] = [
                 'score'    => $score,
-                'username' => $person->getUsername()
+                'username' => $person->getUsername(),
+                'wins'     => $predictionWins,
+                'losses'   => $predictionLosses,
             ];
         }
 
