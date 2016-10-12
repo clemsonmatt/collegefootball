@@ -162,6 +162,12 @@
 
     <h4>Turnovers</h4>
     <div class="form-group row">
+        <label class="col-md-3 control-label">{{ form_label(stats.fumbleCount) }}</label>
+        <div class="col-md-9">
+            {{ form_widget(stats.fumbleCount, {'attr': {'class': 'form-control'}}) }}
+        </div>
+    </div>
+    <div class="form-group row">
         <label class="col-md-3 control-label">{{ form_label(stats.interceptionCount) }}</label>
         <div class="col-md-9">
             {{ form_widget(stats.interceptionCount, {'attr': {'class': 'form-control'}}) }}
@@ -177,12 +183,6 @@
         <label class="col-md-3 control-label">{{ form_label(stats.interceptionTd) }}</label>
         <div class="col-md-9">
             {{ form_widget(stats.interceptionTd, {'attr': {'class': 'form-control'}}) }}
-        </div>
-    </div>
-    <div class="form-group row">
-        <label class="col-md-3 control-label">{{ form_label(stats.fumbleCount) }}</label>
-        <div class="col-md-9">
-            {{ form_widget(stats.fumbleCount, {'attr': {'class': 'form-control'}}) }}
         </div>
     </div>
     <hr>
