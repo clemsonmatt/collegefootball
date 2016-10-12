@@ -157,6 +157,12 @@
 
             <div class="panel panel-default">
                 <div class="panel-heading">
+                    {% if is_granted('ROLE_MANAGE') %}
+                        <a href="{{ path('collegefootball_team_game_stats_add', {'game': game.id}) }}" class="btn btn-xs btn-primary pull-right">
+                            {{ icon('compose') }}
+                            Edit Stats
+                        </a>
+                    {% endif %}
                     Game Statistics
                 </div>
                 {% if game.stats %}
@@ -192,21 +198,34 @@
                             <td>{{ game.stats.homeStats.pointsFourth }}</td>
                             <td>{{ game.stats.awayStats.pointsFourth }}</td>
                         </tr>
-                        <tr>
-                            <th>1st OT</th>
-                            <td>{{ game.stats.homeStats.ot1|default('&mdash;')|raw }}</td>
-                            <td>{{ game.stats.awayStats.ot1|default('&mdash;')|raw }}</td>
-                        </tr>
-                        <tr>
-                            <th>2nd OT</th>
-                            <td>{{ game.stats.homeStats.ot2|default('&mdash;')|raw }}</td>
-                            <td>{{ game.stats.awayStats.ot2|default('&mdash;')|raw }}</td>
-                        </tr>
-                        <tr>
-                            <th>3rd OT</th>
-                            <td>{{ game.stats.homeStats.ot3|default('&mdash;')|raw }}</td>
-                            <td>{{ game.stats.awayStats.ot3|default('&mdash;')|raw }}</td>
-                        </tr>
+                        {% if 'ot1' in game.stats.homeStats|keys and game.stats.homeStats.ot1 %}
+                            <tr>
+                                <th>1st OT</th>
+                                <td>{{ game.stats.homeStats.ot1 }}</td>
+                                <td>{{ game.stats.awayStats.ot1 }}</td>
+                            </tr>
+                        {% endif %}
+                        {% if 'ot2' in game.stats.homeStats|keys and game.stats.homeStats.ot2 %}
+                            <tr>
+                                <th>2nd OT</th>
+                                <td>{{ game.stats.homeStats.ot2 }}</td>
+                                <td>{{ game.stats.awayStats.ot2 }}</td>
+                            </tr>
+                        {% endif %}
+                        {% if 'ot3' in game.stats.homeStats|keys and game.stats.homeStats.ot3 %}
+                            <tr>
+                                <th>3rd OT</th>
+                                <td>{{ game.stats.homeStats.ot3 }}</td>
+                                <td>{{ game.stats.awayStats.ot3 }}</td>
+                            </tr>
+                        {% endif %}
+                        {% if 'ot4' in game.stats.homeStats|keys and game.stats.homeStats.ot4 %}
+                            <tr>
+                                <th>4th OT</th>
+                                <td>{{ game.stats.homeStats.ot4 }}</td>
+                                <td>{{ game.stats.awayStats.ot4 }}</td>
+                            </tr>
+                        {% endif %}
 
                         <tr><th colspan="3" class="tr-header">Total Offense</th></tr>
                         <tr>
@@ -309,16 +328,6 @@
                             <td>{{ game.stats.homeStats.fumbleCount|default('&mdash;')|raw }}</td>
                             <td>{{ game.stats.awayStats.fumbleCount|default('&mdash;')|raw }}</td>
                         </tr>
-                        <tr>
-                            <th>Fumble Yards</th>
-                            <td>{{ game.stats.homeStats.fumbleYards|default('&mdash;')|raw }}</td>
-                            <td>{{ game.stats.awayStats.fumbleYards|default('&mdash;')|raw }}</td>
-                        </tr>
-                        <tr>
-                            <th>Fumble TD</th>
-                            <td>{{ game.stats.homeStats.fumbleTd|default('&mdash;')|raw }}</td>
-                            <td>{{ game.stats.awayStats.fumbleTd|default('&mdash;')|raw }}</td>
-                        </tr>
 
                         <tr><th colspan="3" class="tr-header">Penalties</th></tr>
                         <tr>
@@ -385,18 +394,6 @@
                             <th>Made</th>
                             <td>{{ game.stats.homeStats.patMade|default('&mdash;')|raw }}</td>
                             <td>{{ game.stats.awayStats.patMade|default('&mdash;')|raw }}</td>
-                        </tr>
-
-                        <tr><th colspan="3" class="tr-header">2 Point Conversions</th></tr>
-                        <tr>
-                            <th>Attempts</th>
-                            <td>{{ game.stats.homeStats.twoPtConversionAttempts|default('&mdash;')|raw }}</td>
-                            <td>{{ game.stats.awayStats.twoPtConversionAttempts|default('&mdash;')|raw }}</td>
-                        </tr>
-                        <tr>
-                            <th>Made</th>
-                            <td>{{ game.stats.homeStats.twoPtConversionMade|default('&mdash;')|raw }}</td>
-                            <td>{{ game.stats.awayStats.twoPtConversionMade|default('&mdash;')|raw }}</td>
                         </tr>
                     </table>
                 {% elseif is_granted('ROLE_MANAGE') %}

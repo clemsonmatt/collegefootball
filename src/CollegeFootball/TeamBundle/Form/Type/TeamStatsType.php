@@ -25,6 +25,7 @@ class TeamStatsType extends AbstractType
         $builder->add('ot1', SymfonyTypes\IntegerType::class, ['label' => '1st OT', 'required' => false]);
         $builder->add('ot2', SymfonyTypes\IntegerType::class, ['label' => '2nd OT', 'required' => false]);
         $builder->add('ot3', SymfonyTypes\IntegerType::class, ['label' => '3rd OT', 'required' => false]);
+        $builder->add('ot4', SymfonyTypes\IntegerType::class, ['label' => '4th OT', 'required' => false]);
 
         /* rushing */
         $builder->add('rushingYards', SymfonyTypes\IntegerType::class, ['label' => 'Yards']);
@@ -55,8 +56,6 @@ class TeamStatsType extends AbstractType
         $builder->add('interceptionYards', SymfonyTypes\IntegerType::class);
         $builder->add('interceptionTd', SymfonyTypes\IntegerType::class);
         $builder->add('fumbleCount', SymfonyTypes\IntegerType::class, ['label' => 'Fumbles Recovered']);
-        $builder->add('fumbleYards', SymfonyTypes\IntegerType::class);
-        $builder->add('fumbleTd', SymfonyTypes\IntegerType::class);
 
         /* penalties */
         $builder->add('penaltyCount', SymfonyTypes\IntegerType::class, ['label' => 'Count']);
@@ -80,10 +79,6 @@ class TeamStatsType extends AbstractType
         /* PAT */
         $builder->add('patAttempts', SymfonyTypes\IntegerType::class, ['label' => 'Attempts']);
         $builder->add('patMade', SymfonyTypes\IntegerType::class, ['label' => 'Made']);
-
-        /* 2pt conversions */
-        $builder->add('twoPtConversionAttempts', SymfonyTypes\IntegerType::class, ['label' => 'Attempts']);
-        $builder->add('twoPtConversionMade', SymfonyTypes\IntegerType::class, ['label' => 'Made']);
     }
 
     /**
