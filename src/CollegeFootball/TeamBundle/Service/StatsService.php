@@ -40,6 +40,10 @@ class StatsService
             'pointsSecond'          => 0,
             'pointsThird'           => 0,
             'pointsFourth'          => 0,
+            'ot1'                   => 0,
+            'ot2'                   => 0,
+            'ot3'                   => 0,
+            'ot4'                   => 0,
             'totalOffenseYards'     => 0,
             'rushingYards'          => 0,
             'rushingAttempts'       => 0,
@@ -94,7 +98,9 @@ class StatsService
                 }
 
                 foreach ($value as $singleStat => $singleStatValue) {
-                    $stats[$key][$singleStat] = $singleStatValue + $teamOrOpponentStats[$singleStat];
+                    if (array_key_exists($singleStat, $teamOrOpponentStats)) {
+                        $stats[$key][$singleStat] = $singleStatValue + $teamOrOpponentStats[$singleStat];
+                    }
                 }
             }
         }
