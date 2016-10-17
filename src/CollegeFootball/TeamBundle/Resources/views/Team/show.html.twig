@@ -103,40 +103,7 @@
                 </div>
             </div>
 
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    {{ icon('stats-bars') }}
-                    Team Comparison
-                </div>
-                {% if next_game %}
-                    <table class="table table-striped">
-                        <thead>
-                            <th>Stat (Avg per game)</th>
-                            <th class="text-center">{{ next_game.homeTeam.nameShort }}</th>
-                            <th class="text-center">{{ next_game.awayTeam.nameShort }}</th>
-                            <th class="text-center">Winner</th>
-                        </thead>
-                        {% for stat, stat_value in game_comparison.stats %}
-                            <tr>
-                                <th>{{ stat }}</th>
-                                <td class="text-center">{{ stat != 'Scoring Margin' ? stat_value.home|number_format(2) : stat_value.home }}</td>
-                                <td class="text-center">{{ stat != 'Scoring Margin' ? stat_value.away|number_format(2) : stat_value.away }}</td>
-                                <td class="text-center">{{ stat_value.winner }}</td>
-                            </tr>
-                        {% endfor %}
-                        <tr class="tr-header">
-                            <th>Calculated Winning Odds</th>
-                            <th class="text-center">{{ game_comparison.homeChance }}%</th>
-                            <th class="text-center">{{ game_comparison.awayChance }}%</th>
-                            <th class="text-center">{{ game_comparison.homeChance > game_comparison.awayChance ? next_game.homeTeam.nameShort : next_game.awayTeam.nameShort }}</th>
-                        </tr>
-                    </table>
-                {% else %}
-                    <div class="panel-body">
-                        <span class="text-muted">Off Week</span>
-                    </div>
-                {% endif %}
-            </div>
+            {% include 'CollegeFootballTeamBundle:Game:comparison.html.twig' with {game: next_game} %}
         </div>
         <div class="col-lg-4 visible-lg">
             <div class="panel panel-default">
