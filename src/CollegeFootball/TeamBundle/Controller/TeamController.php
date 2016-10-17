@@ -53,7 +53,7 @@ class TeamController extends Controller
             ->getOneOrNullResult();
 
         $conferenceService = $this->get('collegefootball.team.conference');
-        $conferenceRanking = $conferenceService->teamRankInConference($team->getConference());
+        $conferenceRanking = $conferenceService->teamRankInConference($team->getConference(), false);
 
         return $this->render('CollegeFootballTeamBundle:Team:show.html.twig', [
             'team'               => $team,
