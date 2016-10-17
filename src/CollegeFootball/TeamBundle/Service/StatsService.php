@@ -73,6 +73,7 @@ class StatsService
             'fumbleCount'           => 0,
             'penaltyCount'          => 0,
             'penaltyYards'          => 0,
+            'gameCount'             => count($games),
         ];
 
         $stats = [
@@ -157,8 +158,8 @@ class StatsService
 
         $stats = [
             'Scoring Margin' => [
-                'home'   => ($homeScoringMargin > 0 ? '+'.$homeScoringMargin : $homeScoringMargin),
-                'away'   => ($awayScoringMargin > 0 ? '+'.$awayScoringMargin : $awayScoringMargin),
+                'home'   => $homeScoringMargin,
+                'away'   => $awayScoringMargin,
                 'winner' => ($homeScoringMargin > $awayScoringMargin ? $homeName : $awayName),
             ],
             'Total Offense' => [
@@ -232,36 +233,55 @@ class StatsService
             'away' => 0,
         ];
 
-        /* scoring margin */
-        $winningChance['home'] += round($stats['Scoring Margin']['home'] / $stats['Scoring Margin']['away'], 2);
-        $winningChance['away'] += round($stats['Scoring Margin']['away'] / $stats['Scoring Margin']['home'], 2);
+        $statCount = 0;
 
-        /* total yards */
-        $winningChance['home'] += round($homeTeamStats['team']['totalOffenseYards'] / $awayTeamStats['team']['totalOffenseYards'], 2);
-        $winningChance['away'] += round($awayTeamStats['team']['totalOffenseYards'] / $homeTeamStats['team']['totalOffenseYards'], 2);
+        /**
+         * Pythagorean Projection
+         *
+         * Pythagorean wins = ((Points For ^ 2.37) / (Points For ^ 2.37 + Points Against ^ 2.37)) * # of games
+         *
+         * NOTE: This is just the best way found so far. By no means a good estimate. Below "Points Againts" has been changed to the other teams points.
+         */
+        $exp = 2.37;
 
-        /* total opponent yards */
-        $winningChance['home'] -= round($homeTeamStats['opponent']['totalOffenseYards'] / $awayTeamStats['opponent']['totalOffenseYards'], 2);
-        $winningChance['away'] -= round($awayTeamStats['opponent']['totalOffenseYards'] / $homeTeamStats['opponent']['totalOffenseYards'], 2);
+        /* points */
+        $winningChance['home'] = pow($homeTeamStats['team']['pointsFinal'], $exp) / (pow($homeTeamStats['team']['pointsFinal'], $exp) + pow($awayTeamStats['team']['pointsFinal'], $exp)) * $homeTeamStats['team']['gameCount'];
+        $winningChance['away'] = pow($awayTeamStats['team']['pointsFinal'], $exp) / (pow($awayTeamStats['team']['pointsFinal'], $exp) + pow($homeTeamStats['team']['pointsFinal'], $exp)) * $awayTeamStats['team']['gameCount'];
+        $statCount++;
 
-        /* passing yards */
-        $winningChance['home'] += round(($homeTeamStats['team']['passingYards'] - $awayTeamStats['opponent']['passingYards']) / ($awayTeamStats['team']['passingYards'] - $homeTeamStats['opponent']['passingYards']), 2);
-        $winningChance['away'] += round(($awayTeamStats['team']['passingYards'] - $homeTeamStats['opponent']['passingYards']) / ($homeTeamStats['team']['passingYards'] - $awayTeamStats['opponent']['passingYards']), 2);
+        /* offense */
+        $winningChance['home'] += pow($homeTeamStats['team']['totalOffenseYards'], $exp) / (pow($homeTeamStats['team']['totalOffenseYards'], $exp) + pow($awayTeamStats['opponent']['totalOffenseYards'], $exp)) * $homeTeamStats['team']['gameCount'];
+        $winningChance['away'] += pow($awayTeamStats['team']['totalOffenseYards'], $exp) / (pow($awayTeamStats['team']['totalOffenseYards'], $exp) + pow($homeTeamStats['opponent']['totalOffenseYards'], $exp)) * $awayTeamStats['team']['gameCount'];
+        $statCount++;
 
-        /* rushing yards */
-        $winningChance['home'] += round(($homeTeamStats['team']['rushingYards'] - $awayTeamStats['opponent']['rushingYards']) / ($awayTeamStats['team']['rushingYards'] - $homeTeamStats['opponent']['rushingYards']), 2);
-        $winningChance['away'] += round(($awayTeamStats['team']['rushingYards'] - $homeTeamStats['opponent']['rushingYards']) / ($homeTeamStats['team']['rushingYards'] - $awayTeamStats['opponent']['rushingYards']), 2);
+        /* opponent offense */
+        $winningChance['home'] += pow($homeTeamStats['opponent']['totalOffenseYards'], $exp) / (pow($homeTeamStats['opponent']['totalOffenseYards'], $exp) + pow($awayTeamStats['team']['totalOffenseYards'], $exp)) * $homeTeamStats['opponent']['gameCount'];
+        $winningChance['away'] += pow($awayTeamStats['opponent']['totalOffenseYards'], $exp) / (pow($awayTeamStats['opponent']['totalOffenseYards'], $exp) + pow($homeTeamStats['team']['totalOffenseYards'], $exp)) * $awayTeamStats['opponent']['gameCount'];
+        $statCount++;
 
-        if ($winningChance['home'] > $winningChance['away']) {
-            $awayChance = round(($winningChance['away'] / $winningChance['home']) * 100, 2);
-            $homeChance = 100 - $awayChance;
-        } else {
-            $homeChance = round(($winningChance['home'] / $winningChance['away']) * 100, 2);
-            $awayChance = 100 - $homeChance;
+        /* opponent offense */
+        if ($stats['Scoring Margin']['home'] > 0 && $stats['Scoring Margin']['away'] > 0) {
+            $winningChance['home'] += pow($stats['Scoring Margin']['home'], $exp) / (pow($stats['Scoring Margin']['home'], $exp) + pow($stats['Scoring Margin']['away'], $exp)) * $homeTeamStats['team']['gameCount'];
+            $winningChance['away'] += pow($stats['Scoring Margin']['away'], $exp) / (pow($stats['Scoring Margin']['away'], $exp) + pow($stats['Scoring Margin']['home'], $exp)) * $awayTeamStats['team']['gameCount'];
+            $statCount++;
+        } elseif ($stats['Scoring Margin']['home'] < 0) {
+            $winningChance['away'] += pow($stats['Scoring Margin']['away'], $exp) / (pow($stats['Scoring Margin']['away'], $exp) + pow(abs($stats['Scoring Margin']['home']), $exp)) * $awayTeamStats['team']['gameCount'];
+            $statCount++;
+        } elseif ($stats['Scoring Margin']['away'] < 0) {
+            $winningChance['home'] += pow($stats['Scoring Margin']['home'], $exp) / (pow($stats['Scoring Margin']['home'], $exp) + pow(abs($stats['Scoring Margin']['away']), $exp)) * $homeTeamStats['team']['gameCount'];
+            $statCount++;
         }
 
-        $winningChance['home'] = $homeChance;
-        $winningChance['away'] = $awayChance;
+        if ($winningChance['home'] > $winningChance['away']) {
+            $homeChance = $winningChance['home'] / $statCount;
+            $awayChance = 1 - $homeChance;
+        } else {
+            $awayChance = $winningChance['away'] / $statCount;
+            $homeChance = 1 - $awayChance;
+        }
+
+        $winningChance['home'] = round($homeChance * 100, 2);
+        $winningChance['away'] = round($awayChance * 100, 2);
 
         return $winningChance;
     }
