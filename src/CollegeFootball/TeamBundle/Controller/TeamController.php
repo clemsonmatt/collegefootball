@@ -52,6 +52,9 @@ class TeamController extends Controller
             ->getQuery()
             ->getOneOrNullResult();
 
+        $statsService   = $this->get('collegefootball.team.stats');
+        $gameComparison = $statsService->gameComparison($nextGame);
+
         $conferenceService = $this->get('collegefootball.team.conference');
         $conferenceRanking = $conferenceService->teamRankInConference($team->getConference(), false);
 
@@ -60,6 +63,7 @@ class TeamController extends Controller
             'games'              => $games,
             'conference_ranking' => $conferenceRanking,
             'next_game'          => $nextGame,
+            'game_comparison'    => $gameComparison,
         ]);
     }
 
