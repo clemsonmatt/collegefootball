@@ -25,7 +25,7 @@ class ConferenceService
         $this->em = $em;
     }
 
-    public function teamRankInConference(Conference $conference)
+    public function teamRankInConference(Conference $conference, $bySubConference = true)
     {
         $subConferences = $conference->teamsBySubConference();
 
@@ -46,6 +46,10 @@ class ConferenceService
         }
 
         krsort($rankedTeams);
+
+        if (! $bySubConference) {
+            return $rankedTeams;
+        }
 
         /* now if there are sub-conferences, sort by those */
         $rankedBySubConference = [];
@@ -95,6 +99,8 @@ class ConferenceService
                 $conferenceGamesWon++;
             }
         }
+
+        $rankPoints += $conferenceGamesWon;
 
         $rankedTeams[$rankPoints][] = [
             'subConference'    => $team->getSubConference(),
