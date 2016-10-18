@@ -29,14 +29,7 @@ class GameController extends Controller
 
         $em         = $this->getDoctrine()->getManager();
         $repository = $em->getRepository('CollegeFootballTeamBundle:Game');
-        $games      = $repository->createQueryBuilder('g')
-            ->where('g.date >= :startDate')
-            ->andWhere('g.date <= :endDate')
-            ->orderBy('g.date, g.time')
-            ->setParameter('startDate', $week->getStartDate())
-            ->setParameter('endDate', $week->getEndDate())
-            ->getQuery()
-            ->getResult();
+        $games      = $repository->findGamesByWeek($week);
 
         return $this->render('CollegeFootballTeamBundle:Game:index.html.twig', [
             'games'        => $games,
@@ -183,5 +176,14 @@ class GameController extends Controller
         return $this->redirectToRoute('collegefootball_team_game_show', [
             'game' => $game->getId(),
         ]);
+    }
+
+    /**
+     * @Route("/{season}/lines", name="collegefootball_team_game_lines", defaults={"season": null})
+     * @Route("/{season}/week/{week}/lines", name="collegefootball_team_game_lines_week", defaults={"week": null})
+     */
+    public function linesAction($season = null, $week = null)
+    {
+        # code...
     }
 }

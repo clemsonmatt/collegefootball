@@ -17,14 +17,7 @@ class DefaultController extends Controller
 
         $em         = $this->getDoctrine()->getManager();
         $repository = $em->getRepository('CollegeFootballTeamBundle:Game');
-        $games      = $repository->createQueryBuilder('g')
-            ->where('g.date >= :startDate')
-            ->andWhere('g.date <= :endDate')
-            ->orderBy('g.date, g.time')
-            ->setParameter('startDate', $week->getStartDate())
-            ->setParameter('endDate', $week->getEndDate())
-            ->getQuery()
-            ->getResult();
+        $games      = $repository->findGamesByWeek($week);
 
         $topGames = [];
 
