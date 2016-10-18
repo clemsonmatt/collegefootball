@@ -179,11 +179,32 @@ class GameController extends Controller
     }
 
     /**
-     * @Route("/{season}/lines", name="collegefootball_team_game_lines", defaults={"season": null})
-     * @Route("/{season}/week/{week}/lines", name="collegefootball_team_game_lines_week", defaults={"week": null})
+     * @Route("/{season}/week/{week}/lines", name="collegefootball_team_game_lines", defaults={"week": null})
      */
     public function linesAction($season = null, $week = null)
     {
-        # code...
+        $result      = $this->get('collegefootball.team.week')->currentWeek($season, $week);
+        $week        = $result['week'];
+        $season      = $result['season'];
+        $seasonWeeks = $result['seasonWeeks'];
+
+        $em         = $this->getDoctrine()->getManager();
+        $repository = $em->getRepository('CollegeFootballTeamBundle:Game');
+        $games      = $repository->findGamesByWeek($week);
+
+        $pickemService = $this->get('collegefootball.app.pickem');
+        $gamePicks     = $pickemService->picksByWeek($week);
+
+        $statsService      = $this->get('collegefootball.team.stats');
+        $calculatedWinners = $statsService->gameWinners($games);
+
+        return $this->render('CollegeFootballTeamBundle:Game:lines.html.twig', [
+            'games'              => $games,
+            'season'             => $season,
+            'week'               => $week,
+            'season_weeks'       => $seasonWeeks,
+            'game_picks'         => $gamePicks,
+            'calculated_winners' => $calculatedWinners,
+        ]);
     }
 }

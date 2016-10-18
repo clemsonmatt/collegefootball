@@ -3,7 +3,7 @@
         {{ icon('stats-bars') }}
         Team Comparison
     </div>
-    {% if game %}
+    {% if game and game_comparison.homeChance %}
         <table class="table table-striped">
             <thead>
                 <th>Stat (Avg per game)</th>
@@ -27,8 +27,12 @@
             </tr>
         </table>
     {% else %}
-        <div class="panel-body">
-            <span class="text-muted">Off Week</span>
+        <div class="panel-body text-muted">
+            {% if game %}
+                Not enough data
+            {% else %}
+                Off Week
+            {% endif %}
         </div>
     {% endif %}
 </div>
