@@ -28,6 +28,7 @@
         <div class="col-md-4">
             <div class="panel panel-default">
                 <div class="panel-heading">
+                    {{ icon('document') }}
                     Details
                 </div>
                 <div class="panel-body">
@@ -40,6 +41,7 @@
             </div>
             <div class="panel panel-default">
                 <div class="panel-heading">
+                    {{ icon('star') }}
                     Odds / Picks
                 </div>
                 <div class="panel-body">
@@ -93,6 +95,7 @@
 
             <div class="panel panel-default">
                 <div class="panel-heading">
+                    {{ icon('checkmark-circled') }}
                     Gameday Picks
                 </div>
                 <div class="panel-body">
@@ -177,6 +180,7 @@
                     Edit Stats
                 </a>
             {% endif %}
+            {{ icon('clipboard') }}
             Game Statistics
         </div>
         {% if game.stats %}
