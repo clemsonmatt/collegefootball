@@ -7,6 +7,12 @@
                 {% if guessed_correct_count %}
                     <span class="text-success">{{ (guessed_correct_count / guessed_correct|length * 100)|number_format(1) }}%</span>
                 {% endif %}
+                {% if is_granted('ROLE_MANAGE') %}
+                    <a href="{{ path('collegefootball_team_game_lines_set', {'season': season, 'week': week.number}) }}" class="btn btn-primary btn-xs">
+                        {{ icon('gear-a') }}
+                        Set Lines
+                    </a>
+                {% endif %}
             </div>
             {{ week }} Lines
         </div>
