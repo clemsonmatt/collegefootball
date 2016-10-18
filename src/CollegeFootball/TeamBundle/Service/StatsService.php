@@ -109,9 +109,11 @@ class StatsService
 
         $gameCount = count($games);
 
-        foreach ($stats as $key => $value) {
-            foreach ($value as $singleStat => $singleStatValue) {
-                $stats[$key][$singleStat] = round($singleStatValue / $gameCount, 1);
+        if ($gameCount) {
+            foreach ($stats as $key => $value) {
+                foreach ($value as $singleStat => $singleStatValue) {
+                    $stats[$key][$singleStat] = round($singleStatValue / $gameCount, 1);
+                }
             }
         }
 
@@ -138,6 +140,15 @@ class StatsService
         $homeTeamStats = $this->statsForTeam($homeTeam);
         $awayTeamStats = $this->statsForTeam($awayTeam);
 
+        /* if there are null stats, just return a default */
+        if ($homeTeamStats['team']['gameCount'] == 0 || $awayTeamStats['team']['gameCount'] == 0) {
+            return [
+                'stats'      => null,
+                'homeChance' => null,
+                'awayChance' => null,
+            ];
+        }
+
         $homeScoringMargin = $homeTeamStats['team']['pointsFinal'] - $homeTeamStats['opponent']['pointsFinal'];
         $awayScoringMargin = $awayTeamStats['team']['pointsFinal'] - $awayTeamStats['opponent']['pointsFinal'];
 
@@ -146,15 +157,27 @@ class StatsService
         $homeOpponentTurnovers = $homeTeamStats['opponent']['interceptionCount'] + $homeTeamStats['opponent']['fumbleCount'];
         $awayOpponentTurnovers = $awayTeamStats['opponent']['interceptionCount'] + $awayTeamStats['opponent']['fumbleCount'];
 
-        $homePassing         = round(($homeTeamStats['team']['passingCompletions'] / $homeTeamStats['team']['passingAttempts']) * 100, 2);
-        $awayPassing         = round(($awayTeamStats['team']['passingCompletions'] / $awayTeamStats['team']['passingAttempts']) * 100, 2);
-        $homeOpponentPassing = round(($homeTeamStats['opponent']['passingCompletions'] / $homeTeamStats['opponent']['passingAttempts']) * 100, 2);
-        $awayOpponentPassing = round(($awayTeamStats['opponent']['passingCompletions'] / $awayTeamStats['opponent']['passingAttempts']) * 100, 2);
+        if ($homeTeamStats['team']['passingAttempts'] && $awayTeamStats['team']['passingAttempts']) {
+            $homePassing         = round(($homeTeamStats['team']['passingCompletions'] / $homeTeamStats['team']['passingAttempts']) * 100, 2);
+            $awayPassing         = round(($awayTeamStats['team']['passingCompletions'] / $awayTeamStats['team']['passingAttempts']) * 100, 2);
+            $homeOpponentPassing = round(($homeTeamStats['opponent']['passingCompletions'] / $homeTeamStats['opponent']['passingAttempts']) * 100, 2);
+            $awayOpponentPassing = round(($awayTeamStats['opponent']['passingCompletions'] / $awayTeamStats['opponent']['passingAttempts']) * 100, 2);
 
-        $homeRushing         = round(($homeTeamStats['team']['rushingYards'] / $homeTeamStats['team']['rushingAttempts']), 2);
-        $awayRushing         = round(($awayTeamStats['team']['rushingYards'] / $awayTeamStats['team']['rushingAttempts']), 2);
-        $homeOpponentRushing = round(($homeTeamStats['opponent']['rushingYards'] / $homeTeamStats['opponent']['rushingAttempts']), 2);
-        $awayOpponentRushing = round(($awayTeamStats['opponent']['rushingYards'] / $awayTeamStats['opponent']['rushingAttempts']), 2);
+            $homeRushing         = round(($homeTeamStats['team']['rushingYards'] / $homeTeamStats['team']['rushingAttempts']), 2);
+            $awayRushing         = round(($awayTeamStats['team']['rushingYards'] / $awayTeamStats['team']['rushingAttempts']), 2);
+            $homeOpponentRushing = round(($homeTeamStats['opponent']['rushingYards'] / $homeTeamStats['opponent']['rushingAttempts']), 2);
+            $awayOpponentRushing = round(($awayTeamStats['opponent']['rushingYards'] / $awayTeamStats['opponent']['rushingAttempts']), 2);
+        } else {
+            $homePassing         = 1;
+            $awayPassing         = 1;
+            $homeOpponentPassing = 1;
+            $awayOpponentPassing = 1;
+
+            $homeRushing         = 1;
+            $awayRushing         = 1;
+            $homeOpponentRushing = 1;
+            $awayOpponentRushing = 1;
+        }
 
         $stats = [
             'Scoring Margin' => [
@@ -224,6 +247,20 @@ class StatsService
     }
 
     /**
+     * Find all calculated winners for a set of games
+     */
+    public function gameWinners(array $games)
+    {
+        $calculatedWinners = [];
+
+        foreach ($games as $game) {
+            $calculatedWinners[$game->getId()] = $this->gameComparison($game);
+        }
+
+        return $calculatedWinners;
+    }
+
+    /**
      * Try to calculate the winner
      */
     private function calculateWinner($stats, $homeTeamStats, $awayTeamStats)
@@ -264,12 +301,15 @@ class StatsService
             $winningChance['home'] += pow($stats['Scoring Margin']['home'], $exp) / (pow($stats['Scoring Margin']['home'], $exp) + pow($stats['Scoring Margin']['away'], $exp)) * $homeTeamStats['team']['gameCount'];
             $winningChance['away'] += pow($stats['Scoring Margin']['away'], $exp) / (pow($stats['Scoring Margin']['away'], $exp) + pow($stats['Scoring Margin']['home'], $exp)) * $awayTeamStats['team']['gameCount'];
             $statCount++;
-        } elseif ($stats['Scoring Margin']['home'] < 0) {
-            $winningChance['away'] += pow($stats['Scoring Margin']['away'], $exp) / (pow($stats['Scoring Margin']['away'], $exp) + pow(abs($stats['Scoring Margin']['home']), $exp)) * $awayTeamStats['team']['gameCount'];
-            $statCount++;
-        } elseif ($stats['Scoring Margin']['away'] < 0) {
-            $winningChance['home'] += pow($stats['Scoring Margin']['home'], $exp) / (pow($stats['Scoring Margin']['home'], $exp) + pow(abs($stats['Scoring Margin']['away']), $exp)) * $homeTeamStats['team']['gameCount'];
-            $statCount++;
+        } else {
+            if ($stats['Scoring Margin']['home'] < 0) {
+                $winningChance['away'] += 1;
+                $statCount++;
+            }
+            if ($stats['Scoring Margin']['away'] < 0) {
+                $winningChance['home'] += 1;
+                $statCount++;
+            }
         }
 
         if ($winningChance['home'] > $winningChance['away']) {

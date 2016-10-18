@@ -76,6 +76,11 @@ class Game
      */
     private $stats;
 
+    /**
+     * @ORM\Column(name="winning_chance", type="array", nullable=true)
+     */
+    private $winningChance;
+
 
     /**
      * Get id
@@ -315,5 +320,38 @@ class Game
     public function getStats()
     {
         return $this->stats;
+    }
+
+    /**
+     * Set winningChance
+     *
+     * @param array $winningChance
+     * @return Game
+     */
+    public function setWinningChance($winningChance)
+    {
+        $winningChance['home'] = (int)($winningChance['home'] * 100);
+        $winningChance['away'] = (int)($winningChance['away'] * 100);
+
+        $this->winningChance = $winningChance;
+
+        return $this;
+    }
+
+    /**
+     * Get winningChance
+     *
+     * @return array
+     */
+    public function getWinningChance()
+    {
+        if (! $this->winningChance) {
+            return null;
+        }
+
+        $winningChance['home'] = (float)($this->winningChance['home'] / 100);
+        $winningChance['away'] = (float)($this->winningChance['away'] / 100);
+
+        return $winningChance;
     }
 }
