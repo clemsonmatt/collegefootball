@@ -72,11 +72,15 @@ class GameController extends Controller
         $pickemService = $this->get('collegefootball.app.pickem');
         $gamedayPicks  = $pickemService->gamedayWeekPicks($week, $game);
 
+        $statsService   = $this->get('collegefootball.team.stats');
+        $gameComparison = $statsService->gameComparison($game);
+
         return $this->render('CollegeFootballTeamBundle:Game:show.html.twig', [
             'game'             => $game,
             'game_predictions' => $gamePredictions,
             'user_prediction'  => $userPrediction,
             'gameday_picks'    => $gamedayPicks,
+            'game_comparison'  => $gameComparison,
         ]);
     }
 

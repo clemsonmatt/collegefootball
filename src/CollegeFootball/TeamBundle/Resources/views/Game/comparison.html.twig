@@ -1,0 +1,34 @@
+<div class="panel panel-default">
+    <div class="panel-heading">
+        {{ icon('stats-bars') }}
+        Team Comparison
+    </div>
+    {% if game %}
+        <table class="table table-striped">
+            <thead>
+                <th>Stat (Avg per game)</th>
+                <th class="text-center">{{ game.homeTeam.nameShort }}</th>
+                <th class="text-center">{{ game.awayTeam.nameShort }}</th>
+                <th class="text-center">Winner</th>
+            </thead>
+            {% for stat, stat_value in game_comparison.stats %}
+                <tr>
+                    <th>{{ stat }}</th>
+                    <td class="text-center">{{ stat != 'Scoring Margin' ? stat_value.home|number_format(2) : stat_value.home }}</td>
+                    <td class="text-center">{{ stat != 'Scoring Margin' ? stat_value.away|number_format(2) : stat_value.away }}</td>
+                    <td class="text-center">{{ stat_value.winner }}</td>
+                </tr>
+            {% endfor %}
+            <tr class="tr-header">
+                <th>Calculated Winning Odds</th>
+                <th class="text-center">{{ game_comparison.homeChance }}%</th>
+                <th class="text-center">{{ game_comparison.awayChance }}%</th>
+                <th class="text-center">{{ game_comparison.homeChance > game_comparison.awayChance ? game.homeTeam.nameShort : game.awayTeam.nameShort }}</th>
+            </tr>
+        </table>
+    {% else %}
+        <div class="panel-body">
+            <span class="text-muted">Off Week</span>
+        </div>
+    {% endif %}
+</div>

@@ -137,278 +137,290 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-8">
-            {% if is_granted('ROLE_MANAGE') %}
-                <h3>
-                    Winner:
-                    {% if not game.winningTeam %}
-                        <a href="{{ path('collegefootball_team_game_outcome', {'slug': game.homeTeam.slug, 'game': game.id}) }}" class="btn btn-default btn-xs" style="color: #{{ game.homeTeam.primaryColor }}" data-confirm-action data-confirm-title="Mark {{ game.homeTeam.nameShort }} as the winner">
-                            {{ game.homeTeam.nameShort }}
-                        </a>
-                        <a href="{{ path('collegefootball_team_game_outcome', {'slug': game.awayTeam.slug, 'game': game.id}) }}" class="btn btn-default btn-xs" style="color: #{{ game.awayTeam.primaryColor }}" data-confirm-action data-confirm-title="Mark {{ game.awayTeam.nameShort }} as the winner">
-                            {{ game.awayTeam.nameShort }}
-                        </a>
-                    {% else %}
-                        <span style="color: #{{ game.winningTeam.primaryColor }}">{{ game.winningTeam }}</span>
-                    {% endif %}
-                </h3>
-                <br>
-            {% endif %}
-
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    {% if is_granted('ROLE_MANAGE') %}
-                        <a href="{{ path('collegefootball_team_game_stats_add', {'game': game.id}) }}" class="btn btn-xs btn-primary pull-right">
-                            {{ icon('compose') }}
-                            Edit Stats
-                        </a>
-                    {% endif %}
-                    Game Statistics
-                </div>
-                {% if game.stats %}
-                    <table class="table table-striped table-bordered table-hover stats-table">
-                        <thead>
-                            <th>Stat</th>
-                            <th style="text-align: center;">{{ game.homeTeam.nameShort }}</th>
-                            <th style="text-align: center;">{{ game.awayTeam.nameShort }}</th>
-                        </thead>
-                        <tr><th colspan="3" class="tr-header">Points</th></tr>
-                        <tr>
-                            <th>Final</th>
-                            <td>{{ game.stats.homeStats.pointsFinal }}</td>
-                            <td>{{ game.stats.awayStats.pointsFinal }}</td>
-                        </tr>
-                        <tr>
-                            <th>1st Quarter</th>
-                            <td>{{ game.stats.homeStats.pointsFirst }}</td>
-                            <td>{{ game.stats.awayStats.pointsFirst }}</td>
-                        </tr>
-                        <tr>
-                            <th>2nd Quarter</th>
-                            <td>{{ game.stats.homeStats.pointsSecond }}</td>
-                            <td>{{ game.stats.awayStats.pointsSecond }}</td>
-                        </tr>
-                        <tr>
-                            <th>3rd Quarter</th>
-                            <td>{{ game.stats.homeStats.pointsThird }}</td>
-                            <td>{{ game.stats.awayStats.pointsThird }}</td>
-                        </tr>
-                        <tr>
-                            <th>4th Quarter</th>
-                            <td>{{ game.stats.homeStats.pointsFourth }}</td>
-                            <td>{{ game.stats.awayStats.pointsFourth }}</td>
-                        </tr>
-                        {% if 'ot1' in game.stats.homeStats|keys and game.stats.homeStats.ot1 %}
-                            <tr>
-                                <th>1st OT</th>
-                                <td>{{ game.stats.homeStats.ot1 }}</td>
-                                <td>{{ game.stats.awayStats.ot1 }}</td>
-                            </tr>
-                        {% endif %}
-                        {% if 'ot2' in game.stats.homeStats|keys and game.stats.homeStats.ot2 %}
-                            <tr>
-                                <th>2nd OT</th>
-                                <td>{{ game.stats.homeStats.ot2 }}</td>
-                                <td>{{ game.stats.awayStats.ot2 }}</td>
-                            </tr>
-                        {% endif %}
-                        {% if 'ot3' in game.stats.homeStats|keys and game.stats.homeStats.ot3 %}
-                            <tr>
-                                <th>3rd OT</th>
-                                <td>{{ game.stats.homeStats.ot3 }}</td>
-                                <td>{{ game.stats.awayStats.ot3 }}</td>
-                            </tr>
-                        {% endif %}
-                        {% if 'ot4' in game.stats.homeStats|keys and game.stats.homeStats.ot4 %}
-                            <tr>
-                                <th>4th OT</th>
-                                <td>{{ game.stats.homeStats.ot4 }}</td>
-                                <td>{{ game.stats.awayStats.ot4 }}</td>
-                            </tr>
-                        {% endif %}
-
-                        <tr><th colspan="3" class="tr-header">Total Offense</th></tr>
-                        <tr>
-                            <th>Yards</th>
-                            <td>{{ game.stats.homeStats.totalOffenseYards|default('&mdash;')|raw }}</td>
-                            <td>{{ game.stats.awayStats.totalOffenseYards|default('&mdash;')|raw }}</td>
-                        </tr>
-
-                        <tr><th colspan="3" class="tr-header">Rushing</th></tr>
-                        <tr>
-                            <th>Yards</th>
-                            <td>{{ game.stats.homeStats.rushingYards|default('&mdash;')|raw }}</td>
-                            <td>{{ game.stats.awayStats.rushingYards|default('&mdash;')|raw }}</td>
-                        </tr>
-                        <tr>
-                            <th>Attempts</th>
-                            <td>{{ game.stats.homeStats.rushingAttempts|default('&mdash;')|raw }}</td>
-                            <td>{{ game.stats.awayStats.rushingAttempts|default('&mdash;')|raw }}</td>
-                        </tr>
-                        <tr>
-                            <th>TD</th>
-                            <td>{{ game.stats.homeStats.rushingTd|default('&mdash;')|raw }}</td>
-                            <td>{{ game.stats.awayStats.rushingTd|default('&mdash;')|raw }}</td>
-                        </tr>
-
-                        <tr><th colspan="3" class="tr-header">Passing</th></tr>
-                        <tr>
-                            <th>Yards</th>
-                            <td>{{ game.stats.homeStats.passingYards|default('&mdash;')|raw }}</td>
-                            <td>{{ game.stats.awayStats.passingYards|default('&mdash;')|raw }}</td>
-                        </tr>
-                        <tr>
-                            <th>Attempts</th>
-                            <td>{{ game.stats.homeStats.passingAttempts|default('&mdash;')|raw }}</td>
-                            <td>{{ game.stats.awayStats.passingAttempts|default('&mdash;')|raw }}</td>
-                        </tr>
-                        <tr>
-                            <th>Completions</th>
-                            <td>{{ game.stats.homeStats.passingCompletions|default('&mdash;')|raw }}</td>
-                            <td>{{ game.stats.awayStats.passingCompletions|default('&mdash;')|raw }}</td>
-                        </tr>
-                        <tr>
-                            <th>TD</th>
-                            <td>{{ game.stats.homeStats.passingTd|default('&mdash;')|raw }}</td>
-                            <td>{{ game.stats.awayStats.passingTd|default('&mdash;')|raw }}</td>
-                        </tr>
-                        <tr>
-                            <th>Interceptions</th>
-                            <td>{{ game.stats.homeStats.passingInterceptions|default('&mdash;')|raw }}</td>
-                            <td>{{ game.stats.awayStats.passingInterceptions|default('&mdash;')|raw }}</td>
-                        </tr>
-
-                        <tr><th colspan="3" class="tr-header">Punt Returns</th></tr>
-                        <tr>
-                            <th>Count</th>
-                            <td>{{ game.stats.homeStats.puntReturnCount|default('&mdash;')|raw }}</td>
-                            <td>{{ game.stats.awayStats.puntReturnCount|default('&mdash;')|raw }}</td>
-                        </tr>
-                        <tr>
-                            <th>Yards</th>
-                            <td>{{ game.stats.homeStats.puntReturnYards|default('&mdash;')|raw }}</td>
-                            <td>{{ game.stats.awayStats.puntReturnYards|default('&mdash;')|raw }}</td>
-                        </tr>
-                        <tr>
-                            <th>TD</th>
-                            <td>{{ game.stats.homeStats.puntReturnTd|default('&mdash;')|raw }}</td>
-                            <td>{{ game.stats.awayStats.puntReturnTd|default('&mdash;')|raw }}</td>
-                        </tr>
-
-                        <tr><th colspan="3" class="tr-header">Punts</th></tr>
-                        <tr>
-                            <th>Count</th>
-                            <td>{{ game.stats.homeStats.puntCount|default('&mdash;')|raw }}</td>
-                            <td>{{ game.stats.awayStats.puntCount|default('&mdash;')|raw }}</td>
-                        </tr>
-                        <tr>
-                            <th>Yards</th>
-                            <td>{{ game.stats.homeStats.puntYards|default('&mdash;')|raw }}</td>
-                            <td>{{ game.stats.awayStats.puntYards|default('&mdash;')|raw }}</td>
-                        </tr>
-
-                        <tr><th colspan="3" class="tr-header">Turnovers</th></tr>
-                        <tr>
-                            <th>Interceptions</th>
-                            <td>{{ game.stats.homeStats.interceptionCount|default('&mdash;')|raw }}</td>
-                            <td>{{ game.stats.awayStats.interceptionCount|default('&mdash;')|raw }}</td>
-                        </tr>
-                        <tr>
-                            <th>Interception Yards</th>
-                            <td>{{ game.stats.homeStats.interceptionYards|default('&mdash;')|raw }}</td>
-                            <td>{{ game.stats.awayStats.interceptionYards|default('&mdash;')|raw }}</td>
-                        </tr>
-                        <tr>
-                            <th>Interception TD</th>
-                            <td>{{ game.stats.homeStats.interceptionTd|default('&mdash;')|raw }}</td>
-                            <td>{{ game.stats.awayStats.interceptionTd|default('&mdash;')|raw }}</td>
-                        </tr>
-                        <tr>
-                            <th>Fumble Recovered</th>
-                            <td>{{ game.stats.homeStats.fumbleCount|default('&mdash;')|raw }}</td>
-                            <td>{{ game.stats.awayStats.fumbleCount|default('&mdash;')|raw }}</td>
-                        </tr>
-
-                        <tr><th colspan="3" class="tr-header">Penalties</th></tr>
-                        <tr>
-                            <th>Count</th>
-                            <td>{{ game.stats.homeStats.penaltyCount|default('&mdash;')|raw }}</td>
-                            <td>{{ game.stats.awayStats.penaltyCount|default('&mdash;')|raw }}</td>
-                        </tr>
-                        <tr>
-                            <th>Yards</th>
-                            <td>{{ game.stats.homeStats.penaltyYards|default('&mdash;')|raw }}</td>
-                            <td>{{ game.stats.awayStats.penaltyYards|default('&mdash;')|raw }}</td>
-                        </tr>
-
-                        <tr><th colspan="3" class="tr-header">Time of Possession</th></tr>
-                        <tr>
-                            <th>T.O.P.</th>
-                            <td>{{ game.stats.homeStats.timeOfPossession|default('&mdash;')|raw }}</td>
-                            <td>{{ game.stats.awayStats.timeOfPossession|default('&mdash;')|raw }}</td>
-                        </tr>
-
-                        <tr><th colspan="3" class="tr-header">3rd Downs</th></tr>
-                        <tr>
-                            <th>Attempts</th>
-                            <td>{{ game.stats.homeStats.thirdDownAttempts|default('&mdash;')|raw }}</td>
-                            <td>{{ game.stats.awayStats.thirdDownAttempts|default('&mdash;')|raw }}</td>
-                        </tr>
-                        <tr>
-                            <th>Conversions</th>
-                            <td>{{ game.stats.homeStats.thirdDownConversions|default('&mdash;')|raw }}</td>
-                            <td>{{ game.stats.awayStats.thirdDownConversions|default('&mdash;')|raw }}</td>
-                        </tr>
-
-                        <tr><th colspan="3" class="tr-header">4th Downs</th></tr>
-                        <tr>
-                            <th>Attempts</th>
-                            <td>{{ game.stats.homeStats.fourthDownAttempts|default('&mdash;')|raw }}</td>
-                            <td>{{ game.stats.awayStats.fourthDownAttempts|default('&mdash;')|raw }}</td>
-                        </tr>
-                        <tr>
-                            <th>Conversions</th>
-                            <td>{{ game.stats.homeStats.fourthDownConversions|default('&mdash;')|raw }}</td>
-                            <td>{{ game.stats.awayStats.fourthDownConversions|default('&mdash;')|raw }}</td>
-                        </tr>
-
-                        <tr><th colspan="3" class="tr-header">Field Goals</th></tr>
-                        <tr>
-                            <th>Attempts</th>
-                            <td>{{ game.stats.homeStats.fieldGoalAttempts|default('&mdash;')|raw }}</td>
-                            <td>{{ game.stats.awayStats.fieldGoalAttempts|default('&mdash;')|raw }}</td>
-                        </tr>
-                        <tr>
-                            <th>Made</th>
-                            <td>{{ game.stats.homeStats.fieldGoalMade|default('&mdash;')|raw }}</td>
-                            <td>{{ game.stats.awayStats.fieldGoalMade|default('&mdash;')|raw }}</td>
-                        </tr>
-
-                        <tr><th colspan="3" class="tr-header">Point After TD</th></tr>
-                        <tr>
-                            <th>Attempts</th>
-                            <td>{{ game.stats.homeStats.patAttempts|default('&mdash;')|raw }}</td>
-                            <td>{{ game.stats.awayStats.patAttempts|default('&mdash;')|raw }}</td>
-                        </tr>
-                        <tr>
-                            <th>Made</th>
-                            <td>{{ game.stats.homeStats.patMade|default('&mdash;')|raw }}</td>
-                            <td>{{ game.stats.awayStats.patMade|default('&mdash;')|raw }}</td>
-                        </tr>
-                    </table>
-                {% elseif is_granted('ROLE_MANAGE') %}
-                    <div class="panel-body">
-                        <a href="{{ path('collegefootball_team_game_stats_add', {'game': game.id}) }}" class="btn btn-primary">
-                            {{ icon('plus') }}
-                            Add Stats
-                        </a>
-                    </div>
-                {% else %}
-                    <div class="panel-body">
-                        <span class="text-muted">No stats available</span>
-                    </div>
-                {% endif %}
+        {% if not game.winningTeam %}
+            <div class="col-md-4">
+                {% include 'CollegeFootballTeamBundle:Game:comparison.html.twig' %}
             </div>
-        </div>
+            <div class="col-md-4">
+                {{ _self.game_stats(game) }}
+            </div>
+        {% else %}
+            <div class="col-md-8">
+                {{ _self.game_stats(game) }}
+            </div>
+        {% endif %}
     </div>
 {% endblock %}
+
+{% macro game_stats(game) %}
+    <h3>
+        Winner:
+        {% if not game.winningTeam and is_granted('ROLE_MANAGE') %}
+            <a href="{{ path('collegefootball_team_game_outcome', {'slug': game.homeTeam.slug, 'game': game.id}) }}" class="btn btn-default btn-xs" style="color: #{{ game.homeTeam.primaryColor }}" data-confirm-action data-confirm-title="Mark {{ game.homeTeam.nameShort }} as the winner">
+                {{ game.homeTeam.nameShort }}
+            </a>
+            <a href="{{ path('collegefootball_team_game_outcome', {'slug': game.awayTeam.slug, 'game': game.id}) }}" class="btn btn-default btn-xs" style="color: #{{ game.awayTeam.primaryColor }}" data-confirm-action data-confirm-title="Mark {{ game.awayTeam.nameShort }} as the winner">
+                {{ game.awayTeam.nameShort }}
+            </a>
+            <br>
+        {% elseif game.winningTeam %}
+            <span style="color: #{{ game.winningTeam.primaryColor }}">{{ game.winningTeam.name }}</span>
+            <br>
+        {% endif %}
+    </h3>
+
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            {% if is_granted('ROLE_MANAGE') %}
+                <a href="{{ path('collegefootball_team_game_stats_add', {'game': game.id}) }}" class="btn btn-xs btn-primary pull-right">
+                    {{ icon('compose') }}
+                    Edit Stats
+                </a>
+            {% endif %}
+            Game Statistics
+        </div>
+        {% if game.stats %}
+            <table class="table table-striped table-bordered table-hover stats-table">
+                <thead>
+                    <th>Stat</th>
+                    <th style="text-align: center;">{{ game.homeTeam.nameShort }}</th>
+                    <th style="text-align: center;">{{ game.awayTeam.nameShort }}</th>
+                </thead>
+                <tr><th colspan="3" class="tr-header">Points</th></tr>
+                <tr>
+                    <th>Final</th>
+                    <td>{{ game.stats.homeStats.pointsFinal }}</td>
+                    <td>{{ game.stats.awayStats.pointsFinal }}</td>
+                </tr>
+                <tr>
+                    <th>1st Quarter</th>
+                    <td>{{ game.stats.homeStats.pointsFirst }}</td>
+                    <td>{{ game.stats.awayStats.pointsFirst }}</td>
+                </tr>
+                <tr>
+                    <th>2nd Quarter</th>
+                    <td>{{ game.stats.homeStats.pointsSecond }}</td>
+                    <td>{{ game.stats.awayStats.pointsSecond }}</td>
+                </tr>
+                <tr>
+                    <th>3rd Quarter</th>
+                    <td>{{ game.stats.homeStats.pointsThird }}</td>
+                    <td>{{ game.stats.awayStats.pointsThird }}</td>
+                </tr>
+                <tr>
+                    <th>4th Quarter</th>
+                    <td>{{ game.stats.homeStats.pointsFourth }}</td>
+                    <td>{{ game.stats.awayStats.pointsFourth }}</td>
+                </tr>
+                {% if 'ot1' in game.stats.homeStats|keys and game.stats.homeStats.ot1 %}
+                    <tr>
+                        <th>1st OT</th>
+                        <td>{{ game.stats.homeStats.ot1 }}</td>
+                        <td>{{ game.stats.awayStats.ot1 }}</td>
+                    </tr>
+                {% endif %}
+                {% if 'ot2' in game.stats.homeStats|keys and game.stats.homeStats.ot2 %}
+                    <tr>
+                        <th>2nd OT</th>
+                        <td>{{ game.stats.homeStats.ot2 }}</td>
+                        <td>{{ game.stats.awayStats.ot2 }}</td>
+                    </tr>
+                {% endif %}
+                {% if 'ot3' in game.stats.homeStats|keys and game.stats.homeStats.ot3 %}
+                    <tr>
+                        <th>3rd OT</th>
+                        <td>{{ game.stats.homeStats.ot3 }}</td>
+                        <td>{{ game.stats.awayStats.ot3 }}</td>
+                    </tr>
+                {% endif %}
+                {% if 'ot4' in game.stats.homeStats|keys and game.stats.homeStats.ot4 %}
+                    <tr>
+                        <th>4th OT</th>
+                        <td>{{ game.stats.homeStats.ot4 }}</td>
+                        <td>{{ game.stats.awayStats.ot4 }}</td>
+                    </tr>
+                {% endif %}
+
+                <tr><th colspan="3" class="tr-header">Total Offense</th></tr>
+                <tr>
+                    <th>Yards</th>
+                    <td>{{ game.stats.homeStats.totalOffenseYards|default('&mdash;')|raw }}</td>
+                    <td>{{ game.stats.awayStats.totalOffenseYards|default('&mdash;')|raw }}</td>
+                </tr>
+
+                <tr><th colspan="3" class="tr-header">Rushing</th></tr>
+                <tr>
+                    <th>Yards</th>
+                    <td>{{ game.stats.homeStats.rushingYards|default('&mdash;')|raw }}</td>
+                    <td>{{ game.stats.awayStats.rushingYards|default('&mdash;')|raw }}</td>
+                </tr>
+                <tr>
+                    <th>Attempts</th>
+                    <td>{{ game.stats.homeStats.rushingAttempts|default('&mdash;')|raw }}</td>
+                    <td>{{ game.stats.awayStats.rushingAttempts|default('&mdash;')|raw }}</td>
+                </tr>
+                <tr>
+                    <th>TD</th>
+                    <td>{{ game.stats.homeStats.rushingTd|default('&mdash;')|raw }}</td>
+                    <td>{{ game.stats.awayStats.rushingTd|default('&mdash;')|raw }}</td>
+                </tr>
+
+                <tr><th colspan="3" class="tr-header">Passing</th></tr>
+                <tr>
+                    <th>Yards</th>
+                    <td>{{ game.stats.homeStats.passingYards|default('&mdash;')|raw }}</td>
+                    <td>{{ game.stats.awayStats.passingYards|default('&mdash;')|raw }}</td>
+                </tr>
+                <tr>
+                    <th>Attempts</th>
+                    <td>{{ game.stats.homeStats.passingAttempts|default('&mdash;')|raw }}</td>
+                    <td>{{ game.stats.awayStats.passingAttempts|default('&mdash;')|raw }}</td>
+                </tr>
+                <tr>
+                    <th>Completions</th>
+                    <td>{{ game.stats.homeStats.passingCompletions|default('&mdash;')|raw }}</td>
+                    <td>{{ game.stats.awayStats.passingCompletions|default('&mdash;')|raw }}</td>
+                </tr>
+                <tr>
+                    <th>TD</th>
+                    <td>{{ game.stats.homeStats.passingTd|default('&mdash;')|raw }}</td>
+                    <td>{{ game.stats.awayStats.passingTd|default('&mdash;')|raw }}</td>
+                </tr>
+                <tr>
+                    <th>Interceptions</th>
+                    <td>{{ game.stats.homeStats.passingInterceptions|default('&mdash;')|raw }}</td>
+                    <td>{{ game.stats.awayStats.passingInterceptions|default('&mdash;')|raw }}</td>
+                </tr>
+
+                <tr><th colspan="3" class="tr-header">Punt Returns</th></tr>
+                <tr>
+                    <th>Count</th>
+                    <td>{{ game.stats.homeStats.puntReturnCount|default('&mdash;')|raw }}</td>
+                    <td>{{ game.stats.awayStats.puntReturnCount|default('&mdash;')|raw }}</td>
+                </tr>
+                <tr>
+                    <th>Yards</th>
+                    <td>{{ game.stats.homeStats.puntReturnYards|default('&mdash;')|raw }}</td>
+                    <td>{{ game.stats.awayStats.puntReturnYards|default('&mdash;')|raw }}</td>
+                </tr>
+                <tr>
+                    <th>TD</th>
+                    <td>{{ game.stats.homeStats.puntReturnTd|default('&mdash;')|raw }}</td>
+                    <td>{{ game.stats.awayStats.puntReturnTd|default('&mdash;')|raw }}</td>
+                </tr>
+
+                <tr><th colspan="3" class="tr-header">Punts</th></tr>
+                <tr>
+                    <th>Count</th>
+                    <td>{{ game.stats.homeStats.puntCount|default('&mdash;')|raw }}</td>
+                    <td>{{ game.stats.awayStats.puntCount|default('&mdash;')|raw }}</td>
+                </tr>
+                <tr>
+                    <th>Yards</th>
+                    <td>{{ game.stats.homeStats.puntYards|default('&mdash;')|raw }}</td>
+                    <td>{{ game.stats.awayStats.puntYards|default('&mdash;')|raw }}</td>
+                </tr>
+
+                <tr><th colspan="3" class="tr-header">Turnovers</th></tr>
+                <tr>
+                    <th>Interceptions</th>
+                    <td>{{ game.stats.homeStats.interceptionCount|default('&mdash;')|raw }}</td>
+                    <td>{{ game.stats.awayStats.interceptionCount|default('&mdash;')|raw }}</td>
+                </tr>
+                <tr>
+                    <th>Interception Yards</th>
+                    <td>{{ game.stats.homeStats.interceptionYards|default('&mdash;')|raw }}</td>
+                    <td>{{ game.stats.awayStats.interceptionYards|default('&mdash;')|raw }}</td>
+                </tr>
+                <tr>
+                    <th>Interception TD</th>
+                    <td>{{ game.stats.homeStats.interceptionTd|default('&mdash;')|raw }}</td>
+                    <td>{{ game.stats.awayStats.interceptionTd|default('&mdash;')|raw }}</td>
+                </tr>
+                <tr>
+                    <th>Fumble Recovered</th>
+                    <td>{{ game.stats.homeStats.fumbleCount|default('&mdash;')|raw }}</td>
+                    <td>{{ game.stats.awayStats.fumbleCount|default('&mdash;')|raw }}</td>
+                </tr>
+
+                <tr><th colspan="3" class="tr-header">Penalties</th></tr>
+                <tr>
+                    <th>Count</th>
+                    <td>{{ game.stats.homeStats.penaltyCount|default('&mdash;')|raw }}</td>
+                    <td>{{ game.stats.awayStats.penaltyCount|default('&mdash;')|raw }}</td>
+                </tr>
+                <tr>
+                    <th>Yards</th>
+                    <td>{{ game.stats.homeStats.penaltyYards|default('&mdash;')|raw }}</td>
+                    <td>{{ game.stats.awayStats.penaltyYards|default('&mdash;')|raw }}</td>
+                </tr>
+
+                <tr><th colspan="3" class="tr-header">Time of Possession</th></tr>
+                <tr>
+                    <th>T.O.P.</th>
+                    <td>{{ game.stats.homeStats.timeOfPossession|default('&mdash;')|raw }}</td>
+                    <td>{{ game.stats.awayStats.timeOfPossession|default('&mdash;')|raw }}</td>
+                </tr>
+
+                <tr><th colspan="3" class="tr-header">3rd Downs</th></tr>
+                <tr>
+                    <th>Attempts</th>
+                    <td>{{ game.stats.homeStats.thirdDownAttempts|default('&mdash;')|raw }}</td>
+                    <td>{{ game.stats.awayStats.thirdDownAttempts|default('&mdash;')|raw }}</td>
+                </tr>
+                <tr>
+                    <th>Conversions</th>
+                    <td>{{ game.stats.homeStats.thirdDownConversions|default('&mdash;')|raw }}</td>
+                    <td>{{ game.stats.awayStats.thirdDownConversions|default('&mdash;')|raw }}</td>
+                </tr>
+
+                <tr><th colspan="3" class="tr-header">4th Downs</th></tr>
+                <tr>
+                    <th>Attempts</th>
+                    <td>{{ game.stats.homeStats.fourthDownAttempts|default('&mdash;')|raw }}</td>
+                    <td>{{ game.stats.awayStats.fourthDownAttempts|default('&mdash;')|raw }}</td>
+                </tr>
+                <tr>
+                    <th>Conversions</th>
+                    <td>{{ game.stats.homeStats.fourthDownConversions|default('&mdash;')|raw }}</td>
+                    <td>{{ game.stats.awayStats.fourthDownConversions|default('&mdash;')|raw }}</td>
+                </tr>
+
+                <tr><th colspan="3" class="tr-header">Field Goals</th></tr>
+                <tr>
+                    <th>Attempts</th>
+                    <td>{{ game.stats.homeStats.fieldGoalAttempts|default('&mdash;')|raw }}</td>
+                    <td>{{ game.stats.awayStats.fieldGoalAttempts|default('&mdash;')|raw }}</td>
+                </tr>
+                <tr>
+                    <th>Made</th>
+                    <td>{{ game.stats.homeStats.fieldGoalMade|default('&mdash;')|raw }}</td>
+                    <td>{{ game.stats.awayStats.fieldGoalMade|default('&mdash;')|raw }}</td>
+                </tr>
+
+                <tr><th colspan="3" class="tr-header">Point After TD</th></tr>
+                <tr>
+                    <th>Attempts</th>
+                    <td>{{ game.stats.homeStats.patAttempts|default('&mdash;')|raw }}</td>
+                    <td>{{ game.stats.awayStats.patAttempts|default('&mdash;')|raw }}</td>
+                </tr>
+                <tr>
+                    <th>Made</th>
+                    <td>{{ game.stats.homeStats.patMade|default('&mdash;')|raw }}</td>
+                    <td>{{ game.stats.awayStats.patMade|default('&mdash;')|raw }}</td>
+                </tr>
+            </table>
+        {% elseif is_granted('ROLE_MANAGE') %}
+            <div class="panel-body">
+                <a href="{{ path('collegefootball_team_game_stats_add', {'game': game.id}) }}" class="btn btn-primary">
+                    {{ icon('plus') }}
+                    Add Stats
+                </a>
+            </div>
+        {% else %}
+            <div class="panel-body">
+                <span class="text-muted">No stats available</span>
+            </div>
+        {% endif %}
+    </div>
+{% endmacro %}

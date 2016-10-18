@@ -12,7 +12,7 @@
                 </div>
                 <div class="panel-body">
                     <h4>{{ team.school }}</h4>
-                    <dl>
+                    <dl class="dl-spaced">
                         <dt>Location</dt>
                         <dd>{{ team.city }}, {{ team.state }}</dd>
                         <dt>Stadium</dt>
@@ -103,15 +103,7 @@
                 </div>
             </div>
 
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    {{ icon('stats-bars') }}
-                    Team Comparison
-                </div>
-                <div class="panel-body">
-                    <span class="text-muted">Comming Soon</span>
-                </div>
-            </div>
+            {% include 'CollegeFootballTeamBundle:Game:comparison.html.twig' with {game: next_game} %}
         </div>
         <div class="col-lg-4 visible-lg">
             <div class="panel panel-default">
