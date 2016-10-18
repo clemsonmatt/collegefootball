@@ -198,13 +198,30 @@ class GameController extends Controller
         $statsService      = $this->get('collegefootball.team.stats');
         $calculatedWinners = $statsService->gameWinners($games);
 
+        $guessedCorrect      = [];
+        $guessedCorrectCount = 0;
+
+        foreach ($games as $game) {
+            $guessedCorrect[$game->getId()] = false;
+
+            $awayChance = $calculatedWinners[$game->getId()]['awayChance'];
+            $homeChance = $calculatedWinners[$game->getId()]['homeChance'];
+
+            if (($awayChance > $homeChance and $game->getWinningTeam() == $game->getAwayTeam()) or ($homeChance > $awayChance and $game->getWinningTeam() == $game->getHomeTeam())) {
+                $guessedCorrect[$game->getId()] = true;
+                $guessedCorrectCount++;
+            }
+        }
+
         return $this->render('CollegeFootballTeamBundle:Game:lines.html.twig', [
-            'games'              => $games,
-            'season'             => $season,
-            'week'               => $week,
-            'season_weeks'       => $seasonWeeks,
-            'game_picks'         => $gamePicks,
-            'calculated_winners' => $calculatedWinners,
+            'games'                 => $games,
+            'season'                => $season,
+            'week'                  => $week,
+            'season_weeks'          => $seasonWeeks,
+            'game_picks'            => $gamePicks,
+            'calculated_winners'    => $calculatedWinners,
+            'guessed_correct'       => $guessedCorrect,
+            'guessed_correct_count' => $guessedCorrectCount,
         ]);
     }
 }

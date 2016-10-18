@@ -3,6 +3,11 @@
 {% block content %}
     <div class="panel panel-default">
         <div class="panel-heading">
+            <div class="pull-right">
+                {% if guessed_correct_count %}
+                    <span class="text-success">{{ (guessed_correct_count / guessed_correct|length * 100)|number_format(1) }}%</span>
+                {% endif %}
+            </div>
             {{ week }} Lines
         </div>
         <table class="table table-striped table-hover">
@@ -19,11 +24,7 @@
                 <th width="1%;"></th>
             </thead>
             {% for game in games %}
-                {% set away_chance     = calculated_winners[game.id].awayChance %}
-                {% set home_chance     = calculated_winners[game.id].homeChance %}
-                {% set guessed_correct = (away_chance > home_chance and game.winningTeam == game.awayTeam) or (home_chance > away_chance and game.winningTeam == game.homeTeam) %}
-
-                <tr class="{% if game.winningTeam %} {{ guessed_correct ? 'success' : 'danger' }} {% endif %}">
+                <tr class="{% if game.winningTeam %} {{ guessed_correct[game.id] ? 'success' : 'danger' }} {% endif %}">
                     <td style="padding: 15px 5px 5px 15px;" class="text-muted">
                         {{ game.date|date('D. M, j') }}<br>
                         {{ game.time ? game.time|date('h:i A') : 'TBD' }}
@@ -74,12 +75,15 @@
                         {% endif %}
                     </td>
                     <td class="text-center">
+                        {% set away_chance = calculated_winners[game.id].awayChance %}
+                        {% set home_chance = calculated_winners[game.id].homeChance %}
+
                         <span class="text-{{ away_chance > home_chance ? 'success' : 'danger' }}">
-                            {{ (away_chance ? away_chance ~ '%' : '&mdash;')|raw }}
+                            {{ (away_chance ? away_chance ~ '%' : '<span class="text-muted">&mdash;</span>')|raw }}
                         </span>
                         <hr style="margin: 5px 0px;">
                         <span class="text-{{ home_chance > away_chance ? 'success' : 'danger' }}">
-                            {{ (home_chance ? home_chance ~ '%' : '&mdash;')|raw }}
+                            {{ (home_chance ? home_chance ~ '%' : '<span class="text-muted">&mdash;</span>')|raw }}
                         </span>
                     </td>
                     <td>
