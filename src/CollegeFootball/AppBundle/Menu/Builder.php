@@ -14,6 +14,8 @@ class Builder implements ContainerAwareInterface
     {
         $authorizationChecker = $this->container->get('security.authorization_checker');
         $user                 = $this->container->get('security.token_storage')->getToken()->getUser();
+        $weekSerivce          = $this->container->get('collegefootball.team.week');
+        $currentWeek          = $weekSerivce->currentWeek();
 
         $menu = $factory->createItem('root', [
             'childrenAttributes' => [
@@ -37,6 +39,14 @@ class Builder implements ContainerAwareInterface
 
         $menu->addChild('Games', [
             'route' => 'collegefootball_team_game_index',
+        ]);
+
+        $menu->addChild('Predictor', [
+            'route'           => 'collegefootball_team_game_lines',
+            'routeParameters' => [
+                'season' => $currentWeek['season'],
+                'week'   => $currentWeek['week']->getNumber(),
+            ],
         ]);
 
         $menu->addChild('Rankings', [
