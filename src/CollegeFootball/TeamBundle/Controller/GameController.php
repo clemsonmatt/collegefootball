@@ -210,6 +210,9 @@ class GameController extends Controller
             if ($winningChance !== null) {
                 $awayChance = $winningChance['away'];
                 $homeChance = $winningChance['home'];
+
+                $calculatedWinners[$game->getId()]['awayChance'] = $awayChance;
+                $calculatedWinners[$game->getId()]['homeChance'] = $homeChance;
             } else {
                 $awayChance = $calculatedWinners[$game->getId()]['awayChance'];
                 $homeChance = $calculatedWinners[$game->getId()]['homeChance'];
