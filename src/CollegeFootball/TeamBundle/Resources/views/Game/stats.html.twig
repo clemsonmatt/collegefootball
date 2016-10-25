@@ -10,12 +10,14 @@
                     <span class="caret"></span>
                 </button>
                 <ul class="dropdown-menu dropdown-menu-right">
-                    {% for season_week in season_weeks %}
-                        <li>
-                            <a href="{{ path('collegefootball_team_game_stats_index_week', {'season': season, 'week': season_week.number}) }}">
-                                {{ season_week }}
-                            </a>
-                        </li>
+                    {% for season_week in season_weeks|reverse %}
+                        {% if season_week.startDate|date('U') <= "now"|date('U') and season_week != week %}
+                            <li>
+                                <a href="{{ path('collegefootball_team_game_stats_index_week', {'season': season, 'week': season_week.number}) }}">
+                                    {{ season_week }}
+                                </a>
+                            </li>
+                        {% endif %}
                     {% endfor %}
                 </ul>
             </div>
