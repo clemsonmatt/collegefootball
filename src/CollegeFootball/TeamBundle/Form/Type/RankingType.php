@@ -40,6 +40,11 @@ class RankingType extends AbstractType
             'attr'     => ['class' => 'form-control'],
             'required' => false,
         ]);
+
+        $builder->add('playoffRank', SymfonyTypes\IntegerType::class, [
+            'attr'     => ['class' => 'form-control'],
+            'required' => false,
+        ]);
     }
 
     /**

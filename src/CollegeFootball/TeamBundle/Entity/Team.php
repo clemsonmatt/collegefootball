@@ -26,8 +26,13 @@ class Team
 
     public function __toString()
     {
-        if ($this->currentRanking() && $this->currentRanking()->getApRank()) {
-            return '#'.$this->currentRanking()->getApRank().' '.$this->name;
+        $currentRanking = $this->currentRanking();
+
+        if ($currentRanking && $currentRanking->getApRank()) {
+            if ($currentRanking->getPlayoffRank()) {
+                return '#'.$currentRanking->getPlayoffRank().' '.$this->name;
+            }
+            return '#'.$currentRanking->getApRank().' '.$this->name;
         }
 
         return $this->name;
@@ -119,6 +124,26 @@ class Team
         }
 
         return null;
+    }
+
+    public function printStandings()
+    {
+        $playedGames = 0;
+
+        foreach ($this->homeGames as $game) {
+            if ($game->getWinningTeam()) {
+                $playedGames++;
+            }
+        }
+        foreach ($this->awayGames as $game) {
+            if ($game->getWinningTeam()) {
+                $playedGames++;
+            }
+        }
+
+        $gamesWon = count($this->wonGames);
+
+        return '('.$gamesWon.' &ndash; '.($playedGames - $gamesWon).')';
     }
 
 
