@@ -37,9 +37,18 @@ class DefaultController extends Controller
             ->getQuery()
             ->getResult();
 
+        $playoffRankings = $repository->createQueryBuilder('r')
+            ->where('r.playoffRank IS NOT NULL')
+            ->andWhere('r.week = :week')
+            ->orderBy('r.playoffRank')
+            ->setParameter('week', $week)
+            ->getQuery()
+            ->getResult();
+
         return $this->render('CollegeFootballAppBundle:Default:index.html.twig', [
-            'games'       => $topGames,
-            'ap_rankings' => $apRankings,
+            'games'            => $topGames,
+            'ap_rankings'      => $apRankings,
+            'playoff_rankings' => $playoffRankings,
         ]);
     }
 }

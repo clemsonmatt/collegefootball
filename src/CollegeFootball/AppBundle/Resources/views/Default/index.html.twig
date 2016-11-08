@@ -78,18 +78,31 @@
         <div class="col-lg-4">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    AP Top 25
+                    {{ playoff_rankings ? 'Playoff' : 'AP' }}
+                    Top 25
                 </div>
                 <ul class="list-group">
-                    {% for ranking in ap_rankings %}
-                        <a href="{{ path('collegefootball_team_show', {'slug': ranking.team.slug}) }}" class="list-group-item">
-                            <h4>
-                                <img src="{{ ranking.team.imageLocation }}" style="height: 40px;">
-                                #{{ ranking.apRank }}
-                                {{ ranking.team.nameShort }}
-                            </h4>
-                        </a>
-                    {% endfor %}
+                    {% if playoff_rankings %}
+                        {% for ranking in playoff_rankings %}
+                            <a href="{{ path('collegefootball_team_show', {'slug': ranking.team.slug}) }}" class="list-group-item">
+                                <h4>
+                                    <img src="{{ ranking.team.imageLocation }}" style="height: 40px;">
+                                    #{{ ranking.playoffRank }}
+                                    {{ ranking.team.nameShort }}
+                                </h4>
+                            </a>
+                        {% endfor %}
+                    {% else %}
+                        {% for ranking in ap_rankings %}
+                            <a href="{{ path('collegefootball_team_show', {'slug': ranking.team.slug}) }}" class="list-group-item">
+                                <h4>
+                                    <img src="{{ ranking.team.imageLocation }}" style="height: 40px;">
+                                    #{{ ranking.apRank }}
+                                    {{ ranking.team.nameShort }}
+                                </h4>
+                            </a>
+                        {% endfor %}
+                    {% endif %}
                 </ul>
             </div>
         </div>
