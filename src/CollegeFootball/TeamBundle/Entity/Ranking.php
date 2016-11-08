@@ -48,6 +48,11 @@ class Ranking
     private $coachesPollRank;
 
     /**
+     * @ORM\Column(name="playoff_rank", type="integer", nullable=true)
+     */
+    private $playoffRank;
+
+    /**
      * @ORM\ManyToOne(targetEntity="CollegeFootball\AppBundle\Entity\Week", inversedBy="rankings")
      * @ORM\JoinColumn(name="week_id", referencedColumnName="id")
      */
@@ -102,6 +107,29 @@ class Ranking
     public function setCoachesPollRank($coachesPollRank)
     {
         $this->coachesPollRank = $coachesPollRank;
+
+        return $this;
+    }
+
+    /**
+     * Get playoffRank
+     *
+     * @return integer
+     */
+    public function getPlayoffRank()
+    {
+        return $this->playoffRank;
+    }
+
+    /**
+     * Set playoffRank
+     *
+     * @param integer playoffRank
+     * @return Ranking
+     */
+    public function setPlayoffRank($playoffRank)
+    {
+        $this->playoffRank = $playoffRank;
 
         return $this;
     }

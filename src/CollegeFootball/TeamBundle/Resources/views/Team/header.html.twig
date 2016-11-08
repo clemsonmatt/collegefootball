@@ -3,6 +3,7 @@
         <img src="{{ asset(team.imageLocation) }}" style="width: 100px; float: left; padding-right: 15px; border-right: 1px solid #{{ team.primaryColor }};">
         <h2 style="color: #{{ team.primaryColor }}; margin-left: 110px; line-height: 2.3em; margin-bottom: 0px; padding-bottom: 0px;">
             {{ team }}
+            <small>{{ team.printStandings|raw }}</small>
         </h2>
     </div>
 </div>
