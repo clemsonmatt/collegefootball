@@ -37,7 +37,7 @@ class NewsService
         $repository = $this->em->getRepository('CollegeFootballAppBundle:News');
         $now        = new \DateTime("now");
 
-        if (! $latestNewsUpdate || $latestNewsUpdate->getCreatedAt()->modify('+4 hours')->format('U') < $now->format('U')) {
+        if (! $latestNewsUpdate || $latestNewsUpdate->getCreatedAt()->modify('+1 hours')->format('U') < $now->format('U')) {
             /* check for updates */
             $response = \Unirest\Request::get('http://www.espn.com/espn/rss/ncf/news');
 
