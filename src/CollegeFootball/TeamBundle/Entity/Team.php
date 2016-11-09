@@ -26,13 +26,8 @@ class Team
 
     public function __toString()
     {
-        $currentRanking = $this->currentRanking();
-
-        if ($currentRanking && $currentRanking->getApRank()) {
-            if ($currentRanking->getPlayoffRank()) {
-                return '#'.$currentRanking->getPlayoffRank().' '.$this->name;
-            }
-            return '#'.$currentRanking->getApRank().' '.$this->name;
+        if ($this->rankNumber()) {
+            return '#'.$this->rankNumber().' '.$this->name;
         }
 
         return $this->name;
@@ -40,11 +35,25 @@ class Team
 
     public function rankingNameShort()
     {
-        if ($this->currentRanking() && $this->currentRanking()->getApRank()) {
-            return '#'.$this->currentRanking()->getApRank().' '.$this->nameShort;
+        if ($this->rankNumber()) {
+            return '#'.$this->rankNumber().' '.$this->nameShort;
         }
 
         return $this->nameShort;
+    }
+
+    public function rankNumber()
+    {
+        $currentRanking = $this->currentRanking();
+
+        if ($currentRanking && (($currentRanking->getApRank() && ! $currentRanking->usePlayoffRanking()) || ($currentRanking->getPlayoffRank() && $currentRanking->usePlayoffRanking()))) {
+            if ($currentRanking->getPlayoffRank() && $currentRanking->usePlayoffRanking()) {
+                return $currentRanking->getPlayoffRank();
+            }
+            return $currentRanking->getApRank();
+        }
+
+        return null;
     }
 
     public static function getStatesList()

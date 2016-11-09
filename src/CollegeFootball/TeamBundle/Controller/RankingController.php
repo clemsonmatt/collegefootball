@@ -36,7 +36,7 @@ class RankingController extends Controller
         $em         = $this->getDoctrine()->getManager();
         $repository = $em->getRepository('CollegeFootballTeamBundle:Ranking');
         $playoffRankings = $repository->createQueryBuilder('r')
-            ->where('r.apRank IS NOT NULL')
+            ->where('r.playoffRank IS NOT NULL')
             ->andWhere('r.week = :week')
             ->orderBy('r.playoffRank')
             ->setParameter('week', $week)
