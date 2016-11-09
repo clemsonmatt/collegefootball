@@ -30,6 +30,11 @@ class Ranking
         return false;
     }
 
+    public function usePlayoffRanking()
+    {
+        return $this->week->getNumber() > 10;
+    }
+
     /**
      * @ORM\Id()
      * @ORM\Column(type="integer")
