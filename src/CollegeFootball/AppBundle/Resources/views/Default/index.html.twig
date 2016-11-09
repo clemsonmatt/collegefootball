@@ -6,7 +6,29 @@
 
 {% block content %}
     <div class="row">
-        <div class="col-lg-8">
+        <div class="col-lg-3">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    Latest ESPN News
+                </div>
+                <ul class="list-group">
+                    {% for item in news %}
+                        <a href="{{ item.link }}" target="_blank" class="list-group-item">
+                            <h5>{{ item.title }}</h5>
+                            <span class="text-muted">
+                                {% if item.date|date('m/d/Y') != "now"|date('m/d/Y') %}
+                                    {{ item.date|date('m/d h:i a') }}
+                                {% else %}
+                                    {{ item.date|date('h:i a')}}
+                                {% endif %}
+                            </span>
+                        </a>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+
+        <div class="col-lg-6">
             {% set current_date = null %}
             {% for game in games %}
                 {% if game.date != current_date %}
@@ -75,7 +97,8 @@
                 {% if loop.last %}<br><br>{% endif %}
             {% endfor %}
         </div>
-        <div class="col-lg-4">
+
+        <div class="col-lg-3">
             <div class="panel panel-default">
                 <div class="panel-heading">
                     {{ playoff_rankings ? 'Playoff' : 'AP' }}
@@ -85,21 +108,21 @@
                     {% if playoff_rankings %}
                         {% for ranking in playoff_rankings %}
                             <a href="{{ path('collegefootball_team_show', {'slug': ranking.team.slug}) }}" class="list-group-item">
-                                <h4>
-                                    <img src="{{ ranking.team.imageLocation }}" style="height: 40px;">
+                                <h5>
+                                    <img src="{{ ranking.team.imageLocation }}" style="height: 25px;">
                                     #{{ ranking.playoffRank }}
                                     {{ ranking.team.nameShort }}
-                                </h4>
+                                </h5>
                             </a>
                         {% endfor %}
                     {% else %}
                         {% for ranking in ap_rankings %}
                             <a href="{{ path('collegefootball_team_show', {'slug': ranking.team.slug}) }}" class="list-group-item">
-                                <h4>
-                                    <img src="{{ ranking.team.imageLocation }}" style="height: 40px;">
+                                <h5>
+                                    <img src="{{ ranking.team.imageLocation }}" style="height: 25px;">
                                     #{{ ranking.apRank }}
                                     {{ ranking.team.nameShort }}
-                                </h4>
+                                </h5>
                             </a>
                         {% endfor %}
                     {% endif %}
