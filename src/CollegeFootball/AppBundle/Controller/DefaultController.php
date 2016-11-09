@@ -45,10 +45,13 @@ class DefaultController extends Controller
             ->getQuery()
             ->getResult();
 
+        $news = $this->get('collegefootball.app.news')->getNews();
+
         return $this->render('CollegeFootballAppBundle:Default:index.html.twig', [
             'games'            => $topGames,
             'ap_rankings'      => $apRankings,
             'playoff_rankings' => $playoffRankings,
+            'news'             => $news,
         ]);
     }
 }
