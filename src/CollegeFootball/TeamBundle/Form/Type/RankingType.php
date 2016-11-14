@@ -27,8 +27,9 @@ class RankingType extends AbstractType
                     ->orderBy('c.name', 'ASC')
                     ->addOrderBy('t.name', 'ASC');
             },
-            'group_by' => 'conference',
-            'attr'     => ['class' => 'form-control']
+            'group_by'     => 'conference',
+            'choice_label' => 'name',
+            'attr'         => ['class' => 'form-control']
         ]);
 
         if ($options['rank_type'] == 'apRank') {
