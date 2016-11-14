@@ -69,22 +69,38 @@ class RankingController extends Controller
     }
 
     /**
-     * @Route("/{week}/add", name="collegefootball_team_ranking_add")
+     * @Route("/{week}/{rankType}/add", name="collegefootball_team_ranking_add", requirements={"rankType": "apRank|coachesPollRank|playoffRank"})
      * @Security("is_granted('ROLE_MANAGE')")
      */
-    public function addAction(Week $week, Request $request)
+    public function addAction(Week $week, $rankType, Request $request)
     {
-        $form = $this->createForm(RankingsType::class);
+        $form = $this->createForm(RankingsType::class, null, [
+            'rank_type' => $rankType
+        ]);
 
         $form->handleRequest($request);
 
         if ($form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
+            $em         = $this->getDoctrine()->getManager();
+            $repository = $em->getRepository('CollegeFootballTeamBundle:Ranking');
 
             foreach ($form['rankings']->getData() as $ranking) {
+                $weekRanking = $repository->findOneBy([
+                    'team' => $ranking->getTeam(),
+                    'week' => $week,
+                ]);
+
                 if ($ranking->getTeam()) {
-                    $ranking->setWeek($week);
-                    $em->persist($ranking);
+                    if ($weekRanking) {
+                        /* update */
+                        $rankingSetter = 'set'.ucwords($rankType);
+                        $rankingGetter = 'get'.ucwords($rankType);
+
+                        $weekRanking->{$rankingSetter}($ranking->{$rankingGetter}());
+                    } else {
+                        $ranking->setWeek($week);
+                        $em->persist($ranking);
+                    }
                 }
             }
 
@@ -95,8 +111,9 @@ class RankingController extends Controller
         }
 
         return $this->render('CollegeFootballTeamBundle:Ranking:addEdit.html.twig', [
-            'form' => $form->createView(),
-            'week' => $week,
+            'form'     => $form->createView(),
+            'week'     => $week,
+            'rankType' => $rankType,
         ]);
     }
 }

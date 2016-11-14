@@ -14,12 +14,9 @@
                 <thead>
                     <th></th>
                     <th>Team</th>
-                    <th>AP</th>
-                    <th>Coaches Poll</th>
-                    <th>Playoff</th>
                 </thead>
-                <tbody id="js-rankings" data-team-prototype="{{ form_widget(form.rankings.vars.prototype.children.team)|e }}" data-ap-prototype="{{ form_widget(form.rankings.vars.prototype.children.apRank)|e }}" data-coach-prototype="{{ form_widget(form.rankings.vars.prototype.children.coachesPollRank)|e }}" data-playoff-prototype="{{ form_widget(form.rankings.vars.prototype.children.playoffRank)|e }}">
-                    
+                <tbody id="js-rankings" data-team-prototype="{{ form_widget(form.rankings.vars.prototype.children.team)|e }}" data-rank-prototype="{{ form_widget(form.rankings.vars.prototype.children[rankType])|e }}">
+
                 </tbody>
             </table>
             <div class="panel-body">
@@ -43,22 +40,15 @@
 
             var newWidget;
 
-            for (var i = 0; i < 28; i++) {
-                var teamWidget            = rankingTable.data('team-prototype');
-                var apRankWidget          = rankingTable.data('ap-prototype');
-                var coachesPollRankWidget = rankingTable.data('coach-prototype');
-                var playoffRankWidget     = rankingTable.data('playoff-prototype');
+            for (var i = 0; i < 25; i++) {
+                var teamWidget = rankingTable.data('team-prototype');
+                var rankWidget = rankingTable.data('rank-prototype');
 
-                teamWidget            = teamWidget.replace(/__name__/g, i);
-                apRankWidget          = apRankWidget.replace(/__name__/g, i);
-                coachesPollRankWidget = coachesPollRankWidget.replace(/__name__/g, i);
-                playoffRankWidget     = playoffRankWidget.replace(/__name__/g, i);
+                teamWidget = teamWidget.replace(/__name__/g, i);
+                rankWidget = rankWidget.replace(/__name__/g, i);
+                rankWidget = rankWidget.replace('/', 'value="' + (i+1) + '"');
 
-                apRankWidget          = apRankWidget.replace('/', 'value="' + (i+1) + '"');
-                coachesPollRankWidget = coachesPollRankWidget.replace('/', 'value="' + (i+1) + '"');
-                playoffRankWidget     = playoffRankWidget.replace('/', 'value="' + (i+1) + '"');
-
-                var newRow = $('<tr><td style="font-size: 1.8em; text-align: center; line-height: 1.8em;">' + (i+1) + '</td><td>' + teamWidget + '</td><td>' + apRankWidget + '</td><td>' + coachesPollRankWidget + '</td><td>' + playoffRankWidget + '</td></tr>');
+                var newRow = $('<tr><td style="font-size: 1.8em; text-align: center; line-height: 1.8em;">' + (i+1) + '</td><td>' + teamWidget + '<span style="display:none;">' + rankWidget + '</span></td></tr>');
 
                 newRow.appendTo(rankingTable);
             }
