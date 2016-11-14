@@ -46,7 +46,7 @@ class Team
     {
         $currentRanking = $this->currentRanking();
 
-        if ($currentRanking && (($currentRanking->getApRank() && ! $currentRanking->usePlayoffRanking()) || ($currentRanking->getPlayoffRank() && $currentRanking->usePlayoffRanking()))) {
+        if ($currentRanking) {
             if ($currentRanking->getPlayoffRank() && $currentRanking->usePlayoffRanking()) {
                 return $currentRanking->getPlayoffRank();
             }

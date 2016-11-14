@@ -31,20 +31,26 @@ class RankingType extends AbstractType
             'attr'     => ['class' => 'form-control']
         ]);
 
-        $builder->add('apRank', SymfonyTypes\IntegerType::class, [
-            'attr'     => ['class' => 'form-control'],
-            'required' => false,
-        ]);
+        if ($options['rank_type'] == 'apRank') {
+            $builder->add('apRank', SymfonyTypes\IntegerType::class, [
+                'attr'     => ['class' => 'form-control'],
+                'required' => false,
+            ]);
+        }
 
-        $builder->add('coachesPollRank', SymfonyTypes\IntegerType::class, [
-            'attr'     => ['class' => 'form-control'],
-            'required' => false,
-        ]);
+        if ($options['rank_type'] == 'coachesPollRank') {
+            $builder->add('coachesPollRank', SymfonyTypes\IntegerType::class, [
+                'attr'     => ['class' => 'form-control'],
+                'required' => false,
+            ]);
+        }
 
-        $builder->add('playoffRank', SymfonyTypes\IntegerType::class, [
-            'attr'     => ['class' => 'form-control'],
-            'required' => false,
-        ]);
+        if ($options['rank_type'] == 'playoffRank') {
+            $builder->add('playoffRank', SymfonyTypes\IntegerType::class, [
+                'attr'     => ['class' => 'form-control'],
+                'required' => false,
+            ]);
+        }
     }
 
     /**
@@ -55,5 +61,7 @@ class RankingType extends AbstractType
         $resolver->setDefaults([
             'data_class' => Ranking::class,
         ]);
+
+        $resolver->setRequired(['rank_type']);
     }
 }
