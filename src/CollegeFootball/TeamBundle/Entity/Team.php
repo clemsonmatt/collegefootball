@@ -47,7 +47,7 @@ class Team
         $currentRanking = $this->currentRanking();
 
         if ($currentRanking) {
-            if ($currentRanking->getPlayoffRank() && $currentRanking->usePlayoffRanking()) {
+            if ($currentRanking->usePlayoffRanking()) {
                 return $currentRanking->getPlayoffRank();
             }
             return $currentRanking->getApRank();
@@ -126,8 +126,10 @@ class Team
 
     public function currentRanking()
     {
-        if (count($this->rankings)) {
-            if ($this->rankings->last()->isCurrentWeek()) {
+        $latestRanking = $this->rankings->last();
+
+        if (count($this->rankings) && $latestRanking->isCurrentWeek()) {
+            if ($latestRanking->isCurrentWeek()) {
                 return $this->rankings->last();
             }
         }

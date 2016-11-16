@@ -22,7 +22,7 @@ class DefaultController extends Controller
         $topGames = [];
 
         foreach ($games as $game) {
-            if ($game->getHomeTeam()->currentRanking() || $game->getAwayTeam()->currentRanking()) {
+            if ($game->getHomeTeam()->rankNumber() || $game->getAwayTeam()->rankNumber()) {
                 $topGames[] = $game;
             }
         }

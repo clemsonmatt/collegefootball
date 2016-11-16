@@ -23,7 +23,13 @@ class Ranking
     {
         $today = new \DateTime("now");
 
-        if ($this->week->getStartDate()->format('U') <= $today->format('U') && $this->week->getEndDate()->format('U') >= $today->format('U')) {
+        $startDate = $this->week->getStartDate();
+        $endDate   = $this->week->getEndDate();
+
+        if ($startDate->format('U') <= $today->format('U') && $endDate->format('U') >= $today->format('U')) {
+            return true;
+        } elseif ($this->usePlayoffRanking() && ($startDate->modify('+3 days')->format('U') <= $today->format('U') && $endDate->modify('+3 days')->format('U') >= $today->format('U'))) {
+            /* 3 day buffer */
             return true;
         }
 
