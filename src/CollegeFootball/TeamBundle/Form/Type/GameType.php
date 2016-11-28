@@ -40,7 +40,8 @@ class GameType extends AbstractType
                     ->orderBy('c.name', 'ASC')
                     ->addOrderBy('t.name', 'ASC');
             },
-            'group_by' => 'conference',
+            'group_by'     => 'conference',
+            'choice_label' => 'name',
         ]);
 
         $builder->add('awayTeam', EntityType::class, [
@@ -52,7 +53,8 @@ class GameType extends AbstractType
                     ->orderBy('c.name', 'ASC')
                     ->addOrderBy('t.name', 'ASC');
             },
-            'group_by' => 'conference',
+            'group_by'     => 'conference',
+            'choice_label' => 'name',
         ]);
 
         $builder->add('location', SymfonyTypes\TextType::class, [
@@ -70,6 +72,10 @@ class GameType extends AbstractType
                 'Away' => 'Away',
                 'Home' => 'Home'
             ],
+        ]);
+
+        $builder->add('conferenceChampionship', SymfonyTypes\CheckboxType::class, [
+            'required' => false,
         ]);
     }
 

@@ -81,6 +81,11 @@ class Game
      */
     private $winningChance;
 
+    /**
+     * @ORM\Column(name="conference_championship", type="boolean")
+     */
+    private $conferenceChampionship = false;
+
 
     /**
      * Get id
@@ -353,5 +358,28 @@ class Game
         $winningChance['away'] = (float)($this->winningChance['away'] / 100);
 
         return $winningChance;
+    }
+
+    /**
+     * Set conferenceChampionship
+     *
+     * @param boolean conferenceChampionship
+     * @return Game
+     */
+    public function setConferenceChampionship($conferenceChampionship)
+    {
+        $this->conferenceChampionship = $conferenceChampionship;
+
+        return $this;
+    }
+
+    /**
+     * Get conferenceChampionship
+     *
+     * @return boolean
+     */
+    public function isConferenceChampionship()
+    {
+        return $this->conferenceChampionship;
     }
 }
