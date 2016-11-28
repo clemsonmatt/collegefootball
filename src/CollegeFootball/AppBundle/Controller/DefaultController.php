@@ -19,11 +19,15 @@ class DefaultController extends Controller
         $repository = $em->getRepository('CollegeFootballTeamBundle:Game');
         $games      = $repository->findGamesByWeek($week);
 
-        $topGames = [];
+        if ($week->getNumber() > 13) {
+            $topGames = $games;
+        } else {
+            $topGames = [];
 
-        foreach ($games as $game) {
-            if ($game->getHomeTeam()->rankNumber() || $game->getAwayTeam()->rankNumber()) {
-                $topGames[] = $game;
+            foreach ($games as $game) {
+                if ($game->getHomeTeam()->rankNumber() || $game->getAwayTeam()->rankNumber()) {
+                    $topGames[] = $game;
+                }
             }
         }
 
