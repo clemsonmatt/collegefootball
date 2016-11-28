@@ -33,6 +33,10 @@
                 </div>
                 <div class="panel-body">
                     <center>
+                        {% if game.conferenceChampionship %}
+                            <h3 class="text-primary">{{ game.homeTeam.conference }} Championship Game</h3>
+                            <br />
+                        {% endif %}
                         {{ game.location }}
                         <hr style="margin: 5px 60px;">
                         {{ game.date|date('m/d') }} @ {{ game.time ? game.time|date('h:i A') : 'TBD' }}

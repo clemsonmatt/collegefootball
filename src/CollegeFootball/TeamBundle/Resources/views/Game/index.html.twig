@@ -97,6 +97,11 @@
                     </div>
                 </div>
             </div>
+            {% if game.conferenceChampionship %}
+                <div class="panel-footer">
+                    <h4 class="text-primary text-center" style="margin: 0;">{{ game.homeTeam.conference }} Championship Game</h4>
+                </div>
+            {% endif %}
         </div>
     {% endfor %}
 {% endblock %}
