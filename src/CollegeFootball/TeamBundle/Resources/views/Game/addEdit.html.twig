@@ -4,7 +4,7 @@
 {% block content %}
     <div class="panel panel-default">
         <div class="panel-heading">
-            {% if team is defined %}
+            {% if team %}
                 <a href="{{ path('collegefootball_team_show', {'slug': team.slug}) }}">
                     {{ team }}
                 </a>
@@ -43,6 +43,8 @@
                                     {% endif %}
                                 </h4>
                             </a>
+                        {% else %}
+                            <li class="text-muted list-group-item">None</li>
                         {% endfor %}
                     </ul>
                 </div>
@@ -121,6 +123,12 @@
                     <label class="col-md-2 control-label">{{ form_label(form.predictedWinner) }}</label>
                     <div class="col-md-10">
                         {{ form_widget(form.predictedWinner, {'attr': {'class': 'form-control'}}) }}
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-md-2 control-label">{{ form_label(form.bowlName) }}</label>
+                    <div class="col-md-10">
+                        {{ form_widget(form.bowlName, {'attr': {'class': 'form-control'}}) }}
                     </div>
                 </div>
             </div>

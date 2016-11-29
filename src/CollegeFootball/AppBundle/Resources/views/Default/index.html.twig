@@ -93,9 +93,15 @@
                             </div>
                         </div>
                     </div>
-                    {% if game.conferenceChampionship %}
+                    {% if game.conferenceChampionship or game.bowlName %}
                         <div class="panel-footer">
-                            <h4 class="text-primary text-center" style="margin: 0;">{{ game.homeTeam.conference }} Championship Game</h4>
+                            <h4 class="text-primary text-center" style="margin: 0;">
+                                {% if game.conferenceChampionship %}
+                                    {{ game.homeTeam.conference }} Championship Game
+                                {% else %}
+                                    {{ game.bowlName }}
+                                {% endif %}
+                            </h4>
                         </div>
                     {% endif %}
                 </div>
