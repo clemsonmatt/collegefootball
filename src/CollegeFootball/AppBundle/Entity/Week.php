@@ -21,6 +21,8 @@ class Week
     {
         if ($this->number == 0) {
             return 'Preseason';
+        } elseif ($this->number == 16) {
+            return 'Bowl';
         }
 
         return 'Week '.$this->number;

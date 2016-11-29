@@ -32,11 +32,28 @@ class GameController extends Controller
         $repository = $em->getRepository('CollegeFootballTeamBundle:Game');
         $games      = $repository->findGamesByWeek($week);
 
+        $playoffGames = [];
+
+        if ((string)$week == 'Bowl') {
+            foreach ($games as $game) {
+                if (strpos($game->getBowlName(), 'CFP Semifinal')) {
+                    if (! array_key_exists('firstSemifinal', $playoffGames)) {
+                        $playoffGames['firstSemifinal'] = $game;
+                    } else {
+                        $playoffGames['secondSemifinal'] = $game;
+                    }
+                } elseif ($game->getBowlName() == 'CFP National Championship Game') {
+                    $playoffGames['championship'] = $game;
+                }
+            }
+        }
+
         return $this->render('CollegeFootballTeamBundle:Game:index.html.twig', [
-            'games'        => $games,
-            'season'       => $season,
-            'week'         => $week,
-            'season_weeks' => $seasonWeeks,
+            'games'         => $games,
+            'season'        => $season,
+            'week'          => $week,
+            'season_weeks'  => $seasonWeeks,
+            'playoff_games' => $playoffGames,
         ]);
     }
 
@@ -79,7 +96,7 @@ class GameController extends Controller
     }
 
     /**
-     * @Route("/add", name="collegefootball_team_game_add")
+     * @Route("/add/single", name="collegefootball_team_game_add")
      * @Route("/add/{slug}/team", name="collegefootball_team_game_add_team")
      * @Security("is_granted('ROLE_MANAGE')")
      */

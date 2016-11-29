@@ -42,6 +42,7 @@ class GameType extends AbstractType
             },
             'group_by'     => 'conference',
             'choice_label' => 'name',
+            'required'     => false,
         ]);
 
         $builder->add('awayTeam', EntityType::class, [
@@ -55,6 +56,7 @@ class GameType extends AbstractType
             },
             'group_by'     => 'conference',
             'choice_label' => 'name',
+            'required'     => false,
         ]);
 
         $builder->add('location', SymfonyTypes\TextType::class, [
@@ -75,6 +77,10 @@ class GameType extends AbstractType
         ]);
 
         $builder->add('conferenceChampionship', SymfonyTypes\CheckboxType::class, [
+            'required' => false,
+        ]);
+
+        $builder->add('bowlName', SymfonyTypes\TextType::class, [
             'required' => false,
         ]);
     }

@@ -86,6 +86,11 @@ class Game
      */
     private $conferenceChampionship = false;
 
+    /**
+     * @ORM\Column(name="bowl_name", type="string", length=255, nullable=true)
+     */
+    private $bowlName;
+
 
     /**
      * Get id
@@ -381,5 +386,28 @@ class Game
     public function isConferenceChampionship()
     {
         return $this->conferenceChampionship;
+    }
+
+    /**
+     * Set bowlName
+     *
+     * @param string $bowlName
+     * @return Game
+     */
+    public function setBowlName($bowlName)
+    {
+        $this->bowlName = $bowlName;
+
+        return $this;
+    }
+
+    /**
+     * Get bowlName
+     *
+     * @return string
+     */
+    public function getBowlName()
+    {
+        return $this->bowlName;
     }
 }

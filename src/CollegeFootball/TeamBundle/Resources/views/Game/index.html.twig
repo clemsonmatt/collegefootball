@@ -23,13 +23,65 @@
         </h2>
     </legend>
 
+    {% if week == 'Bowl' and playoff_games.firstSemifinal is defined %}
+        <h4 class="text-center">College Football Playoffs</h4>
+        <div class="row">
+            <div class="col-sm-3">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <h4>{{ (playoff_games.firstSemifinal is defined and playoff_games.firstSemifinal.homeTeam ? playoff_games.firstSemifinal.homeTeam.nameShort : '<span class="text-muted">TBD</span>')|raw }}</h4>
+                    </div>
+                </div>
+                <h5 class="text-center text-muted" style="margin-top: -10px;">{{ playoff_games.firstSemifinal ? playoff_games.firstSemifinal.bowlName }}</h5>
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <h4>{{ (playoff_games.firstSemifinal is defined and playoff_games.firstSemifinal.awayTeam ? playoff_games.firstSemifinal.awayTeam.nameShort : '<span class="text-muted">TBD</span>')|raw }}</h4>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="row" style="margin-top: 60px;">
+                    <div class="col-sm-6">
+                        <div class="panel panel-default">
+                            <div class="panel-body">
+                                <h4>{{ (playoff_games.championship is defined and playoff_games.championship.homeTeam ? playoff_games.championship.homeTeam.nameShort : '<span class="text-muted">TBD</span>')|raw }}</h4>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="panel panel-default">
+                            <div class="panel-body">
+                                <h4>{{ (playoff_games.championship is defined and playoff_games.championship.awayTeam ? playoff_games.championship.awayTeam.nameShort : '<span class="text-muted">TBD</span>')|raw }}</h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <h5 class="text-center text-muted" style="margin-top: 0px;">{{ playoff_games.championship ? playoff_games.championship.bowlName }}</h5>
+            </div>
+            <div class="col-sm-3">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <h4>{{ (playoff_games.secondSemifinal is defined and playoff_games.secondSemifinal.homeTeam ? playoff_games.secondSemifinal.homeTeam.nameShort : '<span class="text-muted">TBD</span>')|raw }}</h4>
+                    </div>
+                </div>
+                <h5 class="text-center text-muted" style="margin-top: -10px;">{{ playoff_games.secondSemifinal ? playoff_games.secondSemifinal.bowlName }}</h5>
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <h4>{{ (playoff_games.secondSemifinal is defined and playoff_games.secondSemifinal.awayTeam ? playoff_games.secondSemifinal.awayTeam.nameShort : '<span class="text-muted">TBD</span>')|raw }}</h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <hr>
+    {% endif %}
+
     {% set current_date = null %}
     {% for game in games %}
         {% if current_date != game.date %}
             {% set current_date = game.date %}
             <h3>{{ game.date|date('D, M. j') }}</h3>
         {% endif %}
-        <div class="panel panel-default panel-click" data-url="{{ path('collegefootball_team_game_show', {'game': game.id}) }}">
+        <div class="panel panel-default {{ game.homeTeam ? 'panel-click' }}" data-url="{{ path('collegefootball_team_game_show', {'game': game.id}) }}">
             <div class="panel-body">
                 <div class="row">
                     <div class="col-sm-4">
@@ -41,15 +93,28 @@
                             </div>
                         {% endif %}
                         <div class="hidden-lg">
-                            <img src="{{ asset(game.homeTeam.imageLocation) }}" style="width: 100px; float: left;">
+                            {% if game.homeTeam %}
+                                <img src="{{ asset(game.homeTeam.imageLocation) }}" style="width: 100px; float: left;">
+                            {% else %}
+                                <div style="width: 100px; height: 85px; background-color: #f2f2f2;">
+                                </div>
+                            {% endif %}
                         </div>
                         <div class="visible-lg" style="margin: -15px 0px;">
-                            <img src="{{ asset(game.homeTeam.imageLocation) }}" style="width: 100px; float: left; padding-right: 15px; border-right: 1px solid #{{ game.homeTeam.primaryColor }};">
-                            <h3 style="color: #{{ game.homeTeam.primaryColor }}; line-height: 1.2em; margin: 15px 0px 0px 110px; padding: 15px 0px 0px 0px;">
-                                <a href="{{ path('collegefootball_team_show', {'slug': game.homeTeam.slug}) }}" style="color: inherit;">
-                                    {{ game.homeTeam }}
-                                </a>
-                            </h3>
+                            {% if game.homeTeam %}
+                                <img src="{{ asset(game.homeTeam.imageLocation) }}" style="width: 100px; float: left; padding-right: 15px; border-right: 1px solid #{{ game.homeTeam.primaryColor }};">
+                                <h3 style="color: #{{ game.homeTeam.primaryColor }}; line-height: 1.2em; margin: 15px 0px 0px 110px; padding: 15px 0px 0px 0px;">
+                                    <a href="{{ path('collegefootball_team_show', {'slug': game.homeTeam.slug}) }}" style="color: inherit;">
+                                        {{ game.homeTeam }}
+                                    </a>
+                                </h3>
+                            {% else %}
+                                <div style="width: 100px; height: 85px; background-color: #f2f2f2; float: left;">
+                                </div>
+                                <h3 style="line-height: 1.2em; margin: 15px 0px 0px 110px; padding: 15px 0px 0px 0px;">
+                                    TBD
+                                </h3>
+                            {% endif %}
                         </div>
                     </div>
                     <div class="col-sm-4">
@@ -84,22 +149,42 @@
                             </div>
                         {% endif %}
                         <div class="hidden-lg">
-                            <img src="{{ asset(game.awayTeam.imageLocation) }}" style="width: 100px; float: right;">
+                            {% if game.awayTeam %}
+                                <img src="{{ asset(game.awayTeam.imageLocation) }}" style="width: 100px; float: right;">
+                            {% else %}
+                                <div style="width: 100px; height: 85px; background-color: #f2f2f2; float: right;">
+
+                                </div>
+                            {% endif %}
                         </div>
                         <div class="visible-lg" style="margin: -15px 0px;">
-                            <img src="{{ asset(game.awayTeam.imageLocation) }}" style="width: 100px; float: right; padding-left: 15px; border-left: 1px solid #{{ game.awayTeam.primaryColor }};">
-                            <h3 style="color: #{{ game.awayTeam.primaryColor }}; line-height: 1.2em; margin: 15px 110px 0px 0px; padding: 15px 0px 0px 0px; text-align: right;">
-                                <a href="{{ path('collegefootball_team_show', {'slug': game.awayTeam.slug}) }}" style="color: inherit;">
-                                    {{ game.awayTeam }}
-                                </a>
-                            </h3>
+                            {% if game.awayTeam %}
+                                <img src="{{ asset(game.awayTeam.imageLocation) }}" style="width: 100px; float: right; padding-left: 15px; border-left: 1px solid #{{ game.awayTeam.primaryColor }};">
+                                <h3 style="color: #{{ game.awayTeam.primaryColor }}; line-height: 1.2em; margin: 15px 110px 0px 0px; padding: 15px 0px 0px 0px; text-align: right;">
+                                    <a href="{{ path('collegefootball_team_show', {'slug': game.awayTeam.slug}) }}" style="color: inherit;">
+                                        {{ game.awayTeam }}
+                                    </a>
+                                </h3>
+                            {% else %}
+                                <div style="width: 100px; height: 85px; background-color: #f2f2f2; float: right;">
+                                </div>
+                                <h3 style="line-height: 1.2em; margin: 15px 110px 0px 0px; padding: 15px 0px 0px 0px; text-align: right;">
+                                    TBD
+                                </h3>
+                            {% endif %}
                         </div>
                     </div>
                 </div>
             </div>
-            {% if game.conferenceChampionship %}
+            {% if game.conferenceChampionship or game.bowlName %}
                 <div class="panel-footer">
-                    <h4 class="text-primary text-center" style="margin: 0;">{{ game.homeTeam.conference }} Championship Game</h4>
+                    <h4 class="text-primary text-center" style="margin: 0;">
+                        {% if game.conferenceChampionship %}
+                            {{ game.homeTeam.conference }} Championship Game
+                        {% else %}
+                            {{ game.bowlName }}
+                        {% endif %}
+                    </h4>
                 </div>
             {% endif %}
         </div>
