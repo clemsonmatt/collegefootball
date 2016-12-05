@@ -29,13 +29,17 @@
             <div class="col-sm-3">
                 <div class="panel panel-default">
                     <div class="panel-body">
-                        <h4>{{ (playoff_games.firstSemifinal is defined and playoff_games.firstSemifinal.homeTeam ? playoff_games.firstSemifinal.homeTeam.nameShort : '<span class="text-muted">TBD</span>')|raw }}</h4>
+                        <img src="{{ asset(playoff_games.firstSemifinal.homeTeam.imageLocation) }}" style="width: 40px; float: left;">
+                        <h4 style="margin-left: 50px;">{{ (playoff_games.firstSemifinal is defined and playoff_games.firstSemifinal.homeTeam ? playoff_games.firstSemifinal.homeTeam.nameShort : '<span class="text-muted">TBD</span>')|raw }}</h4>
                     </div>
                 </div>
-                <h5 class="text-center text-muted" style="margin-top: -10px;">{{ playoff_games.firstSemifinal ? playoff_games.firstSemifinal.bowlName }}</h5>
+                <a href="{{ path('collegefootball_team_game_show', {game: playoff_games.firstSemifinal.id}) }}">
+                    <h5 class="text-center" style="margin-top: -10px;">{{ playoff_games.firstSemifinal ? playoff_games.firstSemifinal.bowlName }}</h5>
+                </a>
                 <div class="panel panel-default">
                     <div class="panel-body">
-                        <h4>{{ (playoff_games.firstSemifinal is defined and playoff_games.firstSemifinal.awayTeam ? playoff_games.firstSemifinal.awayTeam.nameShort : '<span class="text-muted">TBD</span>')|raw }}</h4>
+                        <img src="{{ asset(playoff_games.firstSemifinal.awayTeam.imageLocation) }}" style="width: 40px; float: left;">
+                        <h4 style="margin-left: 50px;">{{ (playoff_games.firstSemifinal is defined and playoff_games.firstSemifinal.awayTeam ? playoff_games.firstSemifinal.awayTeam.nameShort : '<span class="text-muted">TBD</span>')|raw }}</h4>
                     </div>
                 </div>
             </div>
@@ -44,30 +48,46 @@
                     <div class="col-sm-6">
                         <div class="panel panel-default">
                             <div class="panel-body">
-                                <h4>{{ (playoff_games.championship is defined and playoff_games.championship.homeTeam ? playoff_games.championship.homeTeam.nameShort : '<span class="text-muted">TBD</span>')|raw }}</h4>
+                                {% if playoff_games.championship is defined and playoff_games.championship.homeTeam %}
+                                    <img src="{{ asset(playoff_games.championship.awayTeam.imageLocation) }}" style="width: 40px; float: left;">
+                                    <h4 style="margin-left: 50px;">{{ playoff_games.championship.homeTeam.nameShort }}</h4>
+                                {% else %}
+                                    <h4 class="text-muted">TBD</h4>
+                                {% endif %}
                             </div>
                         </div>
                     </div>
                     <div class="col-sm-6">
                         <div class="panel panel-default">
                             <div class="panel-body">
-                                <h4>{{ (playoff_games.championship is defined and playoff_games.championship.awayTeam ? playoff_games.championship.awayTeam.nameShort : '<span class="text-muted">TBD</span>')|raw }}</h4>
+                                {% if playoff_games.championship is defined and playoff_games.championship.homeTeam %}
+                                    <img src="{{ asset(playoff_games.championship.awayTeam.imageLocation) }}" style="width: 40px; float: left;">
+                                    <h4 style="margin-left: 50px;">{{ playoff_games.championship.awayTeam.nameShort }}</h4>
+                                {% else %}
+                                    <h4 class="text-muted">TBD</h4>
+                                {% endif %}
                             </div>
                         </div>
                     </div>
                 </div>
-                <h5 class="text-center text-muted" style="margin-top: 0px;">{{ playoff_games.championship ? playoff_games.championship.bowlName }}</h5>
+                <a href="{{ path('collegefootball_team_game_show', {game: playoff_games.championship.id}) }}">
+                    <h5 class="text-center" style="margin-top: 0px;">{{ playoff_games.championship ? playoff_games.championship.bowlName }}</h5>
+                </a>
             </div>
             <div class="col-sm-3">
                 <div class="panel panel-default">
                     <div class="panel-body">
-                        <h4>{{ (playoff_games.secondSemifinal is defined and playoff_games.secondSemifinal.homeTeam ? playoff_games.secondSemifinal.homeTeam.nameShort : '<span class="text-muted">TBD</span>')|raw }}</h4>
+                        <img src="{{ asset(playoff_games.secondSemifinal.homeTeam.imageLocation) }}" style="width: 40px; float: left;">
+                        <h4 style="margin-left: 50px;">{{ (playoff_games.secondSemifinal is defined and playoff_games.secondSemifinal.homeTeam ? playoff_games.secondSemifinal.homeTeam.nameShort : '<span class="text-muted">TBD</span>')|raw }}</h4>
                     </div>
                 </div>
-                <h5 class="text-center text-muted" style="margin-top: -10px;">{{ playoff_games.secondSemifinal ? playoff_games.secondSemifinal.bowlName }}</h5>
+                <a href="{{ path('collegefootball_team_game_show', {game: playoff_games.secondSemifinal.id}) }}">
+                    <h5 class="text-center" style="margin-top: -10px;">{{ playoff_games.secondSemifinal ? playoff_games.secondSemifinal.bowlName }}</h5>
+                </a>
                 <div class="panel panel-default">
                     <div class="panel-body">
-                        <h4>{{ (playoff_games.secondSemifinal is defined and playoff_games.secondSemifinal.awayTeam ? playoff_games.secondSemifinal.awayTeam.nameShort : '<span class="text-muted">TBD</span>')|raw }}</h4>
+                        <img src="{{ asset(playoff_games.secondSemifinal.awayTeam.imageLocation) }}" style="width: 40px; float: left;">
+                        <h4 style="margin-left: 50px;">{{ (playoff_games.secondSemifinal is defined and playoff_games.secondSemifinal.awayTeam ? playoff_games.secondSemifinal.awayTeam.nameShort : '<span class="text-muted">TBD</span>')|raw }}</h4>
                     </div>
                 </div>
             </div>
