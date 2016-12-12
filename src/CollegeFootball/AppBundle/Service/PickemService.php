@@ -72,6 +72,12 @@ class PickemService
                     $gamePredictions[$gameId]['awayCount']++;
                 }
             }
+
+            if ($homeAway == 'home') {
+                $gamePredictions[$gameId]['people']['home'][] = $prediction->getPerson()->getFirstName();
+            } else {
+                $gamePredictions[$gameId]['people']['away'][] = $prediction->getPerson()->getFirstName();
+            }
         }
 
         return $gamePredictions;
