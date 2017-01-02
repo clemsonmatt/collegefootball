@@ -87,7 +87,7 @@ class PickemService
     {
         $repository           = $this->em->getRepository('CollegeFootballAppBundle:Prediction');
         $predictedWeekWinners = $repository->createQueryBuilder('p')
-            ->select('t.slug')
+            ->select('t.slug, g.id')
             ->join('p.person', 'person')
             ->join('p.team', 't')
             ->join('p.game', 'g')
@@ -103,7 +103,7 @@ class PickemService
 
         $weekWinners = [];
         foreach ($predictedWeekWinners as $weekWinner) {
-            $weekWinners[] = $weekWinner['slug'];
+            $weekWinners[$weekWinner['id']] = $weekWinner['slug'];
         }
 
         return $weekWinners;
