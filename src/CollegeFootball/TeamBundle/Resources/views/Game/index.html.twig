@@ -49,7 +49,7 @@
                         <div class="panel panel-default">
                             <div class="panel-body">
                                 {% if playoff_games.championship is defined and playoff_games.championship.homeTeam %}
-                                    <img src="{{ asset(playoff_games.championship.awayTeam.imageLocation) }}" style="width: 40px; float: left;">
+                                    <img src="{{ asset(playoff_games.championship.homeTeam.imageLocation) }}" style="width: 40px; float: left;">
                                     <h4 style="margin-left: 50px;">{{ playoff_games.championship.homeTeam.nameShort }}</h4>
                                 {% else %}
                                     <h4 class="text-muted">TBD</h4>
