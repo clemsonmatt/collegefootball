@@ -36,44 +36,24 @@ class StatsService
             ->getResult();
 
         $defaultStats = [
-            'pointsFinal'           => 0,
-            'pointsFirst'           => 0,
-            'pointsSecond'          => 0,
-            'pointsThird'           => 0,
-            'pointsFourth'          => 0,
-            'ot1'                   => 0,
-            'ot2'                   => 0,
-            'ot3'                   => 0,
-            'ot4'                   => 0,
-            'totalOffenseYards'     => 0,
-            'rushingYards'          => 0,
-            'rushingAttempts'       => 0,
-            'rushingTd'             => 0,
-            'passingYards'          => 0,
-            'passingAttempts'       => 0,
-            'passingCompletions'    => 0,
-            'passingTd'             => 0,
-            'passingInterceptions'  => 0,
-            'thirdDownAttempts'     => 0,
-            'thirdDownConversions'  => 0,
-            'fourthDownAttempts'    => 0,
-            'fourthDownConversions' => 0,
-            'puntReturnCount'       => 0,
-            'puntReturnYards'       => 0,
-            'puntReturnTd'          => 0,
-            'puntCount'             => 0,
-            'puntYards'             => 0,
-            'fieldGoalAttempts'     => 0,
-            'fieldGoalMade'         => 0,
-            'patAttempts'           => 0,
-            'patMade'               => 0,
-            'interceptionCount'     => 0,
-            'interceptionYards'     => 0,
-            'interceptionTd'        => 0,
-            'fumbleCount'           => 0,
-            'penaltyCount'          => 0,
-            'penaltyYards'          => 0,
-            'gameCount'             => count($games),
+            'pointsFinal'        => 0,
+            'pointsFirst'        => 0,
+            'pointsSecond'       => 0,
+            'pointsThird'        => 0,
+            'pointsFourth'       => 0,
+            'ot1'                => 0,
+            'ot2'                => 0,
+            'ot3'                => 0,
+            'ot4'                => 0,
+            'totalOffenseYards'  => 0,
+            'rushingYards'       => 0,
+            'rushingAttempts'    => 0,
+            'passingYards'       => 0,
+            'passingAttempts'    => 0,
+            'passingCompletions' => 0,
+            'turnoverCount'      => 0,
+            'penaltyYards'       => 0,
+            'gameCount'          => count($games),
         ];
 
         $stats = [
@@ -152,10 +132,10 @@ class StatsService
         $homeScoringMargin = $homeTeamStats['team']['pointsFinal'] - $homeTeamStats['opponent']['pointsFinal'];
         $awayScoringMargin = $awayTeamStats['team']['pointsFinal'] - $awayTeamStats['opponent']['pointsFinal'];
 
-        $homeTurnovers         = $homeTeamStats['team']['interceptionCount'] + $homeTeamStats['team']['fumbleCount'];
-        $awayTurnovers         = $awayTeamStats['team']['interceptionCount'] + $awayTeamStats['team']['fumbleCount'];
-        $homeOpponentTurnovers = $homeTeamStats['opponent']['interceptionCount'] + $homeTeamStats['opponent']['fumbleCount'];
-        $awayOpponentTurnovers = $awayTeamStats['opponent']['interceptionCount'] + $awayTeamStats['opponent']['fumbleCount'];
+        $homeTurnovers         = $homeTeamStats['team']['turnoverCount'];
+        $awayTurnovers         = $awayTeamStats['team']['turnoverCount'];
+        $homeOpponentTurnovers = $homeTeamStats['opponent']['turnoverCount'];
+        $awayOpponentTurnovers = $awayTeamStats['opponent']['turnoverCount'];
 
         if ($homeTeamStats['team']['passingAttempts'] && $awayTeamStats['team']['passingAttempts']) {
             $homePassing         = round(($homeTeamStats['team']['passingCompletions'] / $homeTeamStats['team']['passingAttempts']) * 100, 2);

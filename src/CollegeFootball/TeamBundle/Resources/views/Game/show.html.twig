@@ -270,11 +270,6 @@
                     <td>{{ game.stats.homeStats.rushingAttempts|default('&mdash;')|raw }}</td>
                     <td>{{ game.stats.awayStats.rushingAttempts|default('&mdash;')|raw }}</td>
                 </tr>
-                <tr>
-                    <th>TD</th>
-                    <td>{{ game.stats.homeStats.rushingTd|default('&mdash;')|raw }}</td>
-                    <td>{{ game.stats.awayStats.rushingTd|default('&mdash;')|raw }}</td>
-                </tr>
 
                 <tr><th colspan="3" class="tr-header">Passing</th></tr>
                 <tr>
@@ -292,133 +287,28 @@
                     <td>{{ game.stats.homeStats.passingCompletions|default('&mdash;')|raw }}</td>
                     <td>{{ game.stats.awayStats.passingCompletions|default('&mdash;')|raw }}</td>
                 </tr>
-                <tr>
-                    <th>TD</th>
-                    <td>{{ game.stats.homeStats.passingTd|default('&mdash;')|raw }}</td>
-                    <td>{{ game.stats.awayStats.passingTd|default('&mdash;')|raw }}</td>
-                </tr>
-                <tr>
-                    <th>Interceptions</th>
-                    <td>{{ game.stats.homeStats.passingInterceptions|default('&mdash;')|raw }}</td>
-                    <td>{{ game.stats.awayStats.passingInterceptions|default('&mdash;')|raw }}</td>
-                </tr>
-
-                <tr><th colspan="3" class="tr-header">Punt Returns</th></tr>
-                <tr>
-                    <th>Count</th>
-                    <td>{{ game.stats.homeStats.puntReturnCount|default('&mdash;')|raw }}</td>
-                    <td>{{ game.stats.awayStats.puntReturnCount|default('&mdash;')|raw }}</td>
-                </tr>
-                <tr>
-                    <th>Yards</th>
-                    <td>{{ game.stats.homeStats.puntReturnYards|default('&mdash;')|raw }}</td>
-                    <td>{{ game.stats.awayStats.puntReturnYards|default('&mdash;')|raw }}</td>
-                </tr>
-                <tr>
-                    <th>TD</th>
-                    <td>{{ game.stats.homeStats.puntReturnTd|default('&mdash;')|raw }}</td>
-                    <td>{{ game.stats.awayStats.puntReturnTd|default('&mdash;')|raw }}</td>
-                </tr>
-
-                <tr><th colspan="3" class="tr-header">Punts</th></tr>
-                <tr>
-                    <th>Count</th>
-                    <td>{{ game.stats.homeStats.puntCount|default('&mdash;')|raw }}</td>
-                    <td>{{ game.stats.awayStats.puntCount|default('&mdash;')|raw }}</td>
-                </tr>
-                <tr>
-                    <th>Yards</th>
-                    <td>{{ game.stats.homeStats.puntYards|default('&mdash;')|raw }}</td>
-                    <td>{{ game.stats.awayStats.puntYards|default('&mdash;')|raw }}</td>
-                </tr>
 
                 <tr><th colspan="3" class="tr-header">Turnovers</th></tr>
                 <tr>
-                    <th>Interceptions</th>
-                    <td>{{ game.stats.homeStats.interceptionCount|default('&mdash;')|raw }}</td>
-                    <td>{{ game.stats.awayStats.interceptionCount|default('&mdash;')|raw }}</td>
-                </tr>
-                <tr>
-                    <th>Interception Yards</th>
-                    <td>{{ game.stats.homeStats.interceptionYards|default('&mdash;')|raw }}</td>
-                    <td>{{ game.stats.awayStats.interceptionYards|default('&mdash;')|raw }}</td>
-                </tr>
-                <tr>
-                    <th>Interception TD</th>
-                    <td>{{ game.stats.homeStats.interceptionTd|default('&mdash;')|raw }}</td>
-                    <td>{{ game.stats.awayStats.interceptionTd|default('&mdash;')|raw }}</td>
-                </tr>
-                <tr>
-                    <th>Fumble Recovered</th>
-                    <td>{{ game.stats.homeStats.fumbleCount|default('&mdash;')|raw }}</td>
-                    <td>{{ game.stats.awayStats.fumbleCount|default('&mdash;')|raw }}</td>
+                    <th>Count</th>
+                    {% if 'interceptionCount' in game.stats.homeStats|keys %}
+                        {# old way #}
+                        <td>{{ (game.stats.homeStats.interceptionCount + game.stats.homeStats.fumbleCount)|default('&mdash;')|raw }}</td>
+                        <td>{{ (game.stats.awayStats.interceptionCount + game.stats.awayStats.fumbleCount)|default('&mdash;')|raw }}</td>
+                    {% elseif 'turnoverCount' in game.stats.homeStats|keys %}
+                        {# current way #}
+                        <td>{{ (game.stats.homeStats.turnoverCount)|default('&mdash;')|raw }}</td>
+                        <td>{{ (game.stats.awayStats.turnoverCount)|default('&mdash;')|raw }}</td>
+                    {% else %}
+                        &mdash;
+                    {% endif %}
                 </tr>
 
                 <tr><th colspan="3" class="tr-header">Penalties</th></tr>
                 <tr>
-                    <th>Count</th>
-                    <td>{{ game.stats.homeStats.penaltyCount|default('&mdash;')|raw }}</td>
-                    <td>{{ game.stats.awayStats.penaltyCount|default('&mdash;')|raw }}</td>
-                </tr>
-                <tr>
                     <th>Yards</th>
                     <td>{{ game.stats.homeStats.penaltyYards|default('&mdash;')|raw }}</td>
                     <td>{{ game.stats.awayStats.penaltyYards|default('&mdash;')|raw }}</td>
-                </tr>
-
-                <tr><th colspan="3" class="tr-header">Time of Possession</th></tr>
-                <tr>
-                    <th>T.O.P.</th>
-                    <td>{{ game.stats.homeStats.timeOfPossession|default('&mdash;')|raw }}</td>
-                    <td>{{ game.stats.awayStats.timeOfPossession|default('&mdash;')|raw }}</td>
-                </tr>
-
-                <tr><th colspan="3" class="tr-header">3rd Downs</th></tr>
-                <tr>
-                    <th>Attempts</th>
-                    <td>{{ game.stats.homeStats.thirdDownAttempts|default('&mdash;')|raw }}</td>
-                    <td>{{ game.stats.awayStats.thirdDownAttempts|default('&mdash;')|raw }}</td>
-                </tr>
-                <tr>
-                    <th>Conversions</th>
-                    <td>{{ game.stats.homeStats.thirdDownConversions|default('&mdash;')|raw }}</td>
-                    <td>{{ game.stats.awayStats.thirdDownConversions|default('&mdash;')|raw }}</td>
-                </tr>
-
-                <tr><th colspan="3" class="tr-header">4th Downs</th></tr>
-                <tr>
-                    <th>Attempts</th>
-                    <td>{{ game.stats.homeStats.fourthDownAttempts|default('&mdash;')|raw }}</td>
-                    <td>{{ game.stats.awayStats.fourthDownAttempts|default('&mdash;')|raw }}</td>
-                </tr>
-                <tr>
-                    <th>Conversions</th>
-                    <td>{{ game.stats.homeStats.fourthDownConversions|default('&mdash;')|raw }}</td>
-                    <td>{{ game.stats.awayStats.fourthDownConversions|default('&mdash;')|raw }}</td>
-                </tr>
-
-                <tr><th colspan="3" class="tr-header">Field Goals</th></tr>
-                <tr>
-                    <th>Attempts</th>
-                    <td>{{ game.stats.homeStats.fieldGoalAttempts|default('&mdash;')|raw }}</td>
-                    <td>{{ game.stats.awayStats.fieldGoalAttempts|default('&mdash;')|raw }}</td>
-                </tr>
-                <tr>
-                    <th>Made</th>
-                    <td>{{ game.stats.homeStats.fieldGoalMade|default('&mdash;')|raw }}</td>
-                    <td>{{ game.stats.awayStats.fieldGoalMade|default('&mdash;')|raw }}</td>
-                </tr>
-
-                <tr><th colspan="3" class="tr-header">Point After TD</th></tr>
-                <tr>
-                    <th>Attempts</th>
-                    <td>{{ game.stats.homeStats.patAttempts|default('&mdash;')|raw }}</td>
-                    <td>{{ game.stats.awayStats.patAttempts|default('&mdash;')|raw }}</td>
-                </tr>
-                <tr>
-                    <th>Made</th>
-                    <td>{{ game.stats.homeStats.patMade|default('&mdash;')|raw }}</td>
-                    <td>{{ game.stats.awayStats.patMade|default('&mdash;')|raw }}</td>
                 </tr>
             </table>
         {% elseif is_granted('ROLE_MANAGE') %}
