@@ -4,7 +4,7 @@
 {% block content %}
     <div class="panel panel-default">
         <div class="panel-heading">
-            {% if team %}
+            {% if team is defined %}
                 <a href="{{ path('collegefootball_team_show', {'slug': team.slug}) }}">
                     {{ team }}
                 </a>
