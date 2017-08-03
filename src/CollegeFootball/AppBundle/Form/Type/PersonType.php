@@ -35,10 +35,12 @@ class PersonType extends AbstractType
                 'required' => false,
             ]);
 
-            $builder->add('username', SymfonyTypes\TextType::class, [
-                'label' => false,
-                'attr'  => ['placeholder' => 'Username'],
-            ]);
+            if (! $options['create']) {
+                $builder->add('username', SymfonyTypes\TextType::class, [
+                    'label' => false,
+                    'attr'  => ['placeholder' => 'Username'],
+                ]);
+            }
         } else {
             $builder->add('currentPassword', SymfonyTypes\PasswordType::class, [
                 'attr'   => ['placeholder' => 'Current Password'],
@@ -87,6 +89,7 @@ class PersonType extends AbstractType
             'data_class'    => Person::class,
             'show_password' => true,
             'only_password' => false,
+            'create'        => false,
         ]);
     }
 }

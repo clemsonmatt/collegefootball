@@ -43,7 +43,12 @@ class SecurityController extends Controller
     {
         $person = new Person();
 
-        $form = $this->createForm(PersonType::class, $person);
+        $username = substr(str_shuffle(str_repeat($x='0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ', ceil(10/strlen($x)) )),1,10);
+        $person->setUsername($username);
+
+        $form = $this->createForm(PersonType::class, $person, [
+            'create' => true,
+        ]);
 
         $form->handleRequest($request);
 
@@ -51,6 +56,10 @@ class SecurityController extends Controller
             $passwordEncoder = $this->get('security.password_encoder');
             $password        = $passwordEncoder->encodePassword($person, $person->getPassword());
             $person->setPassword($password);
+
+            $username = $person->getEmail();
+            $username = explode('@', $username);
+            $person->setUsername($username[0]);
 
             $em = $this->getDoctrine()->getManager();
             $em->persist($person);
