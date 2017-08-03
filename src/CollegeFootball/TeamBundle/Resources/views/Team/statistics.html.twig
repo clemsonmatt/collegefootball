@@ -40,34 +40,11 @@
                         <td>{{ stats.team.pointsFourth }}</td>
                         <td>{{ stats.opponent.pointsFourth }}</td>
                     </tr>
-                    {% if 'ot1' in stats.team|keys and stats.team.ot1 %}
-                        <tr>
-                            <th>1st OT</th>
-                            <td>{{ stats.team.ot1 }}</td>
-                            <td>{{ stats.team.ot1 }}</td>
-                        </tr>
-                    {% endif %}
-                    {% if 'ot2' in stats.team|keys and stats.team.ot2 %}
-                        <tr>
-                            <th>2nd OT</th>
-                            <td>{{ stats.team.ot2 }}</td>
-                            <td>{{ stats.team.ot2 }}</td>
-                        </tr>
-                    {% endif %}
-                    {% if 'ot3' in stats.team|keys and stats.team.ot3 %}
-                        <tr>
-                            <th>3rd OT</th>
-                            <td>{{ stats.team.ot3 }}</td>
-                            <td>{{ stats.team.ot3 }}</td>
-                        </tr>
-                    {% endif %}
-                    {% if 'ot4' in stats.team|keys and stats.team.ot4 %}
-                        <tr>
-                            <th>4th OT</th>
-                            <td>{{ stats.team.ot4 }}</td>
-                            <td>{{ stats.team.ot4 }}</td>
-                        </tr>
-                    {% endif %}
+                    <tr>
+                        <th>OT</th>
+                        <td>{{ stats.team.ot }}</td>
+                        <td>{{ stats.opponent.ot }}</td>
+                    </tr>
                 </table>
             </div>
         </div>

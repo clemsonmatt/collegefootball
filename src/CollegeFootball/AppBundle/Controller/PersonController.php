@@ -82,6 +82,8 @@ class PersonController extends Controller
             'week_lose_picks' => $weekLosePicks,
             'people_rank'     => $leaderboard['peopleByRank'],
             'current_rank'    => $leaderboard['currentRank'],
+            'current_score'   => $leaderboard['currentScore'],
+            'highest_score'   => $leaderboard['highestScore'],
         ]);
     }
 

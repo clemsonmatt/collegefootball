@@ -70,7 +70,7 @@
                 </div>
                 <div class="panel-body">
                     <h4 class="text-center">
-                        #{{ current_rank }} {{ person.username }} &mdash; {{ ((person.predictionWins / (person.predictionWins + person.predictionLosses)) * 100)|number_format(1) }}%
+                        #{{ current_rank }} {{ person.username }} &mdash; {{ current_score|number_format(1) }}%
                     </h4>
                 </div>
                 <table class="table table-striped table-hover">
@@ -82,7 +82,7 @@
                     </thead>
                     {% for person_rank in people_rank %}
                         <tr>
-                            <td class="text-center">{{ loop.index }}</td>
+                            <td class="text-center">{{ highest_score.score > 0 ? loop.index : '1' }}</td>
                             <td>{{ person_rank.username }}</td>
                             <td class="text-center">{{ person_rank.score }}%</td>
                             <td class="text-center">({{ person_rank.wins }} &ndash; {{ person_rank.losses }})</td>
