@@ -223,34 +223,11 @@
                     <td>{{ game.stats.homeStats.pointsFourth }}</td>
                     <td>{{ game.stats.awayStats.pointsFourth }}</td>
                 </tr>
-                {% if 'ot1' in game.stats.homeStats|keys and game.stats.homeStats.ot1 %}
-                    <tr>
-                        <th>1st OT</th>
-                        <td>{{ game.stats.homeStats.ot1 }}</td>
-                        <td>{{ game.stats.awayStats.ot1 }}</td>
-                    </tr>
-                {% endif %}
-                {% if 'ot2' in game.stats.homeStats|keys and game.stats.homeStats.ot2 %}
-                    <tr>
-                        <th>2nd OT</th>
-                        <td>{{ game.stats.homeStats.ot2 }}</td>
-                        <td>{{ game.stats.awayStats.ot2 }}</td>
-                    </tr>
-                {% endif %}
-                {% if 'ot3' in game.stats.homeStats|keys and game.stats.homeStats.ot3 %}
-                    <tr>
-                        <th>3rd OT</th>
-                        <td>{{ game.stats.homeStats.ot3 }}</td>
-                        <td>{{ game.stats.awayStats.ot3 }}</td>
-                    </tr>
-                {% endif %}
-                {% if 'ot4' in game.stats.homeStats|keys and game.stats.homeStats.ot4 %}
-                    <tr>
-                        <th>4th OT</th>
-                        <td>{{ game.stats.homeStats.ot4 }}</td>
-                        <td>{{ game.stats.awayStats.ot4 }}</td>
-                    </tr>
-                {% endif %}
+                <tr>
+                    <th>OT</th>
+                    <td>{{ game.stats.homeStats.ot|default('&mdash;')|raw }}</td>
+                    <td>{{ game.stats.awayStats.ot|default('&mdash;')|raw }}</td>
+                </tr>
 
                 <tr><th colspan="3" class="tr-header">Total Offense</th></tr>
                 <tr>
@@ -291,17 +268,8 @@
                 <tr><th colspan="3" class="tr-header">Turnovers</th></tr>
                 <tr>
                     <th>Count</th>
-                    {% if 'interceptionCount' in game.stats.homeStats|keys %}
-                        {# old way #}
-                        <td>{{ (game.stats.homeStats.interceptionCount + game.stats.homeStats.fumbleCount)|default('&mdash;')|raw }}</td>
-                        <td>{{ (game.stats.awayStats.interceptionCount + game.stats.awayStats.fumbleCount)|default('&mdash;')|raw }}</td>
-                    {% elseif 'turnoverCount' in game.stats.homeStats|keys %}
-                        {# current way #}
-                        <td>{{ (game.stats.homeStats.turnoverCount)|default('&mdash;')|raw }}</td>
-                        <td>{{ (game.stats.awayStats.turnoverCount)|default('&mdash;')|raw }}</td>
-                    {% else %}
-                        &mdash;
-                    {% endif %}
+                    <td>{{ (game.stats.homeStats.turnoverCount)|default('&mdash;')|raw }}</td>
+                    <td>{{ (game.stats.awayStats.turnoverCount)|default('&mdash;')|raw }}</td>
                 </tr>
 
                 <tr><th colspan="3" class="tr-header">Penalties</th></tr>
