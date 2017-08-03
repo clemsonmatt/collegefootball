@@ -1,0 +1,39 @@
+{
+    "games": [
+        {
+            "date": "12/2/17",
+            "awayTeam": "Louisiana",
+            "homeTeam": "Appalachian State",
+            "time": "TBD",
+            "location": "Kidd Brewer Stadium, Boone, NC"
+        },
+        {
+            "date": "12/2/17",
+            "awayTeam": "Troy",
+            "homeTeam": "Arkansas State",
+            "time": "TBD",
+            "location": "Centennial Bank Stadium, Jonesboro, AR"
+        },
+        {
+            "date": "12/2/17",
+            "awayTeam": "Georgia Southern",
+            "homeTeam": "Coastal Carolina",
+            "time": "TBD",
+            "location": "Brooks Stadium, Conway, SC"
+        },
+        {
+            "date": "12/2/17",
+            "awayTeam": "Idaho",
+            "homeTeam": "Georgia State",
+            "time": "TBD",
+            "location": "Georgia State Stadium, Atlanta, GA"
+        },
+        {
+            "date": "12/2/17",
+            "awayTeam": "South Alabama",
+            "homeTeam": "New Mexico State",
+            "time": "TBD",
+            "location": "Aggie Memorial Stadium, Las Cru"
+        }
+    ]
+}
