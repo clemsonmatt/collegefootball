@@ -22,10 +22,7 @@ class TeamStatsType extends AbstractType
         $builder->add('pointsFourth', SymfonyTypes\IntegerType::class, ['label' => '4th quarter']);
 
         /* OT */
-        $builder->add('ot1', SymfonyTypes\IntegerType::class, ['label' => '1st OT', 'required' => false]);
-        $builder->add('ot2', SymfonyTypes\IntegerType::class, ['label' => '2nd OT', 'required' => false]);
-        $builder->add('ot3', SymfonyTypes\IntegerType::class, ['label' => '3rd OT', 'required' => false]);
-        $builder->add('ot4', SymfonyTypes\IntegerType::class, ['label' => '4th OT', 'required' => false]);
+        $builder->add('ot', SymfonyTypes\IntegerType::class, ['label' => 'OT', 'required' => false]);
 
         /* rushing */
         $builder->add('rushingYards', SymfonyTypes\IntegerType::class, ['label' => 'Yards']);

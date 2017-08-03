@@ -166,8 +166,12 @@ class PickemService
             $predictionWins   = $person->getPredictionWins();
             $predictionLosses = $person->getPredictionLosses();
 
-            $score = ($predictionWins / ($predictionWins + $predictionLosses)) * 100;
-            $score = round($score, 1);
+            $score = 0;
+
+            if ($predictionWins || $predictionLosses) {
+                $score = ($predictionWins / ($predictionWins + $predictionLosses)) * 100;
+                $score = round($score, 1);
+            }
 
             $sortingScores[] = $score;
 
@@ -184,22 +188,38 @@ class PickemService
 
         /* sort the people by the sorted scores */
         $sortedPeopleByRank = [];
+        $usedPeople         = [];
 
         foreach ($sortingScores as $score) {
             foreach ($peopleByRank as $ranking) {
-                if ($score == $ranking['score']) {
+                if ($score == $ranking['score'] && ! in_array($ranking['username'], $usedPeople)) {
                     $sortedPeopleByRank[] = $ranking;
+                    $usedPeople[]         = $ranking['username'];
                 }
             }
         }
 
         /* get the current user rank */
-        $currentRank = null;
+        $currentRank  = null;
+        $currentScore = 0;
+        $highestScore = [
+            'username' => '--',
+            'score'    => 0,
+        ];
 
         foreach ($sortedPeopleByRank as $rank => $sortedPerson) {
+            $score = $sortedPerson['score'];
+
             if ($sortedPerson['username'] == $user->getUsername()) {
-                $currentRank = $rank + 1;
-                break;
+                $currentRank  = $rank + 1;
+                $currentScore = $score;
+            }
+
+            if ($score > $highestScore['score']) {
+                $highestScore = [
+                    'username' => $user->getUsername(),
+                    'score'    => $score
+                ];
             }
         }
 
@@ -207,6 +227,8 @@ class PickemService
         return [
             'peopleByRank' => $sortedPeopleByRank,
             'currentRank'  => $currentRank,
+            'currentScore' => $currentScore,
+            'highestScore' => $highestScore,
         ];
     }
 }
