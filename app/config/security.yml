@@ -8,7 +8,7 @@ security:
 
     providers:
         administrators:
-            entity: { class: CollegeFootballAppBundle:Person, property: username }
+            entity: { class: CollegeFootballAppBundle:Person, property: email }
 
     firewalls:
         dev:
