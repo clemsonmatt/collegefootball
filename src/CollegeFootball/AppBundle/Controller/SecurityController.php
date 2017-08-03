@@ -119,7 +119,7 @@ class SecurityController extends Controller
                     ->setFrom('noreply@college-football.herokuapp.com')
                     ->setTo($person->getEmail())
                     ->setBody(
-                        $this->render('CollegeFootballAppBundle:Email:forgotPassword.html.twig', [
+                        $this->renderView('CollegeFootballAppBundle:Email:forgotPassword.html.twig', [
                             'unique_password' => $uniquePassword,
                         ]),
                         'text/html'
@@ -127,13 +127,15 @@ class SecurityController extends Controller
 
                 $this->get('mailer')->send($message);
 
-                $this->addFlash('info', 'Your temporary password has been assigned. Please check your email ('.$person->getEmail().') for your temporary password.');
+                $this->addFlash('note', 'Your temporary password has been assigned. Please check your email ('.$person->getEmail().') for your temporary password.');
 
                 return $this->redirectToRoute('collegefootball_security_login');
             }
 
             $this->addFlash('error', 'No user found with email "'.$email.'"');
         }
+
+        $this->addFlash('note', 'Enter email address to get a temporary password');
 
         return $this->render('CollegeFootballAppBundle:Security:forgotPassword.html.twig', [
             'form' => $form->createView(),
@@ -149,7 +151,27 @@ class SecurityController extends Controller
         $repository = $em->getRepository('CollegeFootballAppBundle:Person');
         $person     = $repository->findOneByTempPassword(md5($tempPass));
 
-        if (count($person) > 0) {
+        if (! $person) {
+            return $this->redirectToRoute('collegefootball_security_login');
+        }
+
+        $form = $this->createFormBuilder()
+            ->add('password', SymfonyTypes\PasswordType::class, [
+                'label' => false,
+            ])
+            ->getForm();
+
+        $form->handleRequest($request);
+
+        if ($form->isValid()) {
+            $passwordEncoder = $this->get('security.password_encoder');
+            $password        = $passwordEncoder->encodePassword($person, $form->getData()['password']);
+            $person->setPassword($password);
+            $person->setTempPassword(null);
+
+            $em = $this->getDoctrine()->getManager();
+            $em->flush();
+
             // login the user with their roles
             $token = new UsernamePasswordToken($person, null, 'secured_area', $person->getRoles());
             $this->get('security.token_storage')->setToken($token);
@@ -158,12 +180,15 @@ class SecurityController extends Controller
             $event   = new InteractiveLoginEvent($request, $token);
             $this->get("event_dispatcher")->dispatch("security.interactive_login", $event);
 
-            // store flash message
-            $this->addFlash('info', 'Please update your password.');
+            return $this->redirectToRoute('collegefootball_person_show', [
+                'username' => $person->getUsername(),
+            ]);
         }
 
-        return $this->redirectToRoute('collegefootball_person_show', [
-            'username' => $person->getUsername(),
+        $this->addFlash('note', 'Please update your password.');
+
+        return $this->render('CollegeFootballAppBundle:Security:updatePassword.html.twig', [
+            'form' => $form->createView(),
         ]);
     }
 }

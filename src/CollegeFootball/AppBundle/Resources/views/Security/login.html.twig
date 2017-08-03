@@ -1,89 +1,50 @@
 {% extends 'CollegeFootballAppBundle:Security:layout.html.twig' %}
 
 {% block content %}
-    <div class="container">
-        <div style="margin-top: 5%;">
-            <center>
-                <img src="{{ asset('bundles/collegefootballapp/images/espnCollegeFootballLogo.png') }}" style="max-width: 15%; margin-bottom: 20px;">
-            </center>
-            {% block flash_messages %}
-                {% set flashTypes = [ 'note', 'warning', 'error', 'success'] %}
-                {% set flashTypeMap = {
-                    'note'    : 'info',
-                    'warning' : 'warning',
-                    'error'   : 'danger',
-                    'success' : 'success',
-                } %}
-                {% set flashIconMap = {
-                    'note'    : 'info-circle',
-                    'warning' : 'exclamation-circle',
-                    'error'   : 'times-circle',
-                    'success' : 'check-circle',
-                } %}
-                {% for flashType in flashTypes %}
-                    {% for flashMessage in app.session.flashbag.get(flashType) %}
-                        <div class="hidden-print alert alert-custom alert-dismissible alert-{{ flashTypeMap[flashType] }}" role="alert" style="margin-bottom: 20px;">
-                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                            <table>
-                                <td>
-                                    <div class="alert-icon alert-icon-{{ flashTypeMap[flashType] }}">
-                                        {{ icon(flashIconMap[flashType]) }}
-                                    </div>
-                                </td>
-                                <td style="padding-left: 10px;">
-                                    <strong class="alert-text-{{ flashTypeMap[flashType] }}">
-                                        {{ flashType|capitalize }}!
-                                    </strong>
-                                    {{ flashMessage|raw }}
-                                </td>
-                            </table>
-                        </div>
-                    {% endfor %}
-                {% endfor %}
-            {% endblock %}
-            <!-- login -->
-            <div class="col-md-offset-4 col-md-4 col-sm-offset-3 col-sm-6 panel panel-custom">
-                <form class="form-signin" action="login_check" method="post" style="margin-top: 20px;">
-                    {% if error %}
-                        <div class="hidden-print alert alert-custom alert-danger }}" role="alert" style="margin-bottom: 20px;">
-                            <table>
-                                <td>
-                                    <div class="alert-icon alert-icon-danger">
-                                        {{ icon('alert-circled') }}
-                                    </div>
-                                </td>
-                                <td style="padding-left: 10px;">
-                                    <strong class="alert-text-danger">
-                                        Error!
-                                    </strong>
-                                    {{ error.message }}
-                                </td>
-                            </table>
-                        </div>
-                    {% else %}
-                        <div style="margin-top: 10px;"></div>
-                    {% endif %}
+    <center>
+        <img src="{{ asset('bundles/collegefootballapp/images/espnCollegeFootballLogo.png') }}" style="max-width: 55%; margin-bottom: 20px;">
+    </center>
 
-                    <input type="text" class="form-control input-sm" name="_username" value="{{ username }}" placeholder="Email" />
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <form class="form-signin" action="login_check" method="post" style="margin-top: 20px;">
+                {% if error %}
+                    <div class="hidden-print alert alert-custom alert-danger }}" role="alert" style="margin-bottom: 20px;">
+                        <table>
+                            <td>
+                                <div class="alert-icon alert-icon-danger">
+                                    {{ icon('alert-circled') }}
+                                </div>
+                            </td>
+                            <td style="padding-left: 10px;">
+                                <strong class="alert-text-danger">
+                                    Error!
+                                </strong>
+                                {{ error.message }}
+                            </td>
+                        </table>
+                    </div>
+                {% else %}
+                    <div style="margin-top: 10px;"></div>
+                {% endif %}
 
-                    <input type="password" class="form-control input-sm" name="_password" placeholder="Password" />
+                <input type="text" class="form-control input-sm" name="_username" value="{{ username }}" placeholder="Email" />
 
-                    <button type="submit" class="btn btn-primary btn-block">
-                        {{ icon('log-in') }}
-                        Login
-                    </button>
-                    <br>
-                    <a href="{{ path('collegefootball_security_forgot') }}" class="pull-right text-muted">
-                        Forgot Passord?
-                    </a>
-                    <a href="{{ path('collegefootball_security_create') }}">
-                        Create Account
-                    </a>
-                </form>
+                <input type="password" class="form-control input-sm" name="_password" placeholder="Password" />
+
+                <button type="submit" class="btn btn-primary btn-block">
+                    {{ icon('log-in') }}
+                    Login
+                </button>
                 <br>
-            </div>
+                <a href="{{ path('collegefootball_security_forgot') }}" class="pull-right text-muted">
+                    Forgot Passord?
+                </a>
+                <a href="{{ path('collegefootball_security_create') }}">
+                    Create Account
+                </a>
+            </form>
+            <br>
         </div>
     </div>
 {% endblock %}
