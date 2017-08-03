@@ -1,0 +1,417 @@
+{
+    "games": [
+        {
+            "date": "10/11/17",
+            "awayTeam": "South Alabama",
+            "homeTeam": "Troy",
+            "time": "8:00 PM",
+            "location": "Veterans Memorial Stadium , Troy, AL"
+        },
+        {
+            "date": "10/12/17",
+            "awayTeam": "Texas State",
+            "homeTeam": "Louisiana",
+            "time": "7:30 PM",
+            "location": "Cajun Field, Lafayette, LA"
+        },
+        {
+            "date": "10/12/17",
+            "awayTeam": "Georgia Tech",
+            "homeTeam": "Miami",
+            "time": "8:00 PM",
+            "location": "Hard Rock Stadium, Miami, FL"
+        },
+        {
+            "date": "10/13/17",
+            "awayTeam": "Clemson",
+            "homeTeam": "Syracuse",
+            "time": "7:00 PM",
+            "location": "Carrier Dome, Syracuse, NY"
+        },
+        {
+            "date": "10/13/17",
+            "awayTeam": "Washington State",
+            "homeTeam": "California",
+            "time": "10:30 PM",
+            "location": "Memorial Stadium , Berkeley, CA"
+        },
+        {
+            "date": "10/14/17",
+            "awayTeam": "UCLA",
+            "homeTeam": "Arizona",
+            "time": "TBD",
+            "location": "Arizona Stadium, Tucson, AZ"
+        },
+        {
+            "date": "10/14/17",
+            "awayTeam": "Washington",
+            "homeTeam": "Arizona State",
+            "time": "TBD",
+            "location": "Sun Devil Stadium, Tempe, AZ"
+        },
+        {
+            "date": "10/14/17",
+            "awayTeam": "Utah",
+            "homeTeam": "USC",
+            "time": "TBD",
+            "location": "Los Angeles Memorial Coliseum, Los Angeles, CA"
+        },
+        {
+            "date": "10/14/17",
+            "awayTeam": "Colorado",
+            "homeTeam": "Oregon State",
+            "time": "TBD",
+            "location": "Reser Stadium, Corvallis, OR"
+        },
+        {
+            "date": "10/14/17",
+            "awayTeam": "Oregon",
+            "homeTeam": "Stanford",
+            "time": "TBD",
+            "location": "Stanford Stadium, Stanford, CA"
+        },
+        {
+            "date": "10/14/17",
+            "awayTeam": "Northwestern",
+            "homeTeam": "Maryland",
+            "time": "TBD",
+            "location": "Maryland Stadium, College Park, MD"
+        },
+        {
+            "date": "10/14/17",
+            "awayTeam": "Rutgers",
+            "homeTeam": "Illinois",
+            "time": "TBD",
+            "location": "Memorial Stadium , Champaign, IL"
+        },
+        {
+            "date": "10/14/17",
+            "awayTeam": "Arkansas",
+            "homeTeam": "Alabama",
+            "time": "TBD",
+            "location": "Bryant-Denny Stadium, Tuscaloosa, AL"
+        },
+        {
+            "date": "10/14/17",
+            "awayTeam": "Texas A&M",
+            "homeTeam": "Florida",
+            "time": "TBD",
+            "location": "Ben Hill Griffin Stadium, Gainesville, FL"
+        },
+        {
+            "date": "10/14/17",
+            "awayTeam": "Missouri",
+            "homeTeam": "Georgia",
+            "time": "TBD",
+            "location": "Sanford Stadium, Athens, GA"
+        },
+        {
+            "date": "10/14/17",
+            "awayTeam": "Auburn",
+            "homeTeam": "LSU",
+            "time": "TBD",
+            "location": "Tiger Stadium , Baton Rouge, LA"
+        },
+        {
+            "date": "10/14/17",
+            "awayTeam": "Vanderbilt",
+            "homeTeam": "Ole Miss",
+            "time": "TBD",
+            "location": "Vaught-Hemingway Stadium, Oxford, MS"
+        },
+        {
+            "date": "10/14/17",
+            "awayTeam": "BYU",
+            "homeTeam": "Mississippi State",
+            "time": "TBD",
+            "location": "Davis Wade Stadium, Starkville, MS"
+        },
+        {
+            "date": "10/14/17",
+            "awayTeam": "South Carolina",
+            "homeTeam": "Tennessee",
+            "time": "TBD",
+            "location": "Neyland Stadium, Knoxville, TN"
+        },
+        {
+            "date": "10/14/17",
+            "awayTeam": "Baylor",
+            "homeTeam": "Oklahoma State",
+            "time": "TBD",
+            "location": "Boone Pickens Stadium, Stillwater, OK"
+        },
+        {
+            "date": "10/14/17",
+            "awayTeam": "Kansas",
+            "homeTeam": "Iowa State",
+            "time": "TBD",
+            "location": "Jack Trice Stadium, Ames, IA"
+        },
+        {
+            "date": "10/14/17",
+            "awayTeam": "Oklahoma",
+            "homeTeam": "Texas",
+            "time": "TBD",
+            "location": "Cotton Bowl, Dallas, TX"
+        },
+        {
+            "date": "10/14/17",
+            "awayTeam": "Texas Tech",
+            "homeTeam": "West Virginia",
+            "time": "TBD",
+            "location": "Milan Puskar Stadium, Morgantown, WV"
+        },
+        {
+            "date": "10/14/17",
+            "awayTeam": "TCU",
+            "homeTeam": "Kansas State",
+            "time": "TBD",
+            "location": "Bill Snyder Family Stadium, Manhattan, KS"
+        },
+        {
+            "date": "10/14/17",
+            "awayTeam": "Boston College",
+            "homeTeam": "Louisville",
+            "time": "TBD",
+            "location": "Papa John's Cardinal Stadium, Louisville, KY"
+        },
+        {
+            "date": "10/14/17",
+            "awayTeam": "Florida State",
+            "homeTeam": "Duke",
+            "time": "TBD",
+            "location": "Wallace Wade Stadium, Durham, NC"
+        },
+        {
+            "date": "10/14/17",
+            "awayTeam": "Virginia",
+            "homeTeam": "North Carolina",
+            "time": "TBD",
+            "location": "Kenan Stadium, Chapel Hill, NC"
+        },
+        {
+            "date": "10/14/17",
+            "awayTeam": "NC State",
+            "homeTeam": "Pittsburgh",
+            "time": "TBD",
+            "location": "Heinz Field, Pittsburgh, PA"
+        },
+        {
+            "date": "10/14/17",
+            "awayTeam": "Michigan State",
+            "homeTeam": "Minnesota",
+            "time": "TBD",
+            "location": "TCF Bank Stadium, Minneapolis, MN"
+        },
+        {
+            "date": "10/14/17",
+            "awayTeam": "Ohio State",
+            "homeTeam": "Nebraska",
+            "time": "TBD",
+            "location": "Memorial Stadium , Lincoln, NE"
+        },
+        {
+            "date": "10/14/17",
+            "awayTeam": "Purdue",
+            "homeTeam": "Wisconsin",
+            "time": "TBD",
+            "location": "Camp Randall Stadium, Madison, WI"
+        },
+        {
+            "date": "10/14/17",
+            "awayTeam": "Massachusetts",
+            "homeTeam": "South Florida",
+            "time": "TBD",
+            "location": "Raymond James Stadium, Tampa, FL"
+        },
+        {
+            "date": "10/14/17",
+            "awayTeam": "East Carolina",
+            "homeTeam": "UCF",
+            "time": "TBD",
+            "location": "Bright House Networks Stadium, Orlando, FL"
+        },
+        {
+            "date": "10/14/17",
+            "awayTeam": "Connecticut",
+            "homeTeam": "Temple",
+            "time": "TBD",
+            "location": "Lincoln Financial Field, Philadelphia, PA"
+        },
+        {
+            "date": "10/14/17",
+            "awayTeam": "Houston",
+            "homeTeam": "Tulsa",
+            "time": "TBD",
+            "location": "Chapman Stadium, Tulsa, OK"
+        },
+        {
+            "date": "10/14/17",
+            "awayTeam": "Navy",
+            "homeTeam": "Memphis",
+            "time": "TBD",
+            "location": "Liberty Bowl Memorial Stadium, Memphis, TN"
+        },
+        {
+            "date": "10/14/17",
+            "awayTeam": "UT San Antonio",
+            "homeTeam": "North Texas",
+            "time": "TBD",
+            "location": "Apogee Stadium, Denton, TX"
+        },
+        {
+            "date": "10/14/17",
+            "awayTeam": "Coastal Carolina",
+            "homeTeam": "Arkansas State",
+            "time": "TBD",
+            "location": "Centennial Bank Stadium, Jonesboro, AR"
+        },
+        {
+            "date": "10/14/17",
+            "awayTeam": "Northern Illinois",
+            "homeTeam": "Buffalo",
+            "time": "TBD",
+            "location": "UB Stadium, Buffalo, NY"
+        },
+        {
+            "date": "10/14/17",
+            "awayTeam": "UNLV",
+            "homeTeam": "Air Force",
+            "time": "TBD",
+            "location": "Falcon Stadium, Usaf Academy, CO"
+        },
+        {
+            "date": "10/14/17",
+            "awayTeam": "Nevada",
+            "homeTeam": "Colorado State",
+            "time": "TBD",
+            "location": "CSU Stadium, Fort Collins, CO"
+        },
+        {
+            "date": "10/14/17",
+            "awayTeam": "New Mexico",
+            "homeTeam": "Fresno State",
+            "time": "TBD",
+            "location": "Bulldog Stadium , Fresno, CA"
+        },
+        {
+            "date": "10/14/17",
+            "awayTeam": "San Jose State",
+            "homeTeam": "Hawaii",
+            "time": "TBD",
+            "location": "Aloha Stadium, Honolulu, HI"
+        },
+        {
+            "date": "10/14/17",
+            "awayTeam": "Eastern Michigan",
+            "homeTeam": "Army",
+            "time": "12:00 PM",
+            "location": "Michie Stadium, West Point, NY"
+        },
+        {
+            "date": "10/14/17",
+            "awayTeam": "Michigan",
+            "homeTeam": "Indiana",
+            "time": "12:00 PM",
+            "location": "Memorial Stadium , Bloomington, IN"
+        },
+        {
+            "date": "10/14/17",
+            "awayTeam": "Old Dominion",
+            "homeTeam": "Marshall",
+            "time": "2:30 PM",
+            "location": "Joan C. Edwards Stadium, Huntington, WV"
+        },
+        {
+            "date": "10/14/17",
+            "awayTeam": "Ohio",
+            "homeTeam": "Bowling Green",
+            "time": "3:30 PM",
+            "location": "Doyt Perry Stadium, Bowling Green, OH"
+        },
+        {
+            "date": "10/14/17",
+            "awayTeam": "Toledo",
+            "homeTeam": "Central Michigan",
+            "time": "3:30 PM",
+            "location": "Kelly/Shorts Stadium, Mount Pleasant, MI"
+        },
+        {
+            "date": "10/14/17",
+            "awayTeam": "Akron",
+            "homeTeam": "Western Michigan",
+            "time": "3:30 PM",
+            "location": "Waldo Stadium, Kalamazoo, MI"
+        },
+        {
+            "date": "10/14/17",
+            "awayTeam": "Miami (OH)",
+            "homeTeam": "Kent State",
+            "time": "3:30 PM",
+            "location": "Dix Stadium, Kent, OH"
+        },
+        {
+            "date": "10/14/17",
+            "awayTeam": "Wyoming",
+            "homeTeam": "Utah State",
+            "time": "4:30 PM",
+            "location": "Romney Stadium, Logan, UT"
+        },
+        {
+            "date": "10/14/17",
+            "awayTeam": "Charlotte",
+            "homeTeam": "Western Kentucky",
+            "time": "4:30 PM",
+            "location": "L.T. Smith Stadium, Bowling Green, KY"
+        },
+        {
+            "date": "10/14/17",
+            "awayTeam": "Georgia State",
+            "homeTeam": "Louisiana Monroe",
+            "time": "5:00 PM",
+            "location": "Malone Stadium, Monroe, LA"
+        },
+        {
+            "date": "10/14/17",
+            "awayTeam": "Appalachian State",
+            "homeTeam": "Idaho",
+            "time": "5:00 PM",
+            "location": "Kibbie Dome, Moscow, ID"
+        },
+        {
+            "date": "10/14/17",
+            "awayTeam": "New Mexico State",
+            "homeTeam": "Georgia Southern",
+            "time": "6:00 PM",
+            "location": "Allen E. Paulson Stadium, Statesboro, GA"
+        },
+        {
+            "date": "10/14/17",
+            "awayTeam": "Middle Tennessee",
+            "homeTeam": "UAB",
+            "time": "6:30 PM",
+            "location": "Legion Field , Birmingham, AL"
+        },
+        {
+            "date": "10/14/17",
+            "awayTeam": "Tulane",
+            "homeTeam": "Florida Intl",
+            "time": "7:00 PM",
+            "location": "FIU Stadium, Miami, FL"
+        },
+        {
+            "date": "10/14/17",
+            "awayTeam": "UTEP",
+            "homeTeam": "Southern Mississippi",
+            "time": "7:00 PM",
+            "location": "M. M. Roberts Stadium, Hattiesburg, MS"
+        },
+        {
+            "date": "10/14/17",
+            "awayTeam": "Boise State",
+            "homeTeam": "San Diego State",
+            "time": "10:30 PM",
+            "location": "Qualcomm Stadium, San Diego, CA"
+        }
+    ]
+}

@@ -25,7 +25,7 @@ class WeekService
     public function currentWeek($season = null, $week = null, $includePreseason = false)
     {
          if (! $season) {
-            $season = '2016';
+            $season = '2017';
         }
 
         $repository  = $this->em->getRepository('CollegeFootballAppBundle:Week');
