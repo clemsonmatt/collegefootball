@@ -113,6 +113,11 @@ class Person implements AdvancedUserInterface
      */
     private $roles = [];
 
+    /**
+     * @ORM\Column(name="temp_password", type="string", length=255, nullable=true)
+     */
+    private $tempPassword;
+
 
 
     public function isAccountNonExpired()
@@ -335,5 +340,28 @@ class Person implements AdvancedUserInterface
         }
 
         return $roles;
+    }
+
+    /**
+     * Set tempPassword
+     *
+     * @param string $tempPassword
+     * @return Person
+     */
+    public function setTempPassword($tempPassword)
+    {
+        $this->tempPassword = $tempPassword;
+
+        return $this;
+    }
+
+    /**
+     * Get tempPassword
+     *
+     * @return string
+     */
+    public function getTempPassword()
+    {
+        return $this->tempPassword;
     }
 }

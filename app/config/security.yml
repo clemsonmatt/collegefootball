@@ -28,4 +28,6 @@ security:
     access_control:
         - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/create-account, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/forgot, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/forgot-password, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/, roles: ROLE_USER }
