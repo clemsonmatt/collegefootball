@@ -9232,6 +9232,10 @@ input[type="checkbox"] {
     min-width: 15px;
 }
 
+.text-light {
+    color: #e4e4e4;
+}
+
 /****************************************************************
  *
  * CSS Percentage Circle
