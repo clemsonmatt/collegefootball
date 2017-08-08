@@ -45,29 +45,6 @@ class Gameday
     }
 
     /**
-     * Set location
-     *
-     * @param string $location
-     * @return Gameday
-     */
-    public function setLocation($location)
-    {
-        $this->location = $location;
-
-        return $this;
-    }
-
-    /**
-     * Get location
-     *
-     * @return string
-     */
-    public function getLocation()
-    {
-        return $this->location;
-    }
-
-    /**
      * Set week
      *
      * @param Week $week

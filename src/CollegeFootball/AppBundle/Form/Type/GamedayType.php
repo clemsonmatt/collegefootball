@@ -18,8 +18,6 @@ class GamedayType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('location', SymfonyTypes\TextType::class);
-
         $builder->add('game', EntityType::class, [
             'class'         => 'CollegeFootball\TeamBundle\Entity\Game',
             'placeholder'   => '-- Game --',

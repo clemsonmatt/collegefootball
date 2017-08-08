@@ -16,6 +16,23 @@ class Game
         return $this->awayTeam.' @ '.$this->homeTeam;
     }
 
+    public function canPick()
+    {
+        if ($this->winningTeam) {
+            return false;
+        }
+
+        $now  = new \DateTime();
+        $date = $this->date->format('Y-m-d');
+        $time = new \DateTime($this->time);
+
+        if ($date < $now->format('Y-m-d') || ($date == $now->modify('-3 hour')->format('Y-m-d') && $time->format('U') < $now->modify('-1 hour')->format('U'))) {
+            return false;
+        }
+
+        return true;
+    }
+
     /**
      * @ORM\Id()
      * @ORM\Column(type="integer")

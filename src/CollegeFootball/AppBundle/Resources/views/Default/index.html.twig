@@ -6,28 +6,6 @@
 
 {% block content %}
     <div class="row">
-        <div class="col-lg-3">
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    Latest ESPN News
-                </div>
-                <ul class="list-group">
-                    {% for item in news %}
-                        <a href="{{ item.link }}" target="_blank" class="list-group-item">
-                            <h5>{{ item.title }}</h5>
-                            <span class="text-muted">
-                                {% if item.date|date('m/d/Y') != "now"|date('m/d/Y') %}
-                                    {{ item.date|date('m/d h:i a') }}
-                                {% else %}
-                                    {{ item.date|date('h:i a')}}
-                                {% endif %}
-                            </span>
-                        </a>
-                    {% endfor %}
-                </ul>
-            </div>
-        </div>
-
         <div class="col-lg-6">
             {% set current_date = null %}
             {% for game in games %}
@@ -40,7 +18,7 @@
                     <div class="panel panel-default panel-click" data-url="{{ path('collegefootball_team_game_show', {'game': game.id}) }}" style="margin-bottom: 0px;">
                         <div class="panel-body">
                             <div class="row">
-                                <div class="col-sm-4">
+                                <div class="col-xs-4">
                                     <center>
                                         {% if game.winningTeam and game.winningTeam == game.homeTeam %}
                                             <div style="position: absolute;">
@@ -52,12 +30,12 @@
                                         <img src="{{ asset(game.homeTeam.imageLocation) }}" style="width: 40px;">
                                         <h5 style="color: #{{ game.homeTeam.primaryColor }};">
                                             <a href="{{ path('collegefootball_team_show', {'slug': game.homeTeam.slug}) }}" style="color: inherit;">
-                                                {{ game.homeTeam }}
+                                                {{ game.homeTeam.rankingNameShort }}
                                             </a>
                                         </h5>
                                     </center>
                                 </div>
-                                <div class="col-sm-4">
+                                <div class="col-xs-4">
                                     <center class="text-muted" style="margin-top: 15px; font-size: 0.8em;">
                                         {% if game.winningTeam %}
                                             Final
@@ -73,7 +51,7 @@
                                         {% endif %}
                                     </center>
                                 </div>
-                                <div class="col-sm-4">
+                                <div class="col-xs-4">
                                     <center>
                                         {% if game.winningTeam and game.winningTeam == game.awayTeam %}
                                             <div class="pull-right" style="margin-right: 50px;">
@@ -87,7 +65,7 @@
                                         <img src="{{ asset(game.awayTeam.imageLocation) }}" style="width: 40px;">
                                         <h5 style="color: #{{ game.awayTeam.primaryColor }};">
                                             <a href="{{ path('collegefootball_team_show', {'slug': game.awayTeam.slug}) }}" style="color: inherit;">
-                                                {{ game.awayTeam }}
+                                                {{ game.awayTeam.rankingNameShort }}
                                             </a>
                                         </h5>
                                     </center>
@@ -111,35 +89,61 @@
             {% endfor %}
         </div>
 
-        <div class="col-lg-3">
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    {{ playoff_rankings ? 'Playoff' : 'AP' }}
-                    Top 25
+        <div class="col-lg-6">
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            Latest ESPN News
+                        </div>
+                        <ul class="list-group">
+                            {% for item in news %}
+                                <a href="{{ item.link }}" target="_blank" class="list-group-item">
+                                    <h5>{{ item.title }}</h5>
+                                    <span class="text-muted">
+                                        {% if item.date|date('m/d/Y') != "now"|date('m/d/Y') %}
+                                            {{ item.date|date('m/d h:i a') }}
+                                        {% else %}
+                                            {{ item.date|date('h:i a')}}
+                                        {% endif %}
+                                    </span>
+                                </a>
+                            {% endfor %}
+                        </ul>
+                    </div>
                 </div>
-                <ul class="list-group">
-                    {% if playoff_rankings %}
-                        {% for ranking in playoff_rankings %}
-                            <a href="{{ path('collegefootball_team_show', {'slug': ranking.team.slug}) }}" class="list-group-item">
-                                <h5>
-                                    <img src="{{ ranking.team.imageLocation }}" style="height: 25px;">
-                                    #{{ ranking.playoffRank }}
-                                    {{ ranking.team.nameShort }}
-                                </h5>
-                            </a>
-                        {% endfor %}
-                    {% else %}
-                        {% for ranking in ap_rankings %}
-                            <a href="{{ path('collegefootball_team_show', {'slug': ranking.team.slug}) }}" class="list-group-item">
-                                <h5>
-                                    <img src="{{ ranking.team.imageLocation }}" style="height: 25px;">
-                                    #{{ ranking.apRank }}
-                                    {{ ranking.team.nameShort }}
-                                </h5>
-                            </a>
-                        {% endfor %}
-                    {% endif %}
-                </ul>
+
+                <div class="col-sm-6">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            {{ playoff_rankings ? 'Playoff' : 'AP' }}
+                            Top 25
+                        </div>
+                        <ul class="list-group">
+                            {% if playoff_rankings %}
+                                {% for ranking in playoff_rankings %}
+                                    <a href="{{ path('collegefootball_team_show', {'slug': ranking.team.slug}) }}" class="list-group-item">
+                                        <h5>
+                                            <img src="{{ ranking.team.imageLocation }}" style="height: 25px;">
+                                            #{{ ranking.playoffRank }}
+                                            {{ ranking.team.nameShort }}
+                                        </h5>
+                                    </a>
+                                {% endfor %}
+                            {% else %}
+                                {% for ranking in ap_rankings %}
+                                    <a href="{{ path('collegefootball_team_show', {'slug': ranking.team.slug}) }}" class="list-group-item">
+                                        <h5>
+                                            <img src="{{ ranking.team.imageLocation }}" style="height: 25px;">
+                                            #{{ ranking.apRank }}
+                                            {{ ranking.team.nameShort }}
+                                        </h5>
+                                    </a>
+                                {% endfor %}
+                            {% endif %}
+                        </ul>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
