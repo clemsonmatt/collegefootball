@@ -5,6 +5,10 @@
 
 .navbar {
     border-radius: 0px;
-    z-index: 1;
     margin-bottom: 0px;
+}
+
+.navbar-brand {
+    color: #778086 !important;
+    font-size: 1.2em;
 }

@@ -2,8 +2,6 @@
 <html>
 <head>
     <title>College Football</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-
     {% block stylesheets %}
         {% stylesheets
             '@CollegeFootballAppBundle/Resources/public/css/bootstrap-yeti.css'
@@ -32,124 +30,74 @@
         </style>
     {% endblock %}
 </head>
-<body style="background-color: #f6f7f8;">
+<body>
 
     {% block wrapper %}
-        <nav class="navbar navbar-default" role="navigation" style="margin-bottom: 0px; background-color: #475056; height: 75px;">
-            <div class="container">
-                <div class="navbar-header">
-                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                        <span class="sr-only">Toggle navigation</span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
-                    <div style="font-size: 2.0em; padding: 20px 0px 0px 10px; line-height: 45px; color: #ccc;">
-                        {% block page_title %}
-                            {{ page_title_header|default('Title Needed') }}
-                        {% endblock %}
-                    </div>
-                </div>
+        <div id="wrapper">
+            {# main nav #}
+            {% include 'CollegeFootballAppBundle:Shared:nav.html.twig' %}
 
-                <div class="collapse navbar-collapse">
-                    <ul class="nav navbar-nav navbar-right">
-                        <li style="height: 75px;">
-                            <div style="padding-top: 20px; width: 300px;">
-                                <input class="form-control" placeholder="Search Teams..." id="js-team-search" name="searchName" style="border-radius: 25px; background-color: #374046; border-color: #374046; color: #ccc;">
-                                <ul class="list-group" id="js-team-search-list" style="display: none; position: relative; z-index: 999;">
-                                </ul>
-                            </div>
-                        </li>
+            {# header #}
+            <div id="header">
+                <div id="header-user" class="pull-right btn-group">
+                    <a href="#" class="dropdown-toggle pull-right" data-toggle="dropdown">
+                        {{ app.user.username }} <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu" style="margin-top: 1px;">
+                        <li><a href="{{ path('collegefootball_person_show', {'username': app.user.username}) }}">Profile</a></li>
+                        <li><a href="/logout">Logout</a></li>
                     </ul>
                 </div>
+
+                {% block page_title %}
+                    {{ page_title_header|default('Title Needed') }}
+                {% endblock %}
             </div>
-        </nav>
-        <div class="collapse navbar-collapse" style="padding: 0px;">
-            <nav class="navbar navbar-default" role="navigation">
-                <div class="container">
-                    {% set primary_navigation = knp_menu_get('CollegeFootballAppBundle:Builder:mainMenu') %}
-                    {{ knp_menu_render(primary_navigation, {'currentClass': 'active', 'depth': 2}) }}
 
-                    <ul class="nav navbar-nav navbar-right">
-                        <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                {{ app.user.username }}
-                                <span class="caret"></span>
-                            </a>
-                            <ul class="dropdown-menu">
-                                <li>
-                                    <a href="{{ path('collegefootball_person_show', {'username': app.user}) }}">
-                                        My Profile
-                                    </a>
-                                </li>
-                                {% if is_granted('ROLE_MANAGE') %}
-                                    <li>
-                                        <a href="{{ path('collegefootball_team_game_stats_index') }}">
-                                            Game Stats
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="{{ path('collegefootball_manage_people') }}">
-                                            People
-                                        </a>
-                                    </li>
-                                {% endif %}
-                                <li class="divider"></li>
-                                <li>
-                                    <a href="/logout">
-                                        Logout
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-                    </ul>
-                </div>
-            </nav>
-        </div>
-
-        {# content #}
-        <div style="margin-top: 20px;">
-            {% block flash_messages %}
-                {% set flashTypes = [ 'note', 'warning', 'error', 'success'] %}
-                {% set flashTypeMap = {
-                    'note'    : 'info',
-                    'warning' : 'warning',
-                    'error'   : 'danger',
-                    'success' : 'success',
-                } %}
-                {% set flashIconMap = {
-                    'note'    : 'info-circle',
-                    'warning' : 'exclamation-circle',
-                    'error'   : 'times-circle',
-                    'success' : 'check-circle',
-                } %}
-                {% for flashType in flashTypes %}
-                    {% for flashMessage in app.session.flashbag.get(flashType) %}
-                        <div class="hidden-print alert alert-custom alert-dismissible alert-{{ flashTypeMap[flashType] }}" role="alert" style="margin-bottom: 20px;">
-                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                            <table>
-                                <td>
-                                    <div class="alert-icon alert-icon-{{ flashTypeMap[flashType] }}">
-                                        {{ icon(flashIconMap[flashType]) }}
-                                    </div>
-                                </td>
-                                <td style="padding-left: 10px;">
-                                    <strong class="alert-text-{{ flashTypeMap[flashType] }}">
-                                        {{ flashType|capitalize }}!
-                                    </strong>
-                                    {{ flashMessage|raw }}
-                                </td>
-                            </table>
-                        </div>
+            {# content #}
+            <div id="content">
+                {% block flash_messages %}
+                    {% set flashTypes = [ 'note', 'warning', 'error', 'success'] %}
+                    {% set flashTypeMap = {
+                        'note'    : 'info',
+                        'warning' : 'warning',
+                        'error'   : 'danger',
+                        'success' : 'success',
+                    } %}
+                    {% set flashIconMap = {
+                        'note'    : 'info-circle',
+                        'warning' : 'exclamation-circle',
+                        'error'   : 'times-circle',
+                        'success' : 'check-circle',
+                    } %}
+                    {% for flashType in flashTypes %}
+                        {% for flashMessage in app.session.flashbag.get(flashType) %}
+                            <div class="hidden-print alert alert-custom alert-dismissible alert-{{ flashTypeMap[flashType] }}" role="alert" style="margin-bottom: 20px;">
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                                <table>
+                                    <td>
+                                        <div class="alert-icon alert-icon-{{ flashTypeMap[flashType] }}">
+                                            {{ icon(flashIconMap[flashType]) }}
+                                        </div>
+                                    </td>
+                                    <td style="padding-left: 10px;">
+                                        <strong class="alert-text-{{ flashTypeMap[flashType] }}">
+                                            {{ flashType|capitalize }}!
+                                        </strong>
+                                        {{ flashMessage|raw }}
+                                    </td>
+                                </table>
+                            </div>
+                        {% endfor %}
                     {% endfor %}
-                {% endfor %}
-            {% endblock %}
+                {% endblock %}
 
-            <div class="container">
+                <div class="container">
                 {% block content %}
                 {% endblock %}
+                </div>
             </div>
         </div>
 

@@ -19,8 +19,8 @@ class Builder implements ContainerAwareInterface
 
         $menu = $factory->createItem('root', [
             'childrenAttributes' => [
-                'id'    => 'side-menu',
-                'class' => 'nav',
+                // 'id'    => 'side-menu',
+                'class' => 'nav navbar-nav',
             ],
         ]);
 
@@ -41,13 +41,13 @@ class Builder implements ContainerAwareInterface
             'route' => 'collegefootball_team_game_index',
         ]);
 
-        $menu->addChild('Predictor', [
-            'route'           => 'collegefootball_team_game_lines',
-            'routeParameters' => [
-                'season' => $currentWeek['season'],
-                'week'   => $currentWeek['week']->getNumber(),
-            ],
-        ]);
+        // $menu->addChild('Predictor', [
+        //     'route'           => 'collegefootball_team_game_lines',
+        //     'routeParameters' => [
+        //         'season' => $currentWeek['season'],
+        //         'week'   => $currentWeek['week']->getNumber(),
+        //     ],
+        // ]);
 
         $menu->addChild('Rankings', [
             'route' => 'collegefootball_team_ranking_index',
@@ -57,15 +57,15 @@ class Builder implements ContainerAwareInterface
             'route' => 'collegefootball_gameday_index',
         ]);
 
-        if ($authorizationChecker->isGranted('ROLE_MANAGE')) {
-            $menu->addChild('Game Stats', [
-                'route' => 'collegefootball_team_game_stats_index',
-            ]);
+        // if ($authorizationChecker->isGranted('ROLE_MANAGE')) {
+        //     $menu->addChild('Game Stats', [
+        //         'route' => 'collegefootball_team_game_stats_index',
+        //     ]);
 
-            $menu->addChild('People', [
-                'route' => 'collegefootball_manage_people',
-            ]);
-        }
+        //     $menu->addChild('People', [
+        //         'route' => 'collegefootball_manage_people',
+        //     ]);
+        // }
 
         return $menu;
     }
