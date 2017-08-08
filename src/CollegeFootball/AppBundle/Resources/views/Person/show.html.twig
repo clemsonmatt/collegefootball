@@ -124,11 +124,11 @@
             </div>
             {% for game in games %}
                 {% if game.homeTeam %}
-                    <div class="panel panel-default" id="js-game-{{ game.id }}">
+                    <div class="panel panel-default">
                         {% if game.winningTeam %}
                             {% set winning_team = game.winningTeam == game.homeTeam ? game.homeTeam : game.awayTeam %}
-                            {% set is_winner    = game.winningTeam == winning_team and winning_team.slug in week_winners[game.id] %}
-                            {% set is_loser     = game.winningTeam == winning_team and game.winningTeam.slug not in week_winners[game.id] %}
+                            {% set is_winner    = game.winningTeam == winning_team and game.id in week_winners|keys and winning_team.slug in week_winners[game.id] %}
+                            {% set is_loser     = game.winningTeam == winning_team and game.id in week_winners|keys and game.winningTeam.slug not in week_winners[game.id] %}
 
                             <div class="panel-heading text-center {% if is_winner %}bg-success{% else %}bg-danger{% endif %}">
                                 {{ game.stats.awayStats.pointsFinal }} &ndash; {{ game.stats.homeStats.pointsFinal }}
@@ -162,36 +162,35 @@
                                     </center>
                                 </div>
                                 <div class="col-sm-4 col-xs-2 text-center">
-                                    <div id="js-game-spinner-{{ game.id }}" style="display: none; margin-top: 40px; font-size: 3.5em;">
+                                    <div id="js-game-spinner-{{ game.id }}" style="display: none; position: absolute; margin-top: 40px; left: 40%; font-size: 3.5em;">
                                         {{ icon('load-c ion-spin-animation') }}
                                     </div>
-                                    <div id="js-game-details-{{ game.id }}">
-                                        <div class="hidden-xs">
-                                            {{ game.location }}
-                                            <hr style="margin: 5px 0px;">
-                                            {{ game.date|date('D. M, j') }}
-                                            <br>
-                                            {{ game.time ? game.time|date('h:i A') : 'TBD' }}
-                                            <br>
-                                        </div>
-                                        <a href="{{ path('collegefootball_team_game_show', {'game': game.id}) }}" class="btn btn-primary btn-sm hidden-xs" style="margin-top: 10px;">
-                                            {{ icon('information-circled') }}
-                                            Game Details
-                                        </a>
-                                        <a href="{{ path('collegefootball_team_game_show', {'game': game.id}) }}" class="visible-xs" style="margin-top: 10px; font-size: 2.4em;">
-                                            {{ icon('information-circled') }}
-                                        </a>
 
-                                        {% if not game.winningTeam %}
-                                            <h1 class="text-muted">
-                                                {% if game.winningTeam or game.date|date('Y-m-d') < "now"|date('Y-m-d') or (game.date|date('Y-m-d') == "now"|date_modify('-3 hour')|date('Y-m-d') and game.time|date("U") < "now"|date_modify('-4 hour')|date("U")) %}
-                                                    {{ icon('locked') }}
-                                                {% else %}
-                                                    <span class="text-success">{{ icon('unlocked') }}</span>
-                                                {% endif %}
-                                            </h1>
-                                        {% endif %}
+                                    <div class="hidden-xs">
+                                        {{ game.location }}
+                                        <hr style="margin: 5px 0px;">
+                                        {{ game.date|date('D. M, j') }}
+                                        <br>
+                                        {{ game.time ? game.time|date('h:i A') : 'TBD' }}
+                                        <br>
                                     </div>
+                                    <a href="{{ path('collegefootball_team_game_show', {'game': game.id}) }}" class="btn btn-primary btn-sm hidden-xs" style="margin-top: 10px;">
+                                        {{ icon('information-circled') }}
+                                        Game Details
+                                    </a>
+                                    <a href="{{ path('collegefootball_team_game_show', {'game': game.id}) }}" class="visible-xs" style="margin-top: 10px; font-size: 2.4em;">
+                                        {{ icon('information-circled') }}
+                                    </a>
+
+                                    {% if not game.winningTeam %}
+                                        <h1 class="text-muted">
+                                            {% if game.winningTeam or game.date|date('Y-m-d') < "now"|date('Y-m-d') or (game.date|date('Y-m-d') == "now"|date_modify('-3 hour')|date('Y-m-d') and game.time|date("U") < "now"|date_modify('-4 hour')|date("U")) %}
+                                                {{ icon('locked') }}
+                                            {% else %}
+                                                <span class="text-success">{{ icon('unlocked') }}</span>
+                                            {% endif %}
+                                        </h1>
+                                    {% endif %}
                                 </div>
                                 <div class="col-sm-4 col-xs-5" {% if game.winningTeam and game.winningTeam != game.homeTeam %}style="opacity: 0.3;"{% endif %}>
                                     <center>
@@ -237,8 +236,8 @@
         </span>
     </div>
     {% if game.winningTeam %}
-        {% set is_winner = game.winningTeam == team and team.slug in week_winners[game.id] %}
-        {% set is_loser  = game.winningTeam != team and game.winningTeam.slug not in week_winners[game.id] %}
+        {% set is_winner = game.winningTeam == team and game.id in week_winners|keys and team.slug in week_winners[game.id] %}
+        {% set is_loser  = game.winningTeam != team and game.id in week_winners|keys and game.winningTeam.slug not in week_winners[game.id] %}
 
         <label class="{% if is_winner %} text-success {% elseif is_loser %} text-danger {% endif %}">
             <div style="position: absolute;">
@@ -274,8 +273,6 @@
 
             var gameId = btn.data('game');
 
-            $('#js-game-' + gameId).css('opacity', '0.3');
-            $('#js-game-details-' + gameId).hide();
             $('#js-game-spinner-' + gameId).show();
 
             $.post(url,
@@ -295,8 +292,6 @@
                         $('#js-' + oppHomeAway + '-' + gameId).removeClass('text-primary');
                         $('#js-' + oppHomeAway + '-' + gameId).addClass('text-light');
 
-                        $('#js-game-' + gameId).css('opacity', '1');
-                        $('#js-game-details-' + gameId).show();
                         $('#js-game-spinner-' + gameId).hide();
                     }
                 },
