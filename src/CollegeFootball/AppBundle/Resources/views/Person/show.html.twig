@@ -126,7 +126,11 @@
                 {% if game.homeTeam %}
                     <div class="panel panel-default">
                         {% if game.winningTeam %}
-                            <div class="panel-heading text-center">
+                            {% set winning_team = game.winningTeam == game.homeTeam ? game.homeTeam : game.awayTeam %}
+                            {% set is_winner    = game.winningTeam == winning_team and winning_team.slug in week_winners[game.id] %}
+                            {% set is_loser     = game.winningTeam == winning_team and game.winningTeam.slug not in week_winners[game.id] %}
+
+                            <div class="panel-heading text-center {% if is_winner %}bg-success{% else %}bg-danger{% endif %}">
                                 {{ game.stats.awayStats.pointsFinal }} &ndash; {{ game.stats.homeStats.pointsFinal }}
                             </div>
                         {% endif %}
