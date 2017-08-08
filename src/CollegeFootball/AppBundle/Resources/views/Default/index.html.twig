@@ -30,7 +30,7 @@
                                         <img src="{{ asset(game.homeTeam.imageLocation) }}" style="width: 40px;">
                                         <h5 style="color: #{{ game.homeTeam.primaryColor }};">
                                             <a href="{{ path('collegefootball_team_show', {'slug': game.homeTeam.slug}) }}" style="color: inherit;">
-                                                {{ game.homeTeam }}
+                                                {{ game.homeTeam.rankingNameShort }}
                                             </a>
                                         </h5>
                                     </center>
@@ -65,7 +65,7 @@
                                         <img src="{{ asset(game.awayTeam.imageLocation) }}" style="width: 40px;">
                                         <h5 style="color: #{{ game.awayTeam.primaryColor }};">
                                             <a href="{{ path('collegefootball_team_show', {'slug': game.awayTeam.slug}) }}" style="color: inherit;">
-                                                {{ game.awayTeam }}
+                                                {{ game.awayTeam.rankingNameShort }}
                                             </a>
                                         </h5>
                                     </center>

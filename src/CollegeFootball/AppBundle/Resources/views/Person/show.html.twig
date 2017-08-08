@@ -218,8 +218,8 @@
     <img src="{{ team.imageLocation }}" class="hidden-xs" style="max-width: 50%;">
     <center class="visible-xs"><img src="{{ team.imageLocation }}" style="max-width: 85%;"></center>
     <br>
-    <span class="hidden-xs">{{ team.nameShort }}</span>
-    <span class="visible-xs" style="margin: -10px;">{{ team.nameShort }}</span>
+    <span class="hidden-xs">{{ team.rankingNameShort }}</span>
+    <span class="visible-xs" style="margin: -10px;">{{ team.rankingNameShort }}</span>
     <span class="text-muted">
         {{ game.spread and game.predictedWinner == home_away ? '(-' ~ game.spread ~ ')' }}
     </span>
