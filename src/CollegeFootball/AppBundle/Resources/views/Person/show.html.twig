@@ -139,7 +139,7 @@
                                 <div class="col-sm-4 col-xs-5" {% if game.winningTeam and game.winningTeam != game.awayTeam %}style="opacity: 0.3;"{% endif %}>
                                     <center>
                                         {# team #}
-                                        {% if game.winningTeam %}
+                                        {% if game.winningTeam or not game.canPick %}
                                             {{ macros.teamPick(game, game.awayTeam, week_winners, 'Away') }}
                                         {% else %}
                                             <button class="btn btn-default js-btn-winner {% if game.id in week_winners|keys and game.awayTeam.slug in week_winners[game.id] %} text-primary {% endif %}" data-game="{{ game.id }}" data-home-away="away" data-url="{{ path('collegefootball_person_prediction', {'username': person.username, 'game': game.id, 'slug': game.awayTeam.slug}) }}" style="width: 100%; overflow: hidden; background-color: #f4f4f4; border-radius: 4px;">
@@ -184,17 +184,17 @@
 
                                     {% if not game.winningTeam %}
                                         <h1 class="text-muted">
-                                            {% if game.winningTeam or game.date|date('Y-m-d') < "now"|date('Y-m-d') or (game.date|date('Y-m-d') == "now"|date_modify('-3 hour')|date('Y-m-d') and game.time|date("U") < "now"|date_modify('-4 hour')|date("U")) %}
-                                                {{ icon('locked') }}
-                                            {% else %}
+                                            {% if game.canPick %}
                                                 <span class="text-success">{{ icon('unlocked') }}</span>
+                                            {% else %}
+                                                {{ icon('locked') }}
                                             {% endif %}
                                         </h1>
                                     {% endif %}
                                 </div>
                                 <div class="col-sm-4 col-xs-5" {% if game.winningTeam and game.winningTeam != game.homeTeam %}style="opacity: 0.3;"{% endif %}>
                                     <center>
-                                        {% if game.winningTeam %}
+                                        {% if game.winningTeam or not game.canPick %}
                                             {{ macros.teamPick(game, game.homeTeam, week_winners, 'Home') }}
                                         {% else %}
                                             <button class="btn btn-default js-btn-winner {% if game.id in week_winners|keys and game.awayTeam.slug in week_winners[game.id] %} text-primary {% endif %}" data-game="{{ game.id }}" data-home-away="home" data-url="{{ path('collegefootball_person_prediction', {'username': person.username, 'game': game.id, 'slug': game.homeTeam.slug}) }}" style="width: 100%; overflow: hidden; background-color: #f4f4f4; border-radius: 4px;">
