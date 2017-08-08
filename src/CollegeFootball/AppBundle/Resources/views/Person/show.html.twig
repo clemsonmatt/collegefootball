@@ -124,7 +124,7 @@
             </div>
             {% for game in games %}
                 {% if game.homeTeam %}
-                    <div class="panel panel-default">
+                    <div class="panel panel-default" id="js-game-{{ game.id }}">
                         {% if game.winningTeam %}
                             {% set winning_team = game.winningTeam == game.homeTeam ? game.homeTeam : game.awayTeam %}
                             {% set is_winner    = game.winningTeam == winning_team and winning_team.slug in week_winners[game.id] %}
@@ -162,29 +162,34 @@
                                     </center>
                                 </div>
                                 <div class="col-sm-4 col-xs-2 text-center">
-                                    <div class="hidden-xs">
-                                        {{ game.location }}
-                                        <hr style="margin: 5px 0px;">
-                                        {{ game.date|date('D. M, j') }}
-                                        <br>
-                                        {{ game.time ? game.time|date('h:i A') : 'TBD' }}
-                                        <br>
+                                    <div id="js-game-spinner-{{ game.id }}" style="display: none; margin-top: 40px; font-size: 3.5em;">
+                                        {{ icon('load-c ion-spin-animation') }}
                                     </div>
-                                    <a href="{{ path('collegefootball_team_game_show', {'game': game.id}) }}" class="btn btn-primary btn-sm hidden-xs" style="margin-top: 10px;">
-                                        {{ icon('information-circled') }}
-                                        Game Details
-                                    </a>
-                                    <a href="{{ path('collegefootball_team_game_show', {'game': game.id}) }}" class="visible-xs" style="margin-top: 10px; font-size: 2.4em;">
-                                        {{ icon('information-circled') }}
-                                    </a>
+                                    <div id="js-game-details-{{ game.id }}">
+                                        <div class="hidden-xs">
+                                            {{ game.location }}
+                                            <hr style="margin: 5px 0px;">
+                                            {{ game.date|date('D. M, j') }}
+                                            <br>
+                                            {{ game.time ? game.time|date('h:i A') : 'TBD' }}
+                                            <br>
+                                        </div>
+                                        <a href="{{ path('collegefootball_team_game_show', {'game': game.id}) }}" class="btn btn-primary btn-sm hidden-xs" style="margin-top: 10px;">
+                                            {{ icon('information-circled') }}
+                                            Game Details
+                                        </a>
+                                        <a href="{{ path('collegefootball_team_game_show', {'game': game.id}) }}" class="visible-xs" style="margin-top: 10px; font-size: 2.4em;">
+                                            {{ icon('information-circled') }}
+                                        </a>
 
-                                    <h1 class="text-muted">
-                                        {% if game.winningTeam or game.date|date('Y-m-d') < "now"|date('Y-m-d') or (game.date|date('Y-m-d') == "now"|date_modify('-3 hour')|date('Y-m-d') and game.time|date("U") < "now"|date_modify('-4 hour')|date("U")) %}
-                                            {{ icon('locked') }}
-                                        {% else %}
-                                            <span class="text-success">{{ icon('unlocked') }}</span>
-                                        {% endif %}
-                                    </h1>
+                                        <h1 class="text-muted">
+                                            {% if game.winningTeam or game.date|date('Y-m-d') < "now"|date('Y-m-d') or (game.date|date('Y-m-d') == "now"|date_modify('-3 hour')|date('Y-m-d') and game.time|date("U") < "now"|date_modify('-4 hour')|date("U")) %}
+                                                {{ icon('locked') }}
+                                            {% else %}
+                                                <span class="text-success">{{ icon('unlocked') }}</span>
+                                            {% endif %}
+                                        </h1>
+                                    </div>
                                 </div>
                                 <div class="col-sm-4 col-xs-5" {% if game.winningTeam and game.winningTeam != game.homeTeam %}style="opacity: 0.3;"{% endif %}>
                                     <center>
@@ -263,9 +268,14 @@
         });
 
         $('.js-btn-winner').on('click', function(event, state) {
-            // var url = $(this).children().attr('data-url');
             var url = $(this).attr('data-url');
             var btn = $(this);
+
+            var gameId = btn.data('game');
+
+            $('#js-game-' + gameId).css('opacity', '0.3');
+            $('#js-game-details-' + gameId).hide();
+            $('#js-game-spinner-' + gameId).show();
 
             $.post(url,
                 null,
@@ -274,16 +284,19 @@
                         btn.children().removeClass('text-light');
                         btn.children().addClass('text-primary');
 
-                        var gameId   = btn.data('game');
-                        var homeAway = btn.data('home-away');
-
+                        var homeAway    = btn.data('home-away');
                         var oppHomeAway = 'home';
+
                         if (homeAway == 'home') {
                             oppHomeAway = 'away';
                         }
 
                         $('#js-' + oppHomeAway + '-' + gameId).removeClass('text-primary');
                         $('#js-' + oppHomeAway + '-' + gameId).addClass('text-light');
+
+                        $('#js-game-' + gameId).css('opacity', '1');
+                        $('#js-game-details-' + gameId).show();
+                        $('#js-game-spinner-' + gameId).hide();
                     }
                 },
                 "json"
