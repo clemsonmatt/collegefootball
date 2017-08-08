@@ -125,9 +125,14 @@
             {% for game in games %}
                 {% if game.homeTeam %}
                     <div class="panel panel-default">
+                        {% if game.winningTeam %}
+                            <div class="panel-heading text-center">
+                                {{ game.stats.awayStats.pointsFinal }} &ndash; {{ game.stats.homeStats.pointsFinal }}
+                            </div>
+                        {% endif %}
                         <div class="panel-body">
                             <div class="row">
-                                <div class="col-xs-4" {% if game.winningTeam and game.winningTeam != game.awayTeam %}style="opacity: 0.3;"{% endif %}>
+                                <div class="col-sm-4 col-xs-5" {% if game.winningTeam and game.winningTeam != game.awayTeam %}style="opacity: 0.3;"{% endif %}>
                                     <center>
                                         {# team #}
                                         {% if game.winningTeam %}
@@ -152,32 +157,32 @@
                                         {% endif %}
                                     </center>
                                 </div>
-                                <div class="col-xs-4 text-center">
-                                    {{ game.location }}
-                                    <hr style="margin: 5px 0px;">
-                                    {{ game.date|date('D. M, j') }}
-                                    <br>
-                                    {{ game.time ? game.time|date('h:i A') : 'TBD' }}
-                                    <br>
-                                    <a href="{{ path('collegefootball_team_game_show', {'game': game.id}) }}" class="btn btn-primary btn-sm" style="margin-top: 10px;">
+                                <div class="col-sm-4 col-xs-2 text-center">
+                                    <div class="hidden-xs">
+                                        {{ game.location }}
+                                        <hr style="margin: 5px 0px;">
+                                        {{ game.date|date('D. M, j') }}
+                                        <br>
+                                        {{ game.time ? game.time|date('h:i A') : 'TBD' }}
+                                        <br>
+                                    </div>
+                                    <a href="{{ path('collegefootball_team_game_show', {'game': game.id}) }}" class="btn btn-primary btn-sm hidden-xs" style="margin-top: 10px;">
                                         {{ icon('information-circled') }}
                                         Game Details
                                     </a>
-                                    {% if game.winningTeam %}
-                                        <h2>
-                                            {{ game.stats.awayStats.pointsFinal }} &mdash; {{ game.stats.homeStats.pointsFinal }}
-                                        </h2>
-                                    {% else %}
-                                        <h1 class="text-muted">
-                                            {% if game.winningTeam or game.date|date('Y-m-d') < "now"|date('Y-m-d') or (game.date|date('Y-m-d') == "now"|date_modify('-3 hour')|date('Y-m-d') and game.time|date("U") < "now"|date_modify('-4 hour')|date("U")) %}
-                                                {{ icon('locked') }}
-                                            {% else %}
-                                                <span class="text-success">{{ icon('unlocked') }}</span>
-                                            {% endif %}
-                                        </h1>
-                                    {% endif %}
+                                    <a href="{{ path('collegefootball_team_game_show', {'game': game.id}) }}" class="visible-xs" style="margin-top: 10px; font-size: 2.4em;">
+                                        {{ icon('information-circled') }}
+                                    </a>
+
+                                    <h1 class="text-muted">
+                                        {% if game.winningTeam or game.date|date('Y-m-d') < "now"|date('Y-m-d') or (game.date|date('Y-m-d') == "now"|date_modify('-3 hour')|date('Y-m-d') and game.time|date("U") < "now"|date_modify('-4 hour')|date("U")) %}
+                                            {{ icon('locked') }}
+                                        {% else %}
+                                            <span class="text-success">{{ icon('unlocked') }}</span>
+                                        {% endif %}
+                                    </h1>
                                 </div>
-                                <div class="col-xs-4" {% if game.winningTeam and game.winningTeam != game.homeTeam %}style="opacity: 0.3;"{% endif %}>
+                                <div class="col-sm-4 col-xs-5" {% if game.winningTeam and game.winningTeam != game.homeTeam %}style="opacity: 0.3;"{% endif %}>
                                     <center>
                                         {% if game.winningTeam %}
                                             {{ macros.teamPick(game, game.homeTeam, week_winners, 'Home') }}
@@ -210,9 +215,11 @@
 {% endblock %}
 
 {% macro teamPick(game, team, week_winners, home_away) %}
-    <img src="{{ team.imageLocation }}" style="max-width: 50%;">
+    <img src="{{ team.imageLocation }}" class="hidden-xs" style="max-width: 50%;">
+    <center class="visible-xs"><img src="{{ team.imageLocation }}" style="max-width: 85%;"></center>
     <br>
-    {{ team }}
+    <span class="hidden-xs">{{ team.nameShort }}</span>
+    <span class="visible-xs" style="margin: -10px;">{{ team.nameShort }}</span>
     <span class="text-muted">
         {{ game.spread and game.predictedWinner == home_away ? '(-' ~ game.spread ~ ')' }}
     </span>
