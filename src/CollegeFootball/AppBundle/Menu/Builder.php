@@ -24,13 +24,13 @@ class Builder implements ContainerAwareInterface
             ],
         ]);
 
-        $menu->addChild('My Profile', [
-            'route'           => 'collegefootball_person_show',
-            'routeParameters' => ['username' => $user->getUsername()],
-        ]);
-
         $menu->addChild('Scoreboard', [
             'route' => 'collegefootball_app_index',
+        ]);
+
+        $menu->addChild('Pick\'em', [
+            'route'           => 'collegefootball_person_show',
+            'routeParameters' => ['username' => $user->getUsername()],
         ]);
 
         $menu->addChild('Conferences', [

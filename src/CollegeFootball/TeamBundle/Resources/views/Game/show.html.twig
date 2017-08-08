@@ -147,18 +147,13 @@
                 </div>
             </div>
         </div>
-        {% if not game.winningTeam %}
-            <div class="col-md-4">
+        <div class="col-md-8">
+            {% if not game.winningTeam %}
                 {% include 'CollegeFootballTeamBundle:Game:comparison.html.twig' %}
-            </div>
-            <div class="col-md-4">
-                {{ _self.game_stats(game) }}
-            </div>
-        {% else %}
-            <div class="col-md-8">
-                {{ _self.game_stats(game) }}
-            </div>
-        {% endif %}
+            {% endif %}
+            <hr>
+            {{ _self.game_stats(game) }}
+        </div>
     </div>
 {% endblock %}
 
