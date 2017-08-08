@@ -12,25 +12,17 @@
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group row">
-                            <label class="col-md-2 control-label">{{ form_label(form.location) }}</label>
-                            <div class="col-md-10">
-                                {{ form_widget(form.location, {'attr': {'class': 'form-control'}}) }}
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group row">
                             <label class="col-md-2 control-label">{{ form_label(form.game) }}</label>
                             <div class="col-md-10">
                                 {{ form_widget(form.game, {'attr': {'class': 'form-control'}}) }}
                             </div>
                         </div>
+                        <button class="btn btn-success pull-right" type="submit">
+                            {{ icon('checkmark') }}
+                            Save
+                        </button>
                     </div>
                 </div>
-                <button class="btn btn-success pull-right" type="submit">
-                    {{ icon('check') }}
-                    Save
-                </button>
             {{ form_end(form) }}
         </div>
     </div>
