@@ -1,5 +1,7 @@
 {% extends 'CollegeFootballAppBundle:Person:layout.html.twig' %}
 
+{% import _self as macros %}
+
 {% block content %}
     <div class="row">
         <div class="col-lg-4">
@@ -128,37 +130,12 @@
                                 <div class="col-xs-4" {% if game.winningTeam and game.winningTeam != game.awayTeam %}style="opacity: 0.3;"{% endif %}>
                                     <center>
                                         {# team #}
-                                        <img src="{{ game.awayTeam.imageLocation }}" style="max-width: 50%;">
-                                        <br>
-                                        {{ game.awayTeam }}
-                                        <span class="text-muted">
-                                            {{ game.spread and game.predictedWinner == 'Away' ? '(-' ~ game.spread ~ ')' }}
-                                        </span>
-                                        <br>
-                                        {# checkbox #}
                                         {% if game.winningTeam %}
-                                            {% set is_winner = game.winningTeam == game.awayTeam and game.awayTeam.slug in week_winners[game.id] %}
-                                            {% set is_loser  = game.winningTeam == game.awayTeam and game.winningTeam.slug not in week_winners[game.id] %}
-
-                                            {% if not is_winner and not is_loser %}
-                                                <div style="height: 25px;"></div>
-                                            {% endif %}
-
-                                            <label class="{% if is_winner %} text-success {% elseif is_loser %} text-danger {% endif %}">
-                                                <h2 style="margin: 5px 0px;">
-                                                    {% if is_winner %}
-                                                        {{ icon('checkmark-circled') }}
-                                                    {% elseif is_loser %}
-                                                        {{ icon('close-circled') }}
-                                                    {% endif %}
-                                                </h2>
-                                            </label>
+                                            {{ macros.teamPick(game, game.awayTeam, week_winners, 'Away') }}
                                         {% else %}
-                                            <label class="js-btn-winner {% if game.id in week_winners|keys and game.awayTeam.slug in week_winners[game.id] %} text-primary {% endif %}" data-game="{{ game.id }}" data-home-away="away">
-                                                <h2 id="js-away-{{ game.id }}" class="{% if game.id in week_winners|keys and game.awayTeam.slug in week_winners[game.id] %}text-primary{% else %}text-light{% endif %}" data-url="{{ path('collegefootball_person_prediction', {'username': person.username, 'game': game.id, 'slug': game.awayTeam.slug}) }}" style="margin: 5px 0px;">
-                                                    {{ icon('checkmark-circled') }}
-                                                </h2>
-                                            </label>
+                                            <button class="btn btn-default js-btn-winner {% if game.id in week_winners|keys and game.awayTeam.slug in week_winners[game.id] %} text-primary {% endif %}" data-game="{{ game.id }}" data-home-away="away" data-url="{{ path('collegefootball_person_prediction', {'username': person.username, 'game': game.id, 'slug': game.awayTeam.slug}) }}" style="width: 100%; overflow: hidden; background-color: #f4f4f4; border-radius: 4px;">
+                                                {{ macros.teamPick(game, game.awayTeam, week_winners, 'Away') }}
+                                            </button>
                                         {% endif %}
                                         <hr style="margin: 5px 0px;">
                                         {# predictions #}
@@ -202,36 +179,12 @@
                                 </div>
                                 <div class="col-xs-4" {% if game.winningTeam and game.winningTeam != game.homeTeam %}style="opacity: 0.3;"{% endif %}>
                                     <center>
-                                        <img src="{{ game.homeTeam.imageLocation }}" style="max-width: 50%;">
-                                        <br>
-                                        {{ game.homeTeam }}
-                                        <span class="text-muted">
-                                            {{ game.spread and game.predictedWinner == 'Home' ? '(-' ~ game.spread ~ ')' }}
-                                        </span>
-                                        <br>
                                         {% if game.winningTeam %}
-                                            {% set is_winner = game.winningTeam == game.homeTeam and game.homeTeam.slug in week_winners[game.id] %}
-                                            {% set is_loser  = game.winningTeam == game.homeTeam and game.winningTeam.slug not in week_winners[game.id] %}
-
-                                            {% if not is_winner and not is_loser %}
-                                                <div style="height: 25px;"></div>
-                                            {% endif %}
-
-                                            <label class="{% if is_winner %} text-success {% elseif is_loser %} text-danger {% endif %}">
-                                                <h2 style="margin: 5px 0px;">
-                                                    {% if is_winner %}
-                                                        {{ icon('checkmark-circled') }}
-                                                    {% elseif is_loser %}
-                                                        {{ icon('close-circled') }}
-                                                    {% endif %}
-                                                </h2>
-                                            </label>
+                                            {{ macros.teamPick(game, game.homeTeam, week_winners, 'Home') }}
                                         {% else %}
-                                            <label class="js-btn-winner {% if game.id in week_winners|keys and game.homeTeam.slug in week_winners[game.id] %} text-primary {% endif %}" data-game="{{ game.id }}" data-home-away="home">
-                                                <h2 id="js-home-{{ game.id }}" class="{% if game.id in week_winners|keys and game.homeTeam.slug in week_winners[game.id] %}text-primary{% else %}text-light{% endif %}" data-url="{{ path('collegefootball_person_prediction', {'username': person.username, 'game': game.id, 'slug': game.homeTeam.slug}) }}" style="margin: 5px 0px;">
-                                                    {{ icon('checkmark-circled') }}
-                                                </h2>
-                                            </label>
+                                            <button class="btn btn-default js-btn-winner {% if game.id in week_winners|keys and game.awayTeam.slug in week_winners[game.id] %} text-primary {% endif %}" data-game="{{ game.id }}" data-home-away="home" data-url="{{ path('collegefootball_person_prediction', {'username': person.username, 'game': game.id, 'slug': game.homeTeam.slug}) }}" style="width: 100%; overflow: hidden; background-color: #f4f4f4; border-radius: 4px;">
+                                                {{ macros.teamPick(game, game.homeTeam, week_winners, 'Home') }}
+                                            </button>
                                         {% endif %}
                                         <hr style="margin: 5px 0px;">
                                         {% if game.id in game_picks|keys %}
@@ -256,6 +209,38 @@
     </div>
 {% endblock %}
 
+{% macro teamPick(game, team, week_winners, home_away) %}
+    <img src="{{ team.imageLocation }}" style="max-width: 50%;">
+    <br>
+    {{ team }}
+    <span class="text-muted">
+        {{ game.spread and game.predictedWinner == home_away ? '(-' ~ game.spread ~ ')' }}
+    </span>
+    <br>
+    {% if game.winningTeam %}
+        {% set is_winner = game.winningTeam == team and team.slug in week_winners[game.id] %}
+        {% set is_loser  = game.winningTeam == team and game.winningTeam.slug not in week_winners[game.id] %}
+
+        {% if not is_winner and not is_loser %}
+            <div style="height: 25px;"></div>
+        {% endif %}
+
+        <label class="{% if is_winner %} text-success {% elseif is_loser %} text-danger {% endif %}">
+            <h2 style="margin: 5px 0px;">
+                {% if is_winner %}
+                    {{ icon('checkmark-circled') }}
+                {% elseif is_loser %}
+                    {{ icon('close-circled') }}
+                {% endif %}
+            </h2>
+        </label>
+    {% else %}
+        <h2 id="js-{{ home_away|lower }}-{{ game.id }}" class="{% if game.id in week_winners|keys and team.slug in week_winners[game.id] %}text-primary{% else %}text-light{% endif %}" style="margin: 5px 0px;">
+            {{ icon('checkmark-circled') }}
+        </h2>
+    {% endif %}
+{% endmacro %}
+
 {% block javascripts %}
     {{ parent() }}
 
@@ -267,7 +252,8 @@
         });
 
         $('.js-btn-winner').on('click', function(event, state) {
-            var url = $(this).children().attr('data-url');
+            // var url = $(this).children().attr('data-url');
+            var url = $(this).attr('data-url');
             var btn = $(this);
 
             $.post(url,
