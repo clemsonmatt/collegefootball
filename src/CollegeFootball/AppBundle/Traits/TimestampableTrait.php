@@ -7,7 +7,7 @@ trait TimestampableTrait
     /**
      * @var integer
      *
-     * @\Gedmo\Mapping\Annotation\Timestampable(on="create")
+     * @Gedmo\Mapping\Annotation\Timestampable(on="create")
      * @ORM\Column(name="created_at", type="integer", nullable=true)
      */
     private $createdAt;
@@ -15,7 +15,7 @@ trait TimestampableTrait
     /**
      * @var integer
      *
-     * @\Gedmo\Mapping\Annotation\Timestampable(on="update")
+     * @Gedmo\Mapping\Annotation\Timestampable(on="update")
      * @ORM\Column(name="updated_at", type="integer", nullable=true)
      */
     private $updatedAt;
