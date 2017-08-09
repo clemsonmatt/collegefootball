@@ -7144,7 +7144,7 @@ input[type="checkbox"] {
 }
 
 .navbar-search {
-    /*height: 75px;*/
+    height: 50px;
     margin-top: 20px;
 }
 .navbar-search > input {
@@ -7157,7 +7157,7 @@ input[type="checkbox"] {
 
 @media (max-width: 767px) {
     .navbar-search {
-        /*height: inherit;*/
+        height: inherit;
         margin: 0;
     }
     .navbar-search > input {
