@@ -17,7 +17,3 @@ parameters:
 
     # A secret key that's used to generate certain security-related tokens
     secret:            ThisTokenIsNotSoSecretChangeIt
-
-    # default variables to prevent "undefined variable" error
-    env(SENDGRID_USERNAME): my_username
-    env(SENDGRID_PASSWORD): my_password
