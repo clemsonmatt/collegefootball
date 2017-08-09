@@ -20,9 +20,9 @@ monolog:
         console:
             type:  console
 
-swiftmailer:
-    transport: smtp
-    host: smtp.sendgrid.net
-    username: "%env(SENDGRID_USERNAME)%"
-    password: "%env(SENDGRID_PASSWORD)%"
-    port: 587
+# swiftmailer:
+#     transport: smtp
+#     host: smtp.sendgrid.net
+#     username: "%env(SENDGRID_USERNAME)%"
+#     password: "%env(SENDGRID_PASSWORD)%"
+#     port: 587
