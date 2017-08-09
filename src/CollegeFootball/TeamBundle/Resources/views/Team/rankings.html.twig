@@ -24,10 +24,17 @@
                         <tr><th colspan="5" class="tr-header">{{ team_details.subConference }}</th></tr>
                     {% endif %}
                     <tr>
-                        <td>
+                        <td class="hidden-xs">
                             <img src="{{ team_details.team.imageLocation }}" style="width: 25px;">
                             <a href="{{ path('collegefootball_team_show', {'slug': team_details.team.slug}) }}" style="color: inherit;">
                                 {{ team_details.team.name }}
+                            </a>
+                        </td>
+                        <td class="visible-xs text-center">
+                            <img src="{{ team_details.team.imageLocation }}" style="width: 25px;">
+                            <br>
+                            <a href="{{ path('collegefootball_team_show', {'slug': team_details.team.slug}) }}" style="color: inherit;">
+                                {{ team_details.team.nameShort }}
                             </a>
                         </td>
                         <td style="text-align: center;">
