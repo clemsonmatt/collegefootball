@@ -12,3 +12,24 @@
     color: #778086 !important;
     font-size: 1.2em;
 }
+
+.navbar-search {
+    margin-top: 20px;
+}
+.navbar-search > input {
+    width: 300px;
+    border-radius: 25px;
+    background-color: #374046;
+    border-color: #374046;
+    color: #ccc;
+}
+
+@media (max-width: 767px) {
+    .navbar-search {
+        margin: 0;
+    }
+    .navbar-search > input {
+        width: 100%;
+        border-radius: 0;
+    }
+}

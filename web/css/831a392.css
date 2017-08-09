@@ -7143,6 +7143,29 @@ input[type="checkbox"] {
     font-size: 1.2em;
 }
 
+.navbar-search {
+    /*height: 75px;*/
+    margin-top: 20px;
+}
+.navbar-search > input {
+    width: 300px;
+    border-radius: 25px;
+    background-color: #374046;
+    border-color: #374046;
+    color: #ccc;
+}
+
+@media (max-width: 767px) {
+    .navbar-search {
+        /*height: inherit;*/
+        margin: 0;
+    }
+    .navbar-search > input {
+        width: 100%;
+        border-radius: 0;
+    }
+}
+
 /* sidebar */
 .sidebar {
     border: none;
