@@ -34,7 +34,8 @@
         "knplabs/knp-menu-bundle": "^2.1",
         "jms/security-extra-bundle": "^1.6",
         "braincrafted/bootstrap-bundle": "^2.2",
-        "mashape/unirest-php": "^3.0"
+        "mashape/unirest-php": "^3.0",
+        "twig/twig": "1.34.4"
     },
     "require-dev": {
         "sensio/generator-bundle": "^3.0",
