@@ -1,10 +1,22 @@
 <div class="panel panel-default" style="margin-bottom: 0px;">
     <div class="panel-body" style="padding-bottom: 0px;">
-        <img src="{{ asset(team.imageLocation) }}" style="width: 100px; float: left; padding-right: 15px; border-right: 1px solid #{{ team.primaryColor }};">
-        <h2 style="color: #{{ team.primaryColor }}; margin-left: 110px; line-height: 2.3em; margin-bottom: 0px; padding-bottom: 0px;">
-            {{ team }}
-            <small>{{ team.printStandings|raw }}</small>
-        </h2>
+        <div class="hidden-xs">
+            <img src="{{ asset(team.imageLocation) }}" style="width: 100px; float: left; padding-right: 15px; border-right: 1px solid #{{ team.primaryColor }};">
+            <h2 style="color: #{{ team.primaryColor }}; margin-left: 110px; line-height: 2.3em; margin-bottom: 0px; padding-bottom: 0px;">
+                {{ team }}
+                <small>{{ team.printStandings|raw }}</small>
+            </h2>
+        </div>
+        <div class="visible-xs">
+            <center>
+                <img src="{{ asset(team.imageLocation) }}" style="width: 35%;">
+                <br>
+                <h3 style="color: #{{ team.primaryColor }};">
+                    {{ team.rankingNameShort }}
+                    <small>{{ team.printStandings|raw }}</small>
+                </h3>
+            </center>
+        </div>
     </div>
 </div>
 <nav class="navbar navbar-default" style="margin-bottom: 20px;">

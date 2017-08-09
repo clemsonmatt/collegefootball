@@ -1,7 +1,7 @@
 {% extends 'CollegeFootballAppBundle:Shared:layout.html.twig' %}
 
 {% block page_title %}
-    College Football Scoreboard
+    Scoreboard
 {% endblock %}
 
 {% block content %}
@@ -45,9 +45,18 @@
                                                 {{ game.stats.awayStats.pointsFinal }}
                                             </h4>
                                         {% else %}
-                                            {{ game.location }}
-                                            <hr style="margin: 5px 60px;">
-                                            {{ game.date|date('m/d') }} @ {{ game.time ? game.time|date('h:i A') : 'TBD' }}
+                                            <div class="hidden-xs">
+                                                {{ game.location }}
+                                                <hr style="margin: 5px 60px;">
+                                                {{ game.date|date('m/d') }} @ {{ game.time ? game.time|date('h:i A') : 'TBD' }}
+                                            </div>
+                                            <h5 class="visible-xs">
+                                                {{ game.date|date('m/d') }}
+                                                <br>
+                                                &mdash;
+                                                <br>
+                                                {{ game.time ? game.time|date('h:i A') : 'TBD' }}
+                                            </h5>
                                         {% endif %}
                                     </center>
                                 </div>
