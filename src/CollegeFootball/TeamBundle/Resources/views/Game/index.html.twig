@@ -114,7 +114,7 @@
                         {% endif %}
                         <div class="hidden-lg">
                             {% if game.homeTeam %}
-                                <img src="{{ asset(game.homeTeam.imageLocation) }}" style="width: 100px; float: left;">
+                                <img src="{{ asset(game.homeTeam.imageLocation) }}" style="width: 85%; max-width: 100px; float: left;">
                             {% else %}
                                 <div style="width: 100px; height: 85px; background-color: #f2f2f2;">
                                 </div>
@@ -152,9 +152,16 @@
                                         {{ icon('compose') }}
                                     </a>
                                 {% endif %}
-                                {{ game.location }}
-                                <hr style="margin: 5px 60px;">
-                                {{ game.date|date('m/d') }} @ {{ game.time ? game.time|date('h:i A') : 'TBD' }}
+                                <div class="hidden-xs">
+                                    {{ game.location }}
+                                    <hr style="margin: 5px 60px;">
+                                    {{ game.date|date('m/d') }} @ {{ game.time ? game.time|date('h:i A') : 'TBD' }}
+                                </div>
+                                <div class="visible-xs">
+                                    {{ game.date|date('m/d') }}
+                                    <br>
+                                    {{ game.time ? game.time|date('h:i A') : 'TBD' }}
+                                </div>
                             {% endif %}
                         </center>
                     </div>
@@ -170,7 +177,7 @@
                         {% endif %}
                         <div class="hidden-lg">
                             {% if game.awayTeam %}
-                                <img src="{{ asset(game.awayTeam.imageLocation) }}" style="width: 100px; float: right;">
+                                <img src="{{ asset(game.awayTeam.imageLocation) }}" style="width: 85%; max-width: 100px; float: right;">
                             {% else %}
                                 <div style="width: 100px; height: 85px; background-color: #f2f2f2; float: right;">
 
