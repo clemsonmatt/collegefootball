@@ -166,20 +166,28 @@ class PickemService
             $predictionWins   = $person->getPredictionWins();
             $predictionLosses = $person->getPredictionLosses();
 
-            $score = 0;
+            $percentage = 0;
+            $score      = 0;
 
             if ($predictionWins || $predictionLosses) {
-                $score = ($predictionWins / ($predictionWins + $predictionLosses)) * 100;
-                $score = round($score, 1);
+                // find percentage correct
+                $rawPercentage = $predictionWins / ($predictionWins + $predictionLosses);
+                $percentage    = $rawPercentage * 100;
+                $percentage    = round($percentage, 1);
+
+                // find calculated score
+                $score = 5 * round($predictionWins * $rawPercentage / 5, 2) * 10;
             }
 
             $sortingScores[] = $score;
 
             $peopleByRank[] = [
-                'score'    => $score,
-                'username' => $person->getUsername(),
-                'wins'     => $predictionWins,
-                'losses'   => $predictionLosses,
+                'score'      => $score,
+                'percentage' => $percentage,
+                'username'   => $person->getUsername(),
+                'wins'       => $predictionWins,
+                'losses'     => $predictionLosses,
+                'rank'       => 1,
             ];
         }
 
@@ -189,10 +197,19 @@ class PickemService
         /* sort the people by the sorted scores */
         $sortedPeopleByRank = [];
         $usedPeople         = [];
+        $previousScore      = 0;
+        $rank               = 0;
 
         foreach ($sortingScores as $score) {
             foreach ($peopleByRank as $ranking) {
                 if ($score == $ranking['score'] && ! in_array($ranking['username'], $usedPeople)) {
+                    if ($score != $previousScore || $rank == 0) {
+                        $rank++;
+                        $previousScore = $score;
+                    }
+
+                    $ranking['rank'] = $rank;
+
                     $sortedPeopleByRank[] = $ranking;
                     $usedPeople[]         = $ranking['username'];
                 }
@@ -200,26 +217,26 @@ class PickemService
         }
 
         /* get the current user rank */
-        $currentRank  = null;
+        $currentRank  = 1;
         $currentScore = 0;
         $highestScore = [
             'username' => '--',
             'score'    => 0,
         ];
 
-        foreach ($sortedPeopleByRank as $rank => $sortedPerson) {
+        foreach ($sortedPeopleByRank as $sortedPerson) {
             $score = $sortedPerson['score'];
-
-            if ($sortedPerson['username'] == $user->getUsername()) {
-                $currentRank  = $rank + 1;
-                $currentScore = $score;
-            }
 
             if ($score > $highestScore['score']) {
                 $highestScore = [
                     'username' => $user->getUsername(),
                     'score'    => $score
                 ];
+            }
+
+            if ($sortedPerson['username'] == $user->getUsername() && $highestScore['score'] > 0) {
+                $currentRank  = $sortedPerson['rank'];
+                $currentScore = $score;
             }
         }
 
