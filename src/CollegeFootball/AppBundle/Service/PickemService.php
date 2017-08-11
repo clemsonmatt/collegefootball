@@ -126,7 +126,7 @@ class PickemService
         }
 
         $repository = $this->em->getRepository('CollegeFootballAppBundle:Person');
-        $people     = $repository->findByUsername(['desmondhoward', 'leecorso', 'kirkherbstreit']);
+        $people     = $repository->findByUsername(['desmondhoward', 'leecorso', 'kirkherbstreit', 'davidpollack', 'thebear']);
 
         foreach ($people as $person) {
             $weekWinners[$person->getUsername()] = $this->predictedWeekWinnersByPerson($person, $week);
