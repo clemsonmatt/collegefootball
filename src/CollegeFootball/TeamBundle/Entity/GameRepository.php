@@ -22,15 +22,28 @@ class GameRepository extends EntityRepository
 
     public function findGamesByWeek(Week $week)
     {
-        $games = $this->createQueryBuilder('g')
-            ->where('g.date >= :startDate')
-            ->andWhere('g.date <= :endDate')
-            ->orderBy('g.date, g.time')
-            ->setParameter('startDate', $week->getStartDate())
-            ->setParameter('endDate', $week->getEndDate())
-            ->getQuery()
-            ->getResult();
+        $query  = "
+            SELECT * FROM game g
+            WHERE g.date >= :startDate
+            AND g.date <= :endDate
+            ORDER BY g.date, STR_TO_DATE(g.time, '%h.%i%p')
+        ";
 
-        return $games;
+        $em        = $this->getEntityManager();
+        $statement = $em->getConnection()->prepare($query);
+        $statement->bindValue('startDate', $week->getStartDate()->format('Y-m-d'));
+        $statement->bindValue('endDate', $week->getEndDate()->format('Y-m-d'));
+
+        $statement->execute();
+        $games = $statement->fetchAll();
+
+        // now hydrate
+        $hydratedGames = [];
+
+        foreach ($games as $game) {
+            $hydratedGames[] = $this->findOneById($game['id']);
+        }
+
+        return $hydratedGames;
     }
 }
