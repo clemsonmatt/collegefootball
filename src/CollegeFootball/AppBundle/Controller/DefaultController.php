@@ -19,18 +19,6 @@ class DefaultController extends Controller
         $repository = $em->getRepository('CollegeFootballTeamBundle:Game');
         $games      = $repository->findGamesByWeek($week);
 
-        if ($week->getNumber() > 13) {
-            $topGames = $games;
-        } else {
-            $topGames = [];
-
-            foreach ($games as $game) {
-                if ($game->getHomeTeam()->rankNumber() || $game->getAwayTeam()->rankNumber()) {
-                    $topGames[] = $game;
-                }
-            }
-        }
-
         /* rankings */
         $repository = $em->getRepository('CollegeFootballTeamBundle:Ranking');
         $apRankings = $repository->createQueryBuilder('r')
@@ -52,7 +40,7 @@ class DefaultController extends Controller
         $news = $this->get('collegefootball.app.news')->getNews();
 
         return $this->render('CollegeFootballAppBundle:Default:index.html.twig', [
-            'games'            => $topGames,
+            'games'            => $games,
             'ap_rankings'      => $apRankings,
             'playoff_rankings' => $playoffRankings,
             'news'             => $news,

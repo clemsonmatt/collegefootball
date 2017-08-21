@@ -23,9 +23,12 @@ class GameRepository extends EntityRepository
     public function findGamesByWeek(Week $week)
     {
         $query  = "
-            SELECT * FROM game g
+            SELECT distinct(g.id) FROM game g
+            JOIN ranking r ON (r.team_id = g.home_team_id OR r.team_id = g.away_team_id)
             WHERE g.date >= :startDate
             AND g.date <= :endDate
+            AND r.week_id = :week
+            AND r.ap_rank IS NOT NULL
             ORDER BY g.date, STR_TO_DATE(g.time, '%h.%i%p')
         ";
 
@@ -33,6 +36,7 @@ class GameRepository extends EntityRepository
         $statement = $em->getConnection()->prepare($query);
         $statement->bindValue('startDate', $week->getStartDate()->format('Y-m-d'));
         $statement->bindValue('endDate', $week->getEndDate()->format('Y-m-d'));
+        $statement->bindValue('week', $week->getId());
 
         $statement->execute();
         $games = $statement->fetchAll();
