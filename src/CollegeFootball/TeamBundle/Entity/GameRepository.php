@@ -25,8 +25,26 @@ class GameRepository extends EntityRepository
     {
         if ($top25Only) {
             $query  = "
-                SELECT distinct(g.id) FROM game g
+                SELECT g.*,
+                    homeTeam.id as homeTeamId,
+                    homeTeam.slug as homeTeamSlug,
+                    homeTeam.logo as homeTeamLogo,
+                    homeTeam.name_short as homeTeamNameShort,
+                    homeTeam.primary_color as homeTeamPrimaryColor,
+                    awayTeam.id as awayTeamId,
+                    awayTeam.slug as awayTeamSlug,
+                    awayTeam.logo as awayTeamLogo,
+                    awayTeam.name_short as awayTeamNameShort,
+                    awayTeam.primary_color as awayTeamPrimaryColor,
+                    winningTeam.id as winningTeamId,
+                    winningTeam.slug as winningTeamSlug,
+                    winningTeam.logo as winningTeamLogo,
+                    winningTeam.name_short as winningTeamNameShort
+                FROM game g
                 JOIN ranking r ON (r.team_id = g.home_team_id OR r.team_id = g.away_team_id)
+                JOIN team homeTeam ON g.home_team_id = homeTeam.id
+                JOIN team awayTeam ON g.away_team_id = awayTeam.id
+                LEFT JOIN team winningTeam ON g.winning_team_id = winningTeam.id
                 WHERE g.date >= :startDate
                 AND g.date <= :endDate
                 AND r.week_id = :week
@@ -40,10 +58,12 @@ class GameRepository extends EntityRepository
                     homeTeam.slug as homeTeamSlug,
                     homeTeam.logo as homeTeamLogo,
                     homeTeam.name_short as homeTeamNameShort,
+                    homeTeam.primary_color as homeTeamPrimaryColor,
                     awayTeam.id as awayTeamId,
                     awayTeam.slug as awayTeamSlug,
                     awayTeam.logo as awayTeamLogo,
                     awayTeam.name_short as awayTeamNameShort,
+                    awayTeam.primary_color as awayTeamPrimaryColor,
                     winningTeam.id as winningTeamId,
                     winningTeam.slug as winningTeamSlug,
                     winningTeam.logo as winningTeamLogo,
@@ -77,24 +97,29 @@ class GameRepository extends EntityRepository
 
         foreach ($games as $game) {
             $formattedGames[] = [
-                'id'              => $game['id'],
-                'date'            => $game['date'],
-                'time'            => $game['time'],
-                'location'        => $game['location'],
-                'spread'          => $game['spread'],
-                'predictedWinner' => $game['predicted_winner'],
-                'canPick'         => $this->canPick($game),
-                'homeTeam'        => [
+                'id'                     => $game['id'],
+                'date'                   => $game['date'],
+                'time'                   => $game['time'],
+                'location'               => $game['location'],
+                'stats'                  => $game['stats'],
+                'spread'                 => $game['spread'],
+                'predictedWinner'        => $game['predicted_winner'],
+                'canPick'                => $this->canPick($game),
+                'conferenceChampionship' => $game['conference_championship'],
+                'bowlName'               => $game['bowl_name'],
+                'homeTeam'               => [
                     'id'               => $game['homeTeamId'],
                     'slug'             => $game['homeTeamSlug'],
                     'imageLocation'    => $imagePrefixPath.$game['homeTeamLogo'],
                     'rankingNameShort' => $game['homeTeamNameShort'],
+                    'primaryColor'     => $game['homeTeamPrimaryColor'],
                 ],
                 'awayTeam' => [
                     'id'               => $game['awayTeamId'],
                     'slug'             => $game['awayTeamSlug'],
                     'imageLocation'    => $imagePrefixPath.$game['awayTeamLogo'],
                     'rankingNameShort' => $game['awayTeamNameShort'],
+                    'primaryColor'     => $game['awayTeamPrimaryColor'],
                 ],
                 'winningTeam' => [
                     'id'               => $game['winningTeamId'],
@@ -106,15 +131,6 @@ class GameRepository extends EntityRepository
         }
 
         return $formattedGames;
-
-        // now hydrate
-        // $hydratedGames = [];
-
-        // foreach ($games as $game) {
-        //     $hydratedGames[] = $this->findOneById($game['id']);
-        // }
-
-        // return $hydratedGames;
     }
 
     private function canPick($game)

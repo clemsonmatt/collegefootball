@@ -19,7 +19,7 @@
                         <div class="row">
                             <div class="col-xs-4">
                                 <center>
-                                    {% if game.winningTeam and game.winningTeam == game.homeTeam %}
+                                    {% if game.winningTeam.id and game.winningTeam == game.homeTeam %}
                                         <div style="position: absolute;">
                                             <h1 style="font-size: 3.0em; margin-top: -10px; background-color: #fff; border-radius: 3.0em; padding: 0px 5px;" class="text-success">
                                                 {{ icon('checkmark-circled') }}
@@ -36,7 +36,7 @@
                             </div>
                             <div class="col-xs-4">
                                 <center class="text-muted" style="margin-top: 15px; font-size: 0.8em;">
-                                    {% if game.winningTeam %}
+                                    {% if game.winningTeam.id %}
                                         Final
                                         <h4>
                                             {{ game.stats.homeStats.pointsFinal }}
@@ -61,7 +61,7 @@
                             </div>
                             <div class="col-xs-4">
                                 <center>
-                                    {% if game.winningTeam and game.winningTeam == game.awayTeam %}
+                                    {% if game.winningTeam.id and game.winningTeam == game.awayTeam %}
                                         <div class="pull-right" style="margin-right: 50px;">
                                             <div style="position: absolute;">
                                                 <h1 style="font-size: 3.0em; margin-top: -10px; background-color: #fff; border-radius: 3.0em; padding: 0px 5px;" class="text-success">
