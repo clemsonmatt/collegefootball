@@ -23,60 +23,38 @@ class GameRepository extends EntityRepository
 
     public function findGamesByWeek(Week $week, $top25Only = false)
     {
+        $query  = "
+            SELECT distinct g.*,
+                homeTeam.id as homeTeamId,
+                homeTeam.slug as homeTeamSlug,
+                homeTeam.logo as homeTeamLogo,
+                homeTeam.name as homeTeamName,
+                homeTeam.name_short as homeTeamNameShort,
+                homeTeam.primary_color as homeTeamPrimaryColor,
+                awayTeam.id as awayTeamId,
+                awayTeam.slug as awayTeamSlug,
+                awayTeam.logo as awayTeamLogo,
+                awayTeam.name as awayTeamName,
+                awayTeam.name_short as awayTeamNameShort,
+                awayTeam.primary_color as awayTeamPrimaryColor,
+                winningTeam.id as winningTeamId,
+                winningTeam.slug as winningTeamSlug,
+                winningTeam.logo as winningTeamLogo,
+                winningTeam.name_short as winningTeamNameShort
+            FROM game g
+            JOIN ranking r ON (r.team_id = g.home_team_id OR r.team_id = g.away_team_id)
+            JOIN team homeTeam ON g.home_team_id = homeTeam.id
+            JOIN team awayTeam ON g.away_team_id = awayTeam.id
+            LEFT JOIN team winningTeam ON g.winning_team_id = winningTeam.id
+            WHERE g.date >= :startDate
+            AND g.date <= :endDate
+        ";
+
         if ($top25Only) {
-            $query  = "
-                SELECT g.*,
-                    homeTeam.id as homeTeamId,
-                    homeTeam.slug as homeTeamSlug,
-                    homeTeam.logo as homeTeamLogo,
-                    homeTeam.name_short as homeTeamNameShort,
-                    homeTeam.primary_color as homeTeamPrimaryColor,
-                    awayTeam.id as awayTeamId,
-                    awayTeam.slug as awayTeamSlug,
-                    awayTeam.logo as awayTeamLogo,
-                    awayTeam.name_short as awayTeamNameShort,
-                    awayTeam.primary_color as awayTeamPrimaryColor,
-                    winningTeam.id as winningTeamId,
-                    winningTeam.slug as winningTeamSlug,
-                    winningTeam.logo as winningTeamLogo,
-                    winningTeam.name_short as winningTeamNameShort
-                FROM game g
-                JOIN ranking r ON (r.team_id = g.home_team_id OR r.team_id = g.away_team_id)
-                JOIN team homeTeam ON g.home_team_id = homeTeam.id
-                JOIN team awayTeam ON g.away_team_id = awayTeam.id
-                LEFT JOIN team winningTeam ON g.winning_team_id = winningTeam.id
-                WHERE g.date >= :startDate
-                AND g.date <= :endDate
-                AND r.week_id = :week
-                AND r.ap_rank IS NOT NULL
-                ORDER BY g.date, STR_TO_DATE(g.time, '%h.%i%p')
-            ";
-        } else {
-            $query  = "
-                SELECT g.*,
-                    homeTeam.id as homeTeamId,
-                    homeTeam.slug as homeTeamSlug,
-                    homeTeam.logo as homeTeamLogo,
-                    homeTeam.name_short as homeTeamNameShort,
-                    homeTeam.primary_color as homeTeamPrimaryColor,
-                    awayTeam.id as awayTeamId,
-                    awayTeam.slug as awayTeamSlug,
-                    awayTeam.logo as awayTeamLogo,
-                    awayTeam.name_short as awayTeamNameShort,
-                    awayTeam.primary_color as awayTeamPrimaryColor,
-                    winningTeam.id as winningTeamId,
-                    winningTeam.slug as winningTeamSlug,
-                    winningTeam.logo as winningTeamLogo,
-                    winningTeam.name_short as winningTeamNameShort
-                FROM game g
-                JOIN team homeTeam ON g.home_team_id = homeTeam.id
-                JOIN team awayTeam ON g.away_team_id = awayTeam.id
-                LEFT JOIN team winningTeam ON g.winning_team_id = winningTeam.id
-                WHERE g.date >= :startDate
-                AND g.date <= :endDate
-                ORDER BY g.date, STR_TO_DATE(g.time, '%h.%i%p')
-            ";
+            $query .= " AND r.week_id = :week AND r.ap_rank IS NOT NULL";
         }
+
+        $query .= " ORDER BY g.date, STR_TO_DATE(g.time, '%h.%i%p')";
 
         $em        = $this->getEntityManager();
         $statement = $em->getConnection()->prepare($query);
@@ -111,6 +89,7 @@ class GameRepository extends EntityRepository
                     'id'               => $game['homeTeamId'],
                     'slug'             => $game['homeTeamSlug'],
                     'imageLocation'    => $imagePrefixPath.$game['homeTeamLogo'],
+                    'name'             => $game['homeTeamName'],
                     'rankingNameShort' => $game['homeTeamNameShort'],
                     'primaryColor'     => $game['homeTeamPrimaryColor'],
                 ],
@@ -118,6 +97,7 @@ class GameRepository extends EntityRepository
                     'id'               => $game['awayTeamId'],
                     'slug'             => $game['awayTeamSlug'],
                     'imageLocation'    => $imagePrefixPath.$game['awayTeamLogo'],
+                    'name'             => $game['awayTeamName'],
                     'rankingNameShort' => $game['awayTeamNameShort'],
                     'primaryColor'     => $game['awayTeamPrimaryColor'],
                 ],
