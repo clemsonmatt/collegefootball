@@ -17,7 +17,7 @@
     height: 50px;
     margin-top: 20px;
 }
-.navbar-search > input {
+.navbar-search input {
     width: 300px;
     border-radius: 25px;
     background-color: #374046;
