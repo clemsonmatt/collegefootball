@@ -16,6 +16,8 @@
 .navbar-search {
     height: 50px;
     margin-top: 20px;
+    /*position: relative;
+    z-index: 999;*/
 }
 .navbar-search > input {
     width: 300px;
@@ -24,10 +26,16 @@
     border-color: #374046;
     color: #ccc;
 }
+.navbar-search > ul {
+    position: relative;
+    z-index: 999;
+    width: auto;
+    display: none;
+}
 
-@media (max-width: 767px) {
+@media (max-width: 1000px) {
     .navbar-search {
-        height: inherit;
+        height: 300px;
         margin: 0;
     }
     .navbar-search > input {

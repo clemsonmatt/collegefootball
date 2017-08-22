@@ -8,7 +8,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 use CollegeFootball\AppBundle\Traits\TimestampableTrait;
 
 /**
- * @ORM\Entity()
+ * @ORM\Entity(repositoryClass="CollegeFootball\TeamBundle\Entity\ConferenceRepository")
  * @ORM\Table(name="conference")
  */
 class Conference

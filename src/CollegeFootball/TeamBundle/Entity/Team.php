@@ -113,6 +113,15 @@ class Team
         ];
     }
 
+    public static function imagePrefixPath($defaultImage = false)
+    {
+        if ($defaultImage) {
+            return '/uploads/';
+        }
+
+        return '/uploads/team/';
+    }
+
     public function getImageLocation()
     {
         if ($this->getLogo() !== null) {
@@ -232,7 +241,7 @@ class Team
 
     /**
      * @ORM\ManyToOne(targetEntity="Conference", inversedBy="teams")
-     * @ORM\JoinColumn(name="conference", referencedColumnName="id")
+     * @ORM\JoinColumn(name="conference_id", referencedColumnName="id")
      */
     private $conference;
 
