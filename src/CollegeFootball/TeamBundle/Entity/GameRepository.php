@@ -54,8 +54,6 @@ class GameRepository extends EntityRepository
             $query .= " AND r.week_id = :week AND r.ap_rank IS NOT NULL";
         }
 
-        $query .= " ORDER BY g.date, STR_TO_DATE(g.time, '%h.%i%p')";
-
         $em        = $this->getEntityManager();
         $statement = $em->getConnection()->prepare($query);
         $statement->bindValue('startDate', $week->getStartDate()->format('Y-m-d'));
@@ -74,7 +72,9 @@ class GameRepository extends EntityRepository
         $imagePrefixPath = Team::imagePrefixPath();
 
         foreach ($games as $game) {
-            $formattedGames[] = [
+            $dateTime = new \DateTime($game['date'].' '.$game['time']);
+
+            $formattedGames[$dateTime->format('U').uniqid()] = [
                 'id'                     => $game['id'],
                 'date'                   => $game['date'],
                 'time'                   => $game['time'],
@@ -109,6 +109,8 @@ class GameRepository extends EntityRepository
                 ],
             ];
         }
+
+        ksort($formattedGames);
 
         return $formattedGames;
     }
