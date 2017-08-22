@@ -33,10 +33,9 @@
     display: none;
 }
 
-/*@media (max-width: 767px) {*/
-@media (max-device-width: 320px) {
+@media (max-width: 1000px) {
     .navbar-search {
-        height: inherit;
+        height: 300px;
         margin: 0;
     }
     .navbar-search > input {
