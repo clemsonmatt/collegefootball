@@ -113,6 +113,15 @@ class Team
         ];
     }
 
+    public static function imagePrefixPath($defaultImage = false)
+    {
+        if ($defaultImage) {
+            return '/uploads/';
+        }
+
+        return '/uploads/team/';
+    }
+
     public function getImageLocation()
     {
         if ($this->getLogo() !== null) {

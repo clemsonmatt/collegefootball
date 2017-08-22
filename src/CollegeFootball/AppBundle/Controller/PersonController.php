@@ -59,10 +59,11 @@ class PersonController extends Controller
         $weekWinPicks  = 0;
         $weekLosePicks = 0;
         foreach ($games as $game) {
-            $winningTeam = $game->getWinningTeam();
-            if ($winningTeam && in_array($winningTeam->getSlug(), $weekWinners)) {
+            $winningTeam = $game['winningTeam'];
+
+            if ($winningTeam && in_array($winningTeam['slug'], $weekWinners)) {
                 $weekWinPicks++;
-            } elseif ($winningTeam) {
+            } elseif ($winningTeam['id']) {
                 $weekLosePicks++;
             }
         }

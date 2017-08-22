@@ -17,7 +17,7 @@ class DefaultController extends Controller
 
         $em         = $this->getDoctrine()->getManager();
         $repository = $em->getRepository('CollegeFootballTeamBundle:Game');
-        $games      = $repository->findGamesByWeek($week);
+        $games      = $repository->findGamesByWeek($week, true);
 
         /* rankings */
         $repository = $em->getRepository('CollegeFootballTeamBundle:Ranking');
