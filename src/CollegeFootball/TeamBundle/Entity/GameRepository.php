@@ -31,21 +31,33 @@ class GameRepository extends EntityRepository
                 homeTeam.name as homeTeamName,
                 homeTeam.name_short as homeTeamNameShort,
                 homeTeam.primary_color as homeTeamPrimaryColor,
+                homeTeamRank.ap_rank as homeTeamApRank,
+                homeTeamRank.playoff_rank as homeTeamPlayoffRank,
                 awayTeam.id as awayTeamId,
                 awayTeam.slug as awayTeamSlug,
                 awayTeam.logo as awayTeamLogo,
                 awayTeam.name as awayTeamName,
                 awayTeam.name_short as awayTeamNameShort,
                 awayTeam.primary_color as awayTeamPrimaryColor,
+                awayTeamRank.ap_rank as awayTeamApRank,
+                awayTeamRank.playoff_rank as awayTeamPlayoffRank,
                 winningTeam.id as winningTeamId,
                 winningTeam.slug as winningTeamSlug,
                 winningTeam.logo as winningTeamLogo,
                 winningTeam.name_short as winningTeamNameShort
             FROM game g
-            JOIN ranking r ON (r.team_id = g.home_team_id OR r.team_id = g.away_team_id)
             JOIN team homeTeam ON g.home_team_id = homeTeam.id
             JOIN team awayTeam ON g.away_team_id = awayTeam.id
+            LEFT JOIN ranking homeTeamRank ON homeTeamRank.team_id = g.home_team_id AND homeTeamRank.week_id = :week
+            LEFT JOIN ranking awayTeamRank ON awayTeamRank.team_id = g.away_team_id AND awayTeamRank.week_id = :week
             LEFT JOIN team winningTeam ON g.winning_team_id = winningTeam.id
+        ";
+
+        if ($top25Only) {
+            $query .= " JOIN ranking r ON (r.team_id = g.home_team_id OR r.team_id = g.away_team_id)";
+        }
+
+        $query .= "
             WHERE g.date >= :startDate
             AND g.date <= :endDate
         ";
@@ -58,10 +70,7 @@ class GameRepository extends EntityRepository
         $statement = $em->getConnection()->prepare($query);
         $statement->bindValue('startDate', $week->getStartDate()->format('Y-m-d'));
         $statement->bindValue('endDate', $week->getEndDate()->format('Y-m-d'));
-
-        if ($top25Only) {
-            $statement->bindValue('week', $week->getId());
-        }
+        $statement->bindValue('week', $week->getId());
 
         $statement->execute();
         $games = $statement->fetchAll();
@@ -72,7 +81,27 @@ class GameRepository extends EntityRepository
         $imagePrefixPath = Team::imagePrefixPath();
 
         foreach ($games as $game) {
-            $dateTime = new \DateTime($game['date'].' '.$game['time']);
+            $dateTime          = new \DateTime($game['date'].' '.$game['time']);
+            $homeTeamName      = $game['homeTeamName'];
+            $homeTeamNameShort = $game['homeTeamNameShort'];
+            $awayTeamName      = $game['awayTeamName'];
+            $awayTeamNameShort = $game['awayTeamNameShort'];
+
+            if ($game['homeTeamPlayoffRank']) {
+                $homeTeamName      = '#'.$game['homeTeamPlayoffRank'].' '.$homeTeamName;
+                $homeTeamNameShort = '#'.$game['homeTeamPlayoffRank'].' '.$homeTeamNameShort;
+            } elseif ($game['homeTeamApRank']) {
+                $homeTeamName      = '#'.$game['homeTeamApRank'].' '.$homeTeamName;
+                $homeTeamNameShort = '#'.$game['homeTeamApRank'].' '.$homeTeamNameShort;
+            }
+
+            if ($game['awayTeamPlayoffRank']) {
+                $awayTeamName      = '#'.$game['awayTeamPlayoffRank'].' '.$awayTeamName;
+                $awayTeamNameShort = '#'.$game['awayTeamPlayoffRank'].' '.$awayTeamNameShort;
+            } elseif ($game['awayTeamApRank']) {
+                $awayTeamName      = '#'.$game['awayTeamApRank'].' '.$awayTeamName;
+                $awayTeamNameShort = '#'.$game['awayTeamApRank'].' '.$awayTeamNameShort;
+            }
 
             $formattedGames[$dateTime->format('U').uniqid()] = [
                 'id'                     => $game['id'],
@@ -89,16 +118,16 @@ class GameRepository extends EntityRepository
                     'id'               => $game['homeTeamId'],
                     'slug'             => $game['homeTeamSlug'],
                     'imageLocation'    => $imagePrefixPath.$game['homeTeamLogo'],
-                    'name'             => $game['homeTeamName'],
-                    'rankingNameShort' => $game['homeTeamNameShort'],
+                    'name'             => $homeTeamName,
+                    'rankingNameShort' => $homeTeamNameShort,
                     'primaryColor'     => $game['homeTeamPrimaryColor'],
                 ],
                 'awayTeam' => [
                     'id'               => $game['awayTeamId'],
                     'slug'             => $game['awayTeamSlug'],
                     'imageLocation'    => $imagePrefixPath.$game['awayTeamLogo'],
-                    'name'             => $game['awayTeamName'],
-                    'rankingNameShort' => $game['awayTeamNameShort'],
+                    'name'             => $awayTeamName,
+                    'rankingNameShort' => $awayTeamNameShort,
                     'primaryColor'     => $game['awayTeamPrimaryColor'],
                 ],
                 'winningTeam' => [
