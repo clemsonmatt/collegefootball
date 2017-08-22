@@ -207,7 +207,29 @@ class TeamController extends Controller
     public function searchAction(Request $request)
     {
         $searchName = $request->query->get('searchName');
+        $data       = $this->searchForTeam($searchName);
 
+        $response = ['code' => 100, 'success' => true, 'data' => $data];
+
+        return new JsonResponse($response);
+    }
+
+    /**
+     * @Route("/manual-search", name="collegefootball_team_manual_search")
+     */
+    public function manualSearchAction(Request $request)
+    {
+        $searchName = $request->request->get('searchName');
+        $teams      = $this->searchForTeam($searchName);
+
+        return $this->render('CollegeFootballTeamBundle:Team:manualSearch.html.twig', [
+            'teams'       => $teams,
+            'search_name' => $searchName,
+        ]);
+    }
+
+    private function searchForTeam($searchName)
+    {
         $em         = $this->getDoctrine()->getManager();
         $repository = $em->getRepository('CollegeFootballTeamBundle:Team');
         $teams      = $repository->createQueryBuilder('t')
@@ -226,7 +248,6 @@ class TeamController extends Controller
             ];
         }
 
-        $response = ['code' => 100, 'success' => true, 'data' => $data];
-        return new JsonResponse($response);
+        return $data;
     }
 }

@@ -2,7 +2,7 @@
 <html>
 <head>
     <title>College Football</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
     {% block stylesheets %}
         {% stylesheets
@@ -54,11 +54,11 @@
                 <div class="collapse navbar-collapse">
                     <ul class="nav navbar-nav navbar-right">
                         <li class="navbar-search">
-                            <input class="form-control" placeholder="Search Teams..." id="js-team-search" name="searchName">
+                            <form action="{{ path('collegefootball_team_manual_search') }}" method="post">
+                                <input class="form-control" placeholder="Search Teams..." id="js-team-search" name="searchName" autocomplete="off">
+                            </form>
                             <ul class="list-group" id="js-team-search-list">
                             </ul>
-                            {#<ul class="list-group" id="js-team-search-list" style="display: none; position: relative; z-index: 999;">
-                            </ul>#}
                         </li>
                     </ul>
                 </div>
