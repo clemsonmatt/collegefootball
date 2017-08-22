@@ -7163,9 +7163,10 @@ input[type="checkbox"] {
     display: none;
 }
 
-@media (max-width: 900px) {
+/*@media (max-width: 767px) {*/
+@media (max-device-width: 321px) {
     .navbar-search {
-        height: 300px;
+        height: inherit;
         margin: 0;
     }
     .navbar-search > input {
