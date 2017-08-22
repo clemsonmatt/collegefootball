@@ -33,9 +33,9 @@
     display: none;
 }
 
-@media (max-width: 1000px) {
+@media (max-width: 767px) {
     .navbar-search {
-        height: 300px;
+        height: inherit;
         margin: 0;
     }
     .navbar-search > input {
