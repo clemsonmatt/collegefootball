@@ -33,7 +33,7 @@
     display: none;
 }
 
-@media (max-width: 767px) {
+@media (max-width: 900px) {
     .navbar-search {
         height: 300px;
         margin: 0;
