@@ -198,13 +198,17 @@
                                         {% endif %}
                                     </h1>
                                 {% endif %}
+
+                                <span class="text-muted visible-xs">
+                                    {{ game.spread ? game[game.predictedWinner|lower ~ 'Team'].nameAbbr ~ ' (-' ~ game.spread ~ ')' }}
+                                </span>
                             </div>
-                            <div class="col-sm-4 col-xs-5" {% if game.winningTeam.id and game.winningTeam != game.homeTeam %}style="opacity: 0.3;"{% endif %}>
+                            <div class="col-sm-4 col-xs-5" {% if game.winningTeam.id and game.winningTeam.id != game.homeTeam.id %}style="opacity: 0.3;"{% endif %}>
                                 <center>
                                     {% if game.winningTeam.id or not game.canPick %}
                                         {{ macros.teamPick(game, game.homeTeam, week_winners, 'Home') }}
                                     {% else %}
-                                        <button class="btn btn-default js-btn-winner {% if game.id in week_winners|keys and game.awayTeam.slug in week_winners[game.id] %} text-primary {% endif %}" data-game="{{ game.id }}" data-home-away="home" data-url="{{ path('collegefootball_person_prediction', {'username': person.username, 'game': game.id, 'slug': game.homeTeam.slug}) }}" style="width: 100%; overflow: hidden; background-color: #f4f4f4; border-radius: 4px;">
+                                        <button class="btn btn-default js-btn-winner {% if game.id in week_winners|keys and game.homeTeam.slug in week_winners[game.id] %} text-primary {% endif %}" data-game="{{ game.id }}" data-home-away="home" data-url="{{ path('collegefootball_person_prediction', {'username': person.username, 'game': game.id, 'slug': game.homeTeam.slug}) }}" style="width: 100%; overflow: hidden; background-color: #f4f4f4; border-radius: 4px;">
                                             {{ macros.teamPick(game, game.homeTeam, week_winners, 'Home') }}
                                         </button>
                                     {% endif %}
@@ -235,9 +239,9 @@
         <img src="{{ team.imageLocation }}" class="hidden-xs" style="max-width: 50%;">
         <center class="visible-xs"><img src="{{ team.imageLocation }}" style="max-width: 85%;"></center>
         <br>
-        <span class="hidden-xs">{{ team.rankingNameShort }}</span>
         <span class="visible-xs" style="margin: -10px;">{{ team.rankingNameShort }}</span>
-        <span class="text-muted">
+        <span class="hidden-xs">{{ team.rankingNameShort }}</span>
+        <span class="text-muted hidden-xs">
             {{ game.spread and game.predictedWinner == home_away ? '(-' ~ game.spread ~ ')' }}
         </span>
     </div>
