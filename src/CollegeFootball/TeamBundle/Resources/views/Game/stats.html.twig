@@ -38,11 +38,11 @@
             </thead>
             {% for game in games %}
                 <tr>
-                    <td>{{ game.homeTeam.nameShort }}</td>
-                    <td>{{ game.awayTeam.nameShort }}</td>
+                    <td>{{ game.homeTeam.rankingNameShort }}</td>
+                    <td>{{ game.awayTeam.rankingNameShort }}</td>
                     <td>
-                        {% if game.winningTeam %}
-                            {{ game.winningTeam.nameShort }}
+                        {% if game.winningTeam.id %}
+                            {{ game.winningTeam.rankingNameShort }}
                             <span class="text-muted">
                                 ({{ game.stats.homeStats.pointsFinal }} &ndash; {{ game.stats.awayStats.pointsFinal }})
                             </span>
