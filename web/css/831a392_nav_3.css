@@ -14,37 +14,7 @@
 }
 
 .navbar-search {
-    height: inherit;
-    margin: 0;
-}
-.navbar-search > input {
-    width: 100%;
-    border-radius: 0;
-    background-color: #374046;
-    border-color: #374046;
-    color: #ccc;
-}
-.navbar-search > ul {
-    position: relative;
-    z-index: 999;
-    width: auto;
-    display: none;
-}
-
-@media (min-width: 768px) {
-    .navbar-search {
-        height: 50px;
-        margin-top: 20px;
-    }
-    .navbar-search > input {
-        width: 300px;
-        border-radius: 25px;
-    }
-}
-
-
-/*.navbar-search {
-    height: 50px;
+    height: 150px;
     margin-top: 20px;
 }
 .navbar-search > input {
@@ -70,4 +40,4 @@
         width: 100%;
         border-radius: 0;
     }
-}*/
+}
