@@ -20,14 +20,12 @@ class ConferenceController extends Controller
      */
     public function indexAction()
     {
-        $em             = $this->getDoctrine()->getManager();
-        $repository     = $em->getRepository('CollegeFootballTeamBundle:Conference');
-        $fbsConferences = $repository->findBy(['division' => 'FBS (Division I-A Conferences)'], ['name' => 'asc']);
-        $fcsConferences = $repository->findBy(['division' => 'FCS (Division I-AA Conferences)'], ['name' => 'asc']);
+        $em          = $this->getDoctrine()->getManager();
+        $repository  = $em->getRepository('CollegeFootballTeamBundle:Conference');
+        $conferences = $repository->schoolsByDivision();
 
         return $this->render('CollegeFootballTeamBundle:Conference:index.html.twig', [
-            'fbs_conferences' => $fbsConferences,
-            'fcs_conferences' => $fcsConferences
+            'conferences' => $conferences,
         ]);
     }
 

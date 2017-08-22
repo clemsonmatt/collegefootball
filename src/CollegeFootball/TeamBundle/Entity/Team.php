@@ -241,7 +241,7 @@ class Team
 
     /**
      * @ORM\ManyToOne(targetEntity="Conference", inversedBy="teams")
-     * @ORM\JoinColumn(name="conference", referencedColumnName="id")
+     * @ORM\JoinColumn(name="conference_id", referencedColumnName="id")
      */
     private $conference;
 
