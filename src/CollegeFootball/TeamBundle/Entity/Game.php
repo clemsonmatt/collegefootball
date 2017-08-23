@@ -91,6 +91,11 @@ class Game
      */
     private $bowlName;
 
+    /**
+     * @ORM\Column(name="pickem_game", type="boolean")
+     */
+    private $pickemGame = false;
+
 
     /**
      * Get id
@@ -409,5 +414,28 @@ class Game
     public function getBowlName()
     {
         return $this->bowlName;
+    }
+
+    /**
+     * Set pickemGame
+     *
+     * @param boolean $pickemGame
+     * @return Game
+     */
+    public function setPickemGame($pickemGame)
+    {
+        $this->pickemGame = $pickemGame;
+
+        return $this;
+    }
+
+    /**
+     * Get pickemGame
+     *
+     * @return boolean
+     */
+    public function isPickemGame()
+    {
+        return $this->pickemGame;
     }
 }

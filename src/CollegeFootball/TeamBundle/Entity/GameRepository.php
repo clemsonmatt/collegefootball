@@ -21,7 +21,7 @@ class GameRepository extends EntityRepository
         return $queryResult;
     }
 
-    public function findGamesByWeek(Week $week, $top25Only = false)
+    public function findGamesByWeek(Week $week, $top25Only = false, $pickemOnly = false)
     {
         $query  = "
             SELECT distinct g.*,
@@ -66,6 +66,8 @@ class GameRepository extends EntityRepository
 
         if ($top25Only) {
             $query .= " AND r.week_id = :week AND r.ap_rank IS NOT NULL";
+        } elseif ($pickemOnly) {
+            $query .= " AND g.pickem_game = 1";
         }
 
         $em        = $this->getEntityManager();
@@ -116,6 +118,7 @@ class GameRepository extends EntityRepository
                 'canPick'                => $this->canPick($game),
                 'conferenceChampionship' => $game['conference_championship'],
                 'bowlName'               => $game['bowl_name'],
+                'isPickemGame'           => $game['pickem_game'],
                 'homeTeam'               => [
                     'id'               => $game['homeTeamId'],
                     'slug'             => $game['homeTeamSlug'],

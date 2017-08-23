@@ -48,7 +48,7 @@ class PersonController extends Controller
 
         $em         = $this->getDoctrine()->getManager();
         $repository = $em->getRepository('CollegeFootballTeamBundle:Game');
-        $games      = $repository->findGamesByWeek($week);
+        $games      = $repository->findGamesByWeek($week, false, true);
 
 
         $pickemService = $this->get('collegefootball.app.pickem');
