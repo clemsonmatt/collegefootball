@@ -105,7 +105,7 @@
             <div class="panel-body">
                 <div class="row">
                     <div class="col-xs-4">
-                        {% if game.winningTeam and game.winningTeam == game.homeTeam %}
+                        {% if game.winningTeam.id == game.homeTeam.id %}
                             <div style="position: absolute;">
                                 <h1 style="font-size: 3.0em; margin-top: -10px; margin-left: -10px; background-color: #fff; border-radius: 3.0em; padding: 0px 5px;" class="text-success">
                                     {{ icon('checkmark-circled') }}
