@@ -34,7 +34,7 @@ class GameStatsController extends Controller
         $gamesNeedingStats = [];
 
         foreach ($games as $game) {
-            if ($game['stats'] == 'N;' || (! array_key_exists('totalOffenseYards', $game['stats']['homeStats']) || ! $game['stats']['homeStats']['totalOffenseYards'])) {
+            if ($game['stats'] === null || (! array_key_exists('totalOffenseYards', $game['stats']['homeStats']) || ! $game['stats']['homeStats']['totalOffenseYards'])) {
                 $gamesNeedingStats[] = $game;
             }
         }

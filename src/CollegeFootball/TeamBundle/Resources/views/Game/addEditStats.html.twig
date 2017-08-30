@@ -88,6 +88,15 @@
     </div>
     <hr>
 
+    <h4>Total Offense</h4>
+    <div class="form-group row">
+        <label class="col-md-3 control-label">{{ form_label(stats.totalOffenseYards) }}</label>
+        <div class="col-md-9">
+            {{ form_widget(stats.totalOffenseYards, {'attr': {'class': 'form-control'}}) }}
+        </div>
+    </div>
+    <hr>
+
     <h4>Passing</h4>
     <div class="form-group row">
         <label class="col-md-3 control-label">{{ form_label(stats.passingYards) }}</label>
@@ -129,15 +138,6 @@
         <label class="col-md-3 control-label">{{ form_label(stats.turnoverCount) }}</label>
         <div class="col-md-9">
             {{ form_widget(stats.turnoverCount, {'attr': {'class': 'form-control'}}) }}
-        </div>
-    </div>
-    <hr>
-
-    <h4>Total Offense</h4>
-    <div class="form-group row">
-        <label class="col-md-3 control-label">{{ form_label(stats.totalOffenseYards) }}</label>
-        <div class="col-md-9">
-            {{ form_widget(stats.totalOffenseYards, {'attr': {'class': 'form-control'}}) }}
         </div>
     </div>
     <hr>
