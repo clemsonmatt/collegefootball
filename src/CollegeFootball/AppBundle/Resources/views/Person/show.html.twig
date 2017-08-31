@@ -84,7 +84,9 @@
                     <thead>
                         <th class="text-center">Rank</th>
                         <th>Username</th>
-                        <th class="text-center"><span data-toggle="tooltip" data-placement="top" title="wins * %correct * 10">Score</span></th>
+                        <th class="text-center">
+                            <span data-toggle="tooltip" data-placement="top" title="wins * %correct * 10">Score {{ icon('help-circled') }}</span>
+                        </th>
                         <th class="text-center">Win Ratio</th>
                     </thead>
                     {% for person_rank in people_rank %}
