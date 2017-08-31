@@ -45,6 +45,7 @@ class TeamController extends Controller
         $nextGame = $repository->createQueryBuilder('g')
             ->where('g.date >= :startDate')
             ->andWhere('g.homeTeam = :team OR g.awayTeam = :team')
+            ->andWhere('g.winningTeam IS NULL')
             ->setParameter('startDate', $currentWeek->getStartDate())
             ->setParameter('team', $team)
             ->orderBy('g.date')
