@@ -18,7 +18,7 @@
     },
     "require": {
         "php": ">=5.5.9",
-        "symfony/symfony": "3.2.*",
+        "symfony/symfony": "3.3.*",
         "doctrine/orm": "^2.5",
         "doctrine/doctrine-bundle": "^1.6",
         "doctrine/doctrine-cache-bundle": "^1.2",
@@ -30,7 +30,6 @@
         "incenteev/composer-parameter-handler": "^2.0",
         "symfony/assetic-bundle": "^2.8",
         "stof/doctrine-extensions-bundle": "^1.2",
-        "jms/di-extra-bundle": "^1.7",
         "knplabs/knp-menu-bundle": "^2.1",
         "jms/security-extra-bundle": "^1.6",
         "braincrafted/bootstrap-bundle": "^2.2",

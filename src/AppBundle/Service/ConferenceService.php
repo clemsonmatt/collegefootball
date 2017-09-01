@@ -3,23 +3,14 @@
 namespace AppBundle\Service;
 
 use Doctrine\ORM\EntityManager;
-use JMS\DiExtraBundle\Annotation as DI;
 
 use AppBundle\Entity\Conference;
 use AppBundle\Entity\Team;
 
-/**
-* @DI\Service("collegefootball.team.conference")
-*/
 class ConferenceService
 {
     private $em;
 
-    /**
-     * @DI\InjectParams({
-     *      "em" = @DI\Inject("doctrine.orm.entity_manager")
-     *  })
-     */
     public function __construct(EntityManager $em)
     {
         $this->em = $em;

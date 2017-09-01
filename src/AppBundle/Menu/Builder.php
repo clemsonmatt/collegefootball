@@ -6,20 +6,20 @@ use Knp\Menu\FactoryInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 
+use AppBundle\Service\WeekService;
+
 class Builder implements ContainerAwareInterface
 {
     use ContainerAwareTrait;
 
     public function mainMenu(FactoryInterface $factory, array $options)
     {
-        $authorizationChecker = $this->container->get('security.authorization_checker');
-        $user                 = $this->container->get('security.token_storage')->getToken()->getUser();
-        $weekSerivce          = $this->container->get('collegefootball.team.week');
-        $currentWeek          = $weekSerivce->currentWeek();
+        $user        = $this->container->get('security.token_storage')->getToken()->getUser();
+        $weekSerivce = $this->container->get(WeekService::class);
+        $currentWeek = $weekSerivce->currentWeek();
 
         $menu = $factory->createItem('root', [
             'childrenAttributes' => [
-                // 'id'    => 'side-menu',
                 'class' => 'nav navbar-nav',
             ],
         ]);
@@ -57,16 +57,6 @@ class Builder implements ContainerAwareInterface
             'route' => 'app_gameday_index',
         ]);
 
-        // if ($authorizationChecker->isGranted('ROLE_MANAGE')) {
-        //     $menu->addChild('Game Stats', [
-        //         'route' => 'app_game_stats_index',
-        //     ]);
-
-        //     $menu->addChild('People', [
-        //         'route' => 'app_manage_people',
-        //     ]);
-        // }
-
         return $menu;
     }
 
@@ -97,10 +87,6 @@ class Builder implements ContainerAwareInterface
             'route'           => 'app_team_statistics',
             'routeParameters' => ['slug' => $options['team']->getSlug()]
         ])->setAttribute('icon', 'stats-bars');
-
-        // $menu->addChild('Roster', [
-        //     'uri' => '#'
-        // ])->setAttribute('icon', 'clipboard');
 
         return $menu;
     }

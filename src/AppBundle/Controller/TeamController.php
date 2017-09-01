@@ -10,6 +10,10 @@ use Symfony\Component\HttpFoundation\Request;
 
 use AppBundle\Entity\Team;
 use AppBundle\Form\Type\TeamType;
+use AppBundle\Service\ConferenceService;
+use AppBundle\Service\StatsService;
+use AppBundle\Service\UploadService;
+use AppBundle\Service\WeekService;
 
 /**
  * @Route("/team")
@@ -33,13 +37,12 @@ class TeamController extends Controller
     /**
      * @Route("/{slug}/show", name="app_team_show")
      */
-    public function showAction(Team $team)
+    public function showAction(Team $team, WeekService $weekService, StatsService $statsService, ConferenceService $conferenceService)
     {
         $em         = $this->getDoctrine()->getManager();
         $repository = $em->getRepository('AppBundle:Game');
         $games      = $repository->findGamesByTeam($team);
 
-        $weekService = $this->get('collegefootball.team.week');
         $currentWeek = $weekService->currentWeek()['week'];
 
         $nextGame = $repository->createQueryBuilder('g')
@@ -53,10 +56,7 @@ class TeamController extends Controller
             ->getQuery()
             ->getOneOrNullResult();
 
-        $statsService   = $this->get('collegefootball.team.stats');
-        $gameComparison = $statsService->gameComparison($nextGame);
-
-        $conferenceService = $this->get('collegefootball.team.conference');
+        $gameComparison    = $statsService->gameComparison($nextGame);
         $conferenceRanking = $conferenceService->teamRankInConference($team->getConference(), false);
 
         return $this->render('AppBundle:Team:show.html.twig', [
@@ -72,7 +72,7 @@ class TeamController extends Controller
      * @Route("/add", name="app_team_add")
      * @Security("is_granted('ROLE_MANAGE')")
      */
-    public function addAction(Request $request)
+    public function addAction(Request $request, UploadService $uploadService)
     {
         $team = new Team();
         $form = $this->createForm(TeamType::class, $team);
@@ -81,8 +81,7 @@ class TeamController extends Controller
 
         if ($form->isValid()) {
             if ($form['logo']->getData() !== null) {
-                $uploadService = $this->get('collegefootball.team.upload');
-                $imagePath     = $uploadService->uploadImage($form['logo']->getData(), 'team');
+                $imagePath = $uploadService->uploadImage($form['logo']->getData(), 'team');
                 $team->setLogo($imagePath);
             }
 
@@ -105,7 +104,7 @@ class TeamController extends Controller
      * @Route("/{slug}/edit", name="app_team_edit")
      * @Security("is_granted('ROLE_MANAGE')")
      */
-    public function editAction(Team $team, Request $request)
+    public function editAction(Team $team, Request $request, UploadService $uploadService)
     {
         $form = $this->createForm(TeamType::class, $team);
 
@@ -113,8 +112,7 @@ class TeamController extends Controller
 
         if ($form->isValid()) {
             if ($form['logo']->getData() !== null) {
-                $uploadService = $this->get('collegefootball.team.upload');
-                $imagePath     = $uploadService->uploadImage($form['logo']->getData(), 'team');
+                $imagePath = $uploadService->uploadImage($form['logo']->getData(), 'team');
                 $team->setLogo($imagePath);
             }
 
@@ -177,9 +175,8 @@ class TeamController extends Controller
     /**
      * @Route("/{slug}/rankings", name="app_team_rankings")
      */
-    public function rankingsAction(Team $team)
+    public function rankingsAction(Team $team, ConferenceService $conferenceService)
     {
-        $conferenceService = $this->get('collegefootball.team.conference');
         $conferenceRanking = $conferenceService->teamRankInConference($team->getConference());
 
         return $this->render('AppBundle:Team:rankings.html.twig', [
@@ -191,10 +188,9 @@ class TeamController extends Controller
     /**
      * @Route("/{slug}/statistics", name="app_team_statistics")
      */
-    public function statisticsAction(Team $team)
+    public function statisticsAction(Team $team, StatsService $statsService)
     {
-        $statsService = $this->get('collegefootball.team.stats');
-        $stats        = $statsService->statsForTeam($team);
+        $stats = $statsService->statsForTeam($team);
 
         return $this->render('AppBundle:Team:statistics.html.twig', [
             'team'  => $team,

@@ -5,14 +5,17 @@ namespace AppBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 
+use AppBundle\Service\NewsService;
+use AppBundle\Service\WeekService;
+
 class DefaultController extends Controller
 {
     /**
      * @Route("/", name="app_index")
      */
-    public function indexAction()
+    public function indexAction(NewsService $newsService, WeekService $weekService)
     {
-        $weekResult = $this->get('collegefootball.team.week')->currentWeek();
+        $weekResult = $weekService->currentWeek();
         $week       = $weekResult['week'];
 
         $em         = $this->getDoctrine()->getManager();
@@ -37,7 +40,7 @@ class DefaultController extends Controller
             ->getQuery()
             ->getResult();
 
-        $news = $this->get('collegefootball.app.news')->getNews();
+        $news = $newsService->getNews();
 
         return $this->render('AppBundle:Default:index.html.twig', [
             'games'            => $games,
