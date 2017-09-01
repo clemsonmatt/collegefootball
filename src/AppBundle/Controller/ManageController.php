@@ -13,6 +13,8 @@ use AppBundle\Entity\Person;
 use AppBundle\Entity\Week;
 use AppBundle\Form\Type\PersonType;
 use AppBundle\Entity\Game;
+use AppBundle\Service\EmailService;
+use AppBundle\Service\WeekService;
 
 /**
  * @Route("/manage")
@@ -63,9 +65,8 @@ class ManageController extends Controller
     /**
      * @Route("/pickem-reminder-email", name="app_manage_pickem_reminder_email")
      */
-    public function pickemReminderEmailAction()
+    public function pickemReminderEmailAction(EmailService $emailService)
     {
-        $emailService = $this->get('collegefootball.app.email');
         $emailService->sendPickemReminder();
 
         $this->addFlash('success', 'Pickem reminder sent');
@@ -76,9 +77,9 @@ class ManageController extends Controller
      * @Route("/weekly-pickem", name="app_manage_pickem")
      * @Route("/weekly-pickem/{season}/week/{week}", name="app_manage_pickem_week")
      */
-    public function pickemAction($season = null, $week = null)
+    public function pickemAction($season = null, $week = null, WeekService $weekService)
     {
-        $result      = $this->get('collegefootball.team.week')->currentWeek($season, $week);
+        $result      = $weekService->currentWeek($season, $week);
         $week        = $result['week'];
         $season      = $result['season'];
         $seasonWeeks = $result['seasonWeeks'];

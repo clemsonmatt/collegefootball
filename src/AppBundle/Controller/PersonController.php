@@ -16,6 +16,8 @@ use AppBundle\Entity\Week;
 use AppBundle\Form\Type\PersonType;
 use AppBundle\Entity\Game;
 use AppBundle\Entity\Team;
+use AppBundle\Service\PickemService;
+use AppBundle\Service\WeekService;
 
 /**
  * @Route("/person")
@@ -27,9 +29,9 @@ class PersonController extends Controller
      * @Route("/{username}/show/{season}/week/{week}", name="app_person_show_week")
      * @Security("user == person or is_granted('ROLE_MANAGE')")
      */
-    public function showAction(Person $person, $season = null, $week = null)
+    public function showAction(Person $person, $season = null, $week = null, WeekService $weekService, PickemService $pickemService)
     {
-        $result      = $this->get('collegefootball.team.week')->currentWeek($season, $week);
+        $result      = $weekService->currentWeek($season, $week);
         $week        = $result['week'];
         $season      = $result['season'];
         $seasonWeeks = $result['seasonWeeks'];
@@ -40,7 +42,7 @@ class PersonController extends Controller
         if ($week->getStartDate()->format('U') > $today->format('U')) {
             $this->addFlash('warning', 'Cannot view future weeks');
 
-            $result      = $this->get('collegefootball.team.week')->currentWeek();
+            $result      = $weekService->currentWeek();
             $week        = $result['week'];
             $season      = $result['season'];
             $seasonWeeks = $result['seasonWeeks'];
@@ -50,8 +52,6 @@ class PersonController extends Controller
         $repository = $em->getRepository('AppBundle:Game');
         $games      = $repository->findGamesByWeek($week, false, true);
 
-
-        $pickemService = $this->get('collegefootball.app.pickem');
         $weekWinners   = $pickemService->predictedWeekWinnersByPerson($person, $week);
         $gamePicks     = $pickemService->picksByWeek($week);
 

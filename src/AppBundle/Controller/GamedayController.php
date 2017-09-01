@@ -10,6 +10,8 @@ use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Entity\Gameday;
 use AppBundle\Entity\Week;
 use AppBundle\Form\Type\GamedayType;
+use AppBundle\Service\PickemService;
+use AppBundle\Service\WeekService;
 
 /**
  * @Route("/gameday")
@@ -20,9 +22,8 @@ class GamedayController extends Controller
      * @Route("/", name="app_gameday_index")
      * @Route("/{season}/week/{week}", name="app_gameday_week")
      */
-    public function indexAction($season = null, $week = null)
+    public function indexAction($season = null, $week = null, WeekService $weekService, PickemService $pickemService)
     {
-        $weekService = $this->get('collegefootball.team.week');
         $weekResult  = $weekService->currentWeek($season, $week);
         $week        = $weekResult['week'];
         $season      = $weekResult['season'];
@@ -32,8 +33,7 @@ class GamedayController extends Controller
         $repository = $em->getRepository('AppBundle:Gameday');
         $gameday    = $repository->findOneByWeek($week);
 
-        $pickemService = $this->get('collegefootball.app.pickem');
-        $gamedayPicks  = $pickemService->gamedayWeekPicks($week);
+        $gamedayPicks = $pickemService->gamedayWeekPicks($week);
 
         return $this->render('AppBundle:Gameday:index.html.twig', [
             'week'          => $week,

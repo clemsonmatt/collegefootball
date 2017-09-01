@@ -3,26 +3,15 @@
 namespace AppBundle\Service;
 
 use Doctrine\ORM\EntityManager;
-use JMS\DiExtraBundle\Annotation as DI;
 use Swift_Mailer;
 use Symfony\Component\Templating\EngineInterface;
 
-/**
-* @DI\Service("collegefootball.app.email")
-*/
 class EmailService
 {
     private $em;
     private $mailer;
     private $templating;
 
-    /**
-     * @DI\InjectParams({
-     *      "em"         = @DI\Inject("doctrine.orm.entity_manager"),
-     *      "mailer"     = @DI\Inject("mailer"),
-     *      "templating" = @DI\Inject("templating")
-     *  })
-     */
     public function __construct(EntityManager $em, Swift_Mailer $mailer, EngineInterface $templating)
     {
         $this->em         = $em;
@@ -38,7 +27,6 @@ class EmailService
         $repository = $this->em->getRepository('AppBundle:Person');
         $people     = $repository->createQueryBuilder('p')
             ->where('p.email IS NOT NULL')
-            // ->andWhere("p.firstName = 'Matt'")
             ->getQuery()
             ->getResult();
 

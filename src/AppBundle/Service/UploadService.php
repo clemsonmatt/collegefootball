@@ -2,11 +2,6 @@
 
 namespace AppBundle\Service;
 
-use JMS\DiExtraBundle\Annotation as DI;
-
-/**
- * @DI\Service("collegefootball.team.upload")
- */
 class UploadService
 {
     public function uploadImage($image, $namespace)

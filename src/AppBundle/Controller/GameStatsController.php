@@ -9,6 +9,7 @@ use Symfony\Component\HttpFoundation\Request;
 
 use AppBundle\Entity\Game;
 use AppBundle\Form\Type\GameStatsType;
+use AppBundle\Service\WeekService;
 
 /**
  * @Route("/stats")
@@ -20,9 +21,9 @@ class GameStatsController extends Controller
      * @Route("/{season}", name="app_game_stats_index", defaults={"season": null})
      * @Route("/{season}/week/{week}", name="app_game_stats_index_week", defaults={"week": null})
      */
-    public function indexAction($season = null, $week = null)
+    public function indexAction($season = null, $week = null, WeekService $weekService)
     {
-        $result      = $this->get('collegefootball.team.week')->currentWeek($season, $week);
+        $result      = $weekService->currentWeek($season, $week);
         $week        = $result['week'];
         $season      = $result['season'];
         $seasonWeeks = $result['seasonWeeks'];

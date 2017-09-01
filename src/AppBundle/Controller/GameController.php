@@ -11,6 +11,9 @@ use AppBundle\Entity\Week;
 use AppBundle\Entity\Game;
 use AppBundle\Entity\Team;
 use AppBundle\Form\Type\GameType;
+use AppBundle\Service\PickemService;
+use AppBundle\Service\StatsService;
+use AppBundle\Service\WeekService;
 
 /**
  * @Route("/game")
@@ -21,9 +24,9 @@ class GameController extends Controller
      * @Route("/{season}", name="app_game_index", defaults={"season": null})
      * @Route("/{season}/week/{week}", name="app_game_index_week", defaults={"week": null})
      */
-    public function indexAction($season = null, $week = null)
+    public function indexAction($season = null, $week = null, WeekService $weekService)
     {
-        $result      = $this->get('collegefootball.team.week')->currentWeek($season, $week);
+        $result      = $weekService->currentWeek($season, $week);
         $week        = $result['week'];
         $season      = $result['season'];
         $seasonWeeks = $result['seasonWeeks'];
@@ -60,7 +63,7 @@ class GameController extends Controller
     /**
      * @Route("/{game}/show", name="app_game_show")
      */
-    public function showAction(Game $game)
+    public function showAction(Game $game, PickemService $pickemService, StatsService $statsService)
     {
         $em         = $this->getDoctrine()->getManager();
         $repository = $em->getRepository('AppBundle:Week');
@@ -71,20 +74,15 @@ class GameController extends Controller
             ->getQuery()
             ->getSingleResult();
 
-        $pickemService   = $this->get('collegefootball.app.pickem');
-        $gamePredictions = $pickemService->picksByWeek($week, $game);
-
         $repository = $em->getRepository('AppBundle:Prediction');
         $userPrediction = $repository->findOneBy([
             'person' => $this->getUser(),
             'game'   => $game,
         ]);
 
-        $pickemService = $this->get('collegefootball.app.pickem');
-        $gamedayPicks  = $pickemService->gamedayWeekPicks($week, $game);
-
-        $statsService   = $this->get('collegefootball.team.stats');
-        $gameComparison = $statsService->gameComparison($game);
+        $gamePredictions = $pickemService->picksByWeek($week, $game);
+        $gamedayPicks    = $pickemService->gamedayWeekPicks($week, $game);
+        $gameComparison  = $statsService->gameComparison($game);
 
         return $this->render('AppBundle:Game:show.html.twig', [
             'game'             => $game,
@@ -199,9 +197,9 @@ class GameController extends Controller
     /**
      * @Route("/{season}/week/{week}/lines", name="app_game_lines")
      */
-    public function linesAction($season = null, $week = null)
+    public function linesAction($season = null, $week = null, WeekService $weekService, PickemService $pickemService, StatsService $statsService)
     {
-        $result      = $this->get('collegefootball.team.week')->currentWeek($season, $week);
+        $result      = $weekService->currentWeek($season, $week);
         $week        = $result['week'];
         $season      = $result['season'];
         $seasonWeeks = $result['seasonWeeks'];
@@ -210,10 +208,7 @@ class GameController extends Controller
         $repository = $em->getRepository('AppBundle:Game');
         $games      = $repository->findGamesByWeek($week);
 
-        $pickemService = $this->get('collegefootball.app.pickem');
-        $gamePicks     = $pickemService->picksByWeek($week);
-
-        $statsService      = $this->get('collegefootball.team.stats');
+        $gamePicks         = $pickemService->picksByWeek($week);
         $calculatedWinners = $statsService->gameWinners($games);
 
         $guessedCorrect      = [];
@@ -257,9 +252,9 @@ class GameController extends Controller
      * @Route("/{season}/week/{week}/set-lines", name="app_game_lines_set")
      * @Security("is_granted('ROLE_MANAGE')")
      */
-    public function setLinesAction($season = null, $week = null)
+    public function setLinesAction($season = null, $week = null, WeekService $weekService, StatsService $statsService)
     {
-        $result      = $this->get('collegefootball.team.week')->currentWeek($season, $week);
+        $result      = $weekService->currentWeek($season, $week);
         $week        = $result['week'];
         $season      = $result['season'];
         $seasonWeeks = $result['seasonWeeks'];
@@ -268,7 +263,6 @@ class GameController extends Controller
         $repository = $em->getRepository('AppBundle:Game');
         $games      = $repository->findGamesByWeek($week);
 
-        $statsService      = $this->get('collegefootball.team.stats');
         $calculatedWinners = $statsService->gameWinners($games);
 
         foreach ($games as $game) {

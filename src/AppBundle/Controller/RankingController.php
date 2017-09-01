@@ -9,16 +9,17 @@ use Symfony\Component\HttpFoundation\Request;
 
 use AppBundle\Entity\Week;
 use AppBundle\Form\Type\RankingsType;
+use AppBundle\Service\WeekService;
 
 /**
- * @Route("ranking")
+ * @Route("/ranking")
  */
 class RankingController extends Controller
 {
     /**
      * @Route("/{week}", name="app_ranking_index", defaults={"week": null})
      */
-    public function indexAction(Week $week = null)
+    public function indexAction(Week $week = null, WeekService $weekService)
     {
         $season = null;
         if ($week) {
@@ -28,10 +29,9 @@ class RankingController extends Controller
             $week = null;
         }
 
-        $weekService = $this->get('collegefootball.team.week');
-        $weekResult  = $weekService->currentWeek($season, $week, true);
-        $week        = $weekResult['week'];
-        $weeks       = $weekResult['seasonWeeks'];
+        $weekResult = $weekService->currentWeek($season, $week, true);
+        $week       = $weekResult['week'];
+        $weeks      = $weekResult['seasonWeeks'];
 
         $em         = $this->getDoctrine()->getManager();
         $repository = $em->getRepository('AppBundle:Ranking');
