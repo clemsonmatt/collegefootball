@@ -16,13 +16,13 @@ class StatsService
         $this->em = $em;
     }
 
-    public function statsForTeam(Team $team)
+    public function statsForTeam($teamId)
     {
         $repository = $this->em->getRepository('AppBundle:Game');
         $games      = $repository->createQueryBuilder('g')
-            ->where('g.homeTeam = :team OR g.awayTeam = :team')
+            ->where('g.homeTeam = :teamId OR g.awayTeam = :teamId')
             ->andWhere('g.winningTeam IS NOT NULL')
-            ->setParameter('team', $team)
+            ->setParameter('teamId', $teamId)
             ->getQuery()
             ->getResult();
 
@@ -52,7 +52,7 @@ class StatsService
         foreach ($games as $game) {
             $gameStats = $game->getStats();
 
-            if ($game->getHomeTeam() == $team) {
+            if ($game->getHomeTeam()->getId() == $teamId) {
                 $teamStats     = $gameStats['homeStats'];
                 $opponentStats = $gameStats['awayStats'];
             } else {
@@ -89,24 +89,13 @@ class StatsService
     }
 
     /**
-     * Compare stats for teams in game
+     * Compare stats for 2 teams
      */
-    public function gameComparison(Game $game = null)
+    public function teamComparison($homeTeamId, $awayTeamId)
     {
-        if (! $game) {
-            /* off week */
-            return;
-        }
-
-        $homeTeam = $game->getHomeTeam();
-        $awayTeam = $game->getAwayTeam();
-
-        $homeName = $homeTeam->getNameAbbr();
-        $awayName = $awayTeam->getNameAbbr();
-
         /* get stats */
-        $homeTeamStats = $this->statsForTeam($homeTeam);
-        $awayTeamStats = $this->statsForTeam($awayTeam);
+        $homeTeamStats = $this->statsForTeam($homeTeamId);
+        $awayTeamStats = $this->statsForTeam($awayTeamId);
 
         /* if there are null stats, just return a default */
         if ($homeTeamStats['team']['gameCount'] == 0 || $awayTeamStats['team']['gameCount'] == 0) {
@@ -151,67 +140,69 @@ class StatsService
             'Scoring Margin' => [
                 'home'   => $homeScoringMargin,
                 'away'   => $awayScoringMargin,
-                'winner' => ($homeScoringMargin > $awayScoringMargin ? $homeName : $awayName),
+                'winner' => ($homeScoringMargin > $awayScoringMargin ? $homeTeamId : $awayTeamId),
             ],
             'Total Offense' => [
                 'home'   => $homeTeamStats['team']['totalOffenseYards'],
                 'away'   => $awayTeamStats['team']['totalOffenseYards'],
-                'winner' => ($homeTeamStats['team']['totalOffenseYards'] > $awayTeamStats['team']['totalOffenseYards'] ? $homeName : $awayName),
+                'winner' => ($homeTeamStats['team']['totalOffenseYards'] > $awayTeamStats['team']['totalOffenseYards'] ? $homeTeamId : $awayTeamId),
             ],
             'Opponent Total Offense' => [
                 'home'   => $homeTeamStats['opponent']['totalOffenseYards'],
                 'away'   => $awayTeamStats['opponent']['totalOffenseYards'],
-                'winner' => ($homeTeamStats['opponent']['totalOffenseYards'] < $awayTeamStats['opponent']['totalOffenseYards'] ? $homeName : $awayName),
+                'winner' => ($homeTeamStats['opponent']['totalOffenseYards'] < $awayTeamStats['opponent']['totalOffenseYards'] ? $homeTeamId : $awayTeamId),
             ],
             'Turnovers' => [
                 'home'   => $homeOpponentTurnovers,
                 'away'   => $awayOpponentTurnovers,
-                'winner' => ($homeOpponentTurnovers < $awayOpponentTurnovers ? $homeName : $awayName),
+                'winner' => ($homeOpponentTurnovers < $awayOpponentTurnovers ? $homeTeamId : $awayTeamId),
             ],
             'Opponent Turnovers' => [
                 'home'   => $homeTurnovers,
                 'away'   => $awayTurnovers,
-                'winner' => ($homeTurnovers > $awayTurnovers ? $homeName : $awayName),
+                'winner' => ($homeTurnovers > $awayTurnovers ? $homeTeamId : $awayTeamId),
             ],
             'Pass %' => [
                 'home'   => $homePassing,
                 'away'   => $awayPassing,
-                'winner' => ($homePassing > $awayPassing ? $homeName : $awayName),
+                'winner' => ($homePassing > $awayPassing ? $homeTeamId : $awayTeamId),
             ],
             'Opponent Pass %' => [
                 'home'   => $homeOpponentPassing,
                 'away'   => $awayOpponentPassing,
-                'winner' => ($homeOpponentPassing < $awayOpponentPassing ? $homeName : $awayName),
+                'winner' => ($homeOpponentPassing < $awayOpponentPassing ? $homeTeamId : $awayTeamId),
             ],
             'Rushing Yds/Carry' => [
                 'home'   => $homeRushing,
                 'away'   => $awayRushing,
-                'winner' => ($homeRushing > $awayRushing ? $homeName : $awayName),
+                'winner' => ($homeRushing > $awayRushing ? $homeTeamId : $awayTeamId),
             ],
             'Opponent Rushing Yds/Carry' => [
                 'home'   => $homeOpponentRushing,
                 'away'   => $awayOpponentRushing,
-                'winner' => ($homeOpponentRushing < $awayOpponentRushing ? $homeName : $awayName),
+                'winner' => ($homeOpponentRushing < $awayOpponentRushing ? $homeTeamId : $awayTeamId),
             ],
             'Penalty Yds' => [
                 'home'   => $homeTeamStats['team']['penaltyYards'],
                 'away'   => $awayTeamStats['team']['penaltyYards'],
-                'winner' => ($homeTeamStats['team']['penaltyYards'] < round($awayTeamStats['team']['penaltyYards'], 2) ? $homeName : $awayName),
+                'winner' => ($homeTeamStats['team']['penaltyYards'] < round($awayTeamStats['team']['penaltyYards'], 2) ? $homeTeamId : $awayTeamId),
             ],
             'Opponent Penalty Yds' => [
                 'home'   => $homeTeamStats['opponent']['penaltyYards'],
                 'away'   => $awayTeamStats['opponent']['penaltyYards'],
-                'winner' => ($homeTeamStats['opponent']['penaltyYards'] > round($awayTeamStats['opponent']['penaltyYards'], 2) ? $homeName : $awayName),
+                'winner' => ($homeTeamStats['opponent']['penaltyYards'] > round($awayTeamStats['opponent']['penaltyYards'], 2) ? $homeTeamId : $awayTeamId),
             ],
         ];
 
         $calculatedWinner = $this->calculateWinner($stats, $homeTeamStats, $awayTeamStats);
 
-        return [
+        $comparison = [
             'stats'      => $stats,
             'homeChance' => $calculatedWinner['home'],
             'awayChance' => $calculatedWinner['away'],
         ];
+
+        return $comparison;
     }
 
     /**
@@ -222,7 +213,7 @@ class StatsService
         $calculatedWinners = [];
 
         foreach ($games as $game) {
-            $calculatedWinners[$game['id']] = $this->gameComparison($game);
+            $calculatedWinners[$game['id']] = $this->teamComparison($game['homeTeam']['id'], $game['awayTeam']['id']);
         }
 
         return $calculatedWinners;

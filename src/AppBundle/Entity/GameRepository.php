@@ -119,6 +119,7 @@ class GameRepository extends EntityRepository
                 'conferenceChampionship' => $game['conference_championship'],
                 'bowlName'               => $game['bowl_name'],
                 'isPickemGame'           => $game['pickem_game'],
+                'winningChance'          => unserialize($game['winning_chance']),
                 'homeTeam'               => [
                     'id'               => $game['homeTeamId'],
                     'slug'             => $game['homeTeamSlug'],

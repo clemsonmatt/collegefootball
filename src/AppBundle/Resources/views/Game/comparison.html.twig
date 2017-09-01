@@ -16,7 +16,7 @@
                     <th>{{ stat }}</th>
                     <td class="text-center">{{ stat != 'Scoring Margin' ? stat_value.home|number_format(2) : stat_value.home }}</td>
                     <td class="text-center">{{ stat != 'Scoring Margin' ? stat_value.away|number_format(2) : stat_value.away }}</td>
-                    <td class="text-center">{{ stat_value.winner }}</td>
+                    <td class="text-center">{{ stat_value.winner == game.homeTeam.id ? game.homeTeam.nameAbbr : game.awayTeam.nameAbbr }}</td>
                 </tr>
             {% endfor %}
             <tr class="tr-header">
