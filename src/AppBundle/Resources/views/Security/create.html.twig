@@ -5,7 +5,7 @@
         <div class="panel-body">
             <legend><h4>Create Account</h4></legend>
             {{ form_start(form, {'attr': {'class': 'form-signin'}}) }}
-                {{ form_row(form.firstName) }}
+                {{ form_row(form.firstName, {'attr': {'autofocus': true}}) }}
                 {{ form_row(form.lastName) }}
                 {{ form_row(form.email) }}
                 <hr>
