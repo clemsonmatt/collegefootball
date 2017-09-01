@@ -56,7 +56,12 @@ class TeamController extends Controller
             ->getQuery()
             ->getOneOrNullResult();
 
-        $gameComparison    = $statsService->gameComparison($nextGame);
+        $gameComparison = null;
+
+        if ($nextGame) {
+            $gameComparison = $statsService->teamComparison($nextGame->getHomeTeam()->getId(), $nextGame->getAwayTeam()->getId());
+        }
+
         $conferenceRanking = $conferenceService->teamRankInConference($team->getConference(), false);
 
         return $this->render('AppBundle:Team:show.html.twig', [
@@ -190,7 +195,7 @@ class TeamController extends Controller
      */
     public function statisticsAction(Team $team, StatsService $statsService)
     {
-        $stats = $statsService->statsForTeam($team);
+        $stats = $statsService->statsForTeam($team->getId());
 
         return $this->render('AppBundle:Team:statistics.html.twig', [
             'team'  => $team,

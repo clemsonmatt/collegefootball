@@ -82,7 +82,7 @@ class GameController extends Controller
 
         $gamePredictions = $pickemService->picksByWeek($week, $game);
         $gamedayPicks    = $pickemService->gamedayWeekPicks($week, $game);
-        $gameComparison  = $statsService->gameComparison($game);
+        $gameComparison  = $statsService->teamComparison($game->getHomeTeam()->getId(), $game->getAwayTeam()->getId());
 
         return $this->render('AppBundle:Game:show.html.twig', [
             'game'             => $game,
@@ -215,9 +215,9 @@ class GameController extends Controller
         $guessedCorrectCount = 0;
 
         foreach ($games as $game) {
-            $guessedCorrect[$game->getId()] = false;
+            $guessedCorrect[$game['id']] = false;
 
-            $winningChance = $game->getWinningChance();
+            $winningChance = $game['winningChance'];
 
             if ($winningChance !== null) {
                 $awayChance = $winningChance['away'];
@@ -226,12 +226,12 @@ class GameController extends Controller
                 $calculatedWinners[$game->getId()]['awayChance'] = $awayChance;
                 $calculatedWinners[$game->getId()]['homeChance'] = $homeChance;
             } else {
-                $awayChance = $calculatedWinners[$game->getId()]['awayChance'];
-                $homeChance = $calculatedWinners[$game->getId()]['homeChance'];
+                $awayChance = $calculatedWinners[$game['id']]['awayChance'];
+                $homeChance = $calculatedWinners[$game['id']]['homeChance'];
             }
 
-            if (($awayChance > $homeChance and $game->getWinningTeam() == $game->getAwayTeam()) or ($homeChance > $awayChance and $game->getWinningTeam() == $game->getHomeTeam())) {
-                $guessedCorrect[$game->getId()] = true;
+            if (($awayChance > $homeChance and $game['winningTeam']['id'] == $game['awayTeam']['id']) or ($homeChance > $awayChance and $game['winningTeam']['id'] == $game['homeTeam']['id'])) {
+                $guessedCorrect[$game['id']] = true;
                 $guessedCorrectCount++;
             }
         }

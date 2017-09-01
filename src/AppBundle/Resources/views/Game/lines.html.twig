@@ -58,26 +58,26 @@
                     </td>
                     <td>
                         <div class="pull-right text-muted">
-                            {% if game.winningTeam %}
+                            {% if game.winningTeam.id %}
                                 {{ game.stats.awayStats.pointsFinal }}
                             {% endif %}
                         </div>
                         <img src="{{ game.awayTeam.imageLocation }}" style="max-height: 15px;">
                         <a href="{{ path('app_team_show', {'slug': game.awayTeam.slug}) }}">
-                            {{ game.awayTeam }}
+                            {{ game.awayTeam.name }}
                             <span class="text-muted">
                                 {{ game.spread and game.predictedWinner == 'Away' ? '(-' ~ game.spread ~ ')' }}
                             </span>
                         </a>
                         <hr style="margin: 5px 0px;">
                         <div class="pull-right text-muted">
-                            {% if game.winningTeam %}
+                            {% if game.winningTeam.id %}
                                 {{ game.stats.homeStats.pointsFinal }}
                             {% endif %}
                         </div>
                         <img src="{{ game.homeTeam.imageLocation }}" style="max-height: 15px;">
                         <a href="{{ path('app_team_show', {'slug': game.homeTeam.slug}) }}">
-                            {{ game.homeTeam }}
+                            {{ game.homeTeam.name }}
                             <span class="text-muted">
                                 {{ game.spread and game.predictedWinner == 'Home' ? '(-' ~ game.spread ~ ')' }}
                             </span>
