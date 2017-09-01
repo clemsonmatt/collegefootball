@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>College Football</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+    {% block stylesheets %}
+        {% stylesheets
+            '@AppBundle/Resources/public/css/bootstrap-yeti.css'
+            '@AppBundle/Resources/public/css/main-structure.css'
+            '@AppBundle/Resources/public/css/nav.css'
+            '@AppBundle/Resources/public/css/sidebar.css'
+            '@AppBundle/Resources/public/css/ionicons.css'
+            '@AppBundle/Resources/public/css/bootstrap-datepicker.css'
+            '@AppBundle/Resources/public/css/custom.css'
+            '@AppBundle/Resources/public/css/circle.css'
+        %}
+            <link rel="stylesheet" href="{{ asset_url }}" />
+        {% endstylesheets %}
+
+        <style type="text/css">
+            @font-face {
+                font-family: "Ionicons";
+                src: url("{{ asset('bundles/app/fonts/ionicons.eot') }}");
+                src: url("{{ asset('bundles/app/fonts/ionicons.eot') }}") format("embedded-opentype"),
+                    url("{{ asset('bundles/app/fonts/ionicons.ttf') }}") format("truetype"),
+                    url("{{ asset('bundles/app/fonts/ionicons.woff') }}") format("woff"),
+                    url("{{ asset('bundles/app/fonts/ionicons.svg') }}") format("svg");
+                font-weight: normal;
+                font-style: normal;
+            }
+        </style>
+    {% endblock %}
+</head>
+<body style="background-color: #f6f7f8;">
+
+    {% block wrapper %}
+        <nav class="navbar navbar-default" role="navigation" style="margin-bottom: 0px; background-color: #475056; height: 75px;">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse" style="margin-top: 20px;">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <div style="font-size: 2.0em; padding: 20px 0px 0px 10px; line-height: 45px; color: #ccc;">
+                        {% block page_title %}
+                            {{ page_title_header|default('Title Needed') }}
+                        {% endblock %}
+                    </div>
+                </div>
+
+                <div class="collapse navbar-collapse">
+                    <ul class="nav navbar-nav navbar-right">
+                        <li class="navbar-search">
+                            <form action="{{ path('app_team_manual_search') }}" method="post">
+                                <input class="form-control" placeholder="Search Teams..." id="js-team-search" name="searchName" autocomplete="off">
+                            </form>
+                            <ul class="list-group" id="js-team-search-list">
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <div class="collapse navbar-collapse" style="padding: 0px;">
+            <div class="visible-xs" style="width: 100%; height: 35px;"></div>
+            <nav class="navbar navbar-default" role="navigation">
+                <div class="container">
+                    {% set primary_navigation = knp_menu_get('AppBundle:Builder:mainMenu') %}
+                    {{ knp_menu_render(primary_navigation, {'currentClass': 'active', 'depth': 2}) }}
+
+                    <ul class="nav navbar-nav navbar-right">
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                {{ app.user }}
+                                <span class="caret"></span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <a href="{{ path('app_person_show', {'username': app.user.username}) }}">
+                                        My Profile
+                                    </a>
+                                </li>
+                                {% if is_granted('ROLE_MANAGE') %}
+                                    <li>
+                                        <a href="{{ path('app_game_stats_index') }}">
+                                            Game Stats
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="{{ path('app_manage_people') }}">
+                                            People
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="{{ path('app_manage_pickem') }}">
+                                            Manage Pick'em
+                                        </a>
+                                    </li>
+                                {% endif %}
+                                <li class="divider"></li>
+                                <li>
+                                    <a href="/logout">
+                                        Logout
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        </div>
+
+        {# content #}
+        <div class="container" style="margin-top: 20px;">
+            {% block flash_messages %}
+                {% set flashTypes = [ 'note', 'warning', 'error', 'success'] %}
+                {% set flashTypeMap = {
+                    'note'    : 'info',
+                    'warning' : 'warning',
+                    'error'   : 'danger',
+                    'success' : 'success',
+                } %}
+                {% set flashIconMap = {
+                    'note'    : 'info-circle',
+                    'warning' : 'exclamation-circle',
+                    'error'   : 'times-circle',
+                    'success' : 'check-circle',
+                } %}
+                {% for flashType in flashTypes %}
+                    {% for flashMessage in app.session.flashbag.get(flashType) %}
+                        <div class="hidden-print alert alert-custom alert-dismissible alert-{{ flashTypeMap[flashType] }}" role="alert" style="margin-bottom: 20px;">
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                            <table>
+                                <td>
+                                    <div class="alert-icon alert-icon-{{ flashTypeMap[flashType] }}">
+                                        {{ icon(flashIconMap[flashType]) }}
+                                    </div>
+                                </td>
+                                <td style="padding-left: 10px;">
+                                    <strong class="alert-text-{{ flashTypeMap[flashType] }}">
+                                        {{ flashType|capitalize }}!
+                                    </strong>
+                                    {{ flashMessage|raw }}
+                                </td>
+                            </table>
+                        </div>
+                    {% endfor %}
+                {% endfor %}
+            {% endblock %}
+
+            {% block content %}
+            {% endblock %}
+        </div>
+
+        <div class="modal fade js-confirm-modal" role="dialog" style="display: none;">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        Are you sure you want to <span class="js-confirm-modal-title">continue</span>?
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn js-continue-action">
+                            <span class="js-confirm-modal-btn">Continue</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endblock %}
+
+    {% block javascripts %}
+        {% javascripts
+            'bundles/app/js/jquery-3.1.0.min.js'
+            'bundles/app/js/bootstrap.js'
+            'bundles/app/js/bootstrap-datepicker.js'
+        %}
+            <script src="{{ asset_url }}"></script>
+        {% endjavascripts %}
+
+        <script type="text/javascript">
+            /* list items header */
+            $('.list-item-header').on('click', function(){
+                $('.list-item-header-options').toggle("fade");
+            });
+
+            /* tooltip */
+            $('[data-toggle="tooltip"]').tooltip();
+
+            /* popover */
+            $('[data-toggle="popover"]').popover({'html': true});
+
+            /* panel-click */
+            $('.panel-click, .table-click').on('click', function(){
+                var route = $(this).data('url');
+                window.location.href = route;
+            });
+
+            /* team search */
+            $('#js-team-search').on('keyup', function() {
+                var searchText = $(this).val();
+                var searchList = $('#js-team-search-list');
+
+                if (searchText == "") {
+                    searchList.hide();
+                    return 0;
+                }
+
+                $.getJSON("{{ path('app_team_search') }}", {
+                    format: "json",
+                    searchName: searchText
+                })
+                .done(function(data){
+                    searchList.empty();
+                    searchList.show();
+
+                    $.each(data.data, function(index, value){
+                        var listGroupItem = '<a href="' + value.route + '" class="list-group-item">' + value.name + '</a>';
+                        searchList.append(listGroupItem);
+                    });
+                });
+            });
+
+
+            /* modal confirmation */
+            $(document).ready(function(){
+                $('a[data-confirm-action]').each(function (i, el) {
+                    LinkConfirmation.init(el);
+                });
+
+                $('form[data-confirm-action]').each(function (i, el) {
+                    FormConfirmation.init(el);
+                });
+            });
+
+            var LinkConfirmation = {
+                init: function(el) {
+                    var title    = 'Continue';
+                    var btnClass = 'primary';
+
+                    if ($(el).is('[data-confirm-title]')) {
+                        title = $(el).attr('data-confirm-title');
+                    }
+
+                    if ($(el).is('[data-confirm-btn-class]')) {
+                        btnClass = $(el).attr('data-confirm-btn-class');
+                    }
+
+                    $(el).on('click', function (e) {
+                        e.preventDefault();
+                        e.stopPropagation();
+
+                        var modal = $('.js-confirm-modal');
+
+                        modal.find('.js-confirm-modal-title').text(title.toLowerCase());
+                        modal.find('.js-confirm-modal-btn').text(title);
+                        modal.find('.js-continue-action').addClass('btn-' + btnClass);
+
+                        modal.modal().on('shown.bs.modal', function() {
+                            $('[data-dismiss="modal"]').on('click', function (e) {
+                                e.preventDefault();
+                                modal.modal('hide');
+                            });
+
+                            $('.js-continue-action').on('click', function (e) {
+                                modal.modal('hide');
+                                window.location.href = $(el).attr('href');
+                            });
+                        });
+                    });
+                }
+            }
+
+            var FormConfirmation = {
+                init: function(el) {
+                    var title    = 'Continue';
+                    var btnClass = 'primary';
+
+                    if ($(el).is('[data-confirm-title]')) {
+                        title = $(el).attr('data-confirm-title');
+                    }
+
+                    if ($(el).is('[data-confirm-btn-class]')) {
+                        btnClass = $(el).attr('data-confirm-btn-class');
+                    }
+
+                    $(el).on('submit', function (e) {
+                        e.preventDefault();
+                        e.stopPropagation();
+
+                        var modal = $('.js-confirm-modal');
+
+                        modal.find('.js-confirm-modal-title').text(title.toLowerCase());
+                        modal.find('.js-confirm-modal-btn').text(title);
+                        modal.find('.js-continue-action').addClass('btn-' + btnClass);
+
+                        modal.modal().on('shown.bs.modal', function() {
+                            $('[data-dismiss="modal"]').on('click', function (e) {
+                                e.preventDefault();
+                                modal.modal('hide');
+                            });
+
+                            $('.js-continue-action').on('click', function (e) {
+                                modal.modal('hide');
+                                $(el).off('submit');
+                                $(el).submit();
+                            });
+                        });
+                    });
+                }
+            }
+
+        </script>
+    {% endblock %}
+
+</body>
+</html>

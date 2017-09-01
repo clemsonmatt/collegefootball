@@ -1,0 +1,29 @@
+{% extends 'AppBundle:Gameday:layout.html.twig' %}
+
+{% block content %}
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <a href="{{ path('app_gameday_index') }}">Gameday</a>
+            |
+            Add
+        </div>
+        <div class="panel-body">
+            {{ form_start(form, {'attr': {'class': 'form-horizontal'}}) }}
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group row">
+                            <label class="col-md-2 control-label">{{ form_label(form.game) }}</label>
+                            <div class="col-md-10">
+                                {{ form_widget(form.game, {'attr': {'class': 'form-control'}}) }}
+                            </div>
+                        </div>
+                        <button class="btn btn-success pull-right" type="submit">
+                            {{ icon('checkmark') }}
+                            Save
+                        </button>
+                    </div>
+                </div>
+            {{ form_end(form) }}
+        </div>
+    </div>
+{% endblock %}

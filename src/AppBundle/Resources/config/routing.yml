@@ -1,0 +1,9 @@
+college_football_app:
+    resource: "@AppBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
+college_football_team:
+    resource: "@AppBundle/Controller/"
+    type:     annotation
+    prefix:   /

@@ -1,0 +1,96 @@
+{% extends 'AppBundle:Ranking:layout.html.twig' %}
+
+{% block content %}
+    <legend>
+        <h2>
+            <div class="btn-group pull-right">
+                <button type="button" class="btn btn-sm btn-primary dropdown-toggle" data-toggle="dropdown">
+                    {{ icon('calendar') }}
+                    {{ week }}
+                    <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu dropdown-menu-right">
+                    {% for season_week in weeks %}
+                        <li>
+                            <a href="{{ path('app_ranking_index', {'week': season_week.id}) }}">
+                                {{ season_week }}
+                            </a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+            {{ week }} Standings
+        </h2>
+    </legend>
+    <div class="row">
+        <div class="col-sm-4">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    {% if is_granted('ROLE_MANAGE') %}
+                        <a href="{{ path('app_ranking_add', {'week': week.id, 'rankType': 'playoffRank'}) }}" class="btn btn-xs btn-primary pull-right">
+                            {{ icon('edit') }}
+                        </a>
+                    {% endif %}
+                    Playoff Rankings
+                </div>
+                <ul class="list-group">
+                    {% for ranking in playoff_rankings %}
+                        <a href="{{ path('app_team_show', {'slug': ranking.team.slug}) }}" class="list-group-item">
+                            <h4>
+                                <img src="{{ ranking.team.imageLocation }}" style="height: 50px;">
+                                #{{ ranking.playoffRank }}
+                                {{ ranking.team.name }}
+                            </h4>
+                        </a>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    {% if is_granted('ROLE_MANAGE') %}
+                        <a href="{{ path('app_ranking_add', {'week': week.id, 'rankType': 'apRank'}) }}" class="btn btn-xs btn-primary pull-right">
+                            {{ icon('edit') }}
+                        </a>
+                    {% endif %}
+                    AP Rankings
+                </div>
+                <ul class="list-group">
+                    {% for ranking in ap_rankings %}
+                        <a href="{{ path('app_team_show', {'slug': ranking.team.slug}) }}" class="list-group-item">
+                            <h4>
+                                <img src="{{ ranking.team.imageLocation }}" style="height: 50px;">
+                                #{{ ranking.apRank }}
+                                {{ ranking.team.name }}
+                            </h4>
+                        </a>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    {% if is_granted('ROLE_MANAGE') %}
+                        <a href="{{ path('app_ranking_add', {'week': week.id, 'rankType': 'coachesPollRank'}) }}" class="btn btn-xs btn-primary pull-right">
+                            {{ icon('edit') }}
+                        </a>
+                    {% endif %}
+                    Coaches Poll
+                </div>
+                <ul class="list-group">
+                    {% for ranking in coaches_poll_rankings %}
+                        <a href="{{ path('app_team_show', {'slug': ranking.team.slug}) }}" class="list-group-item">
+                            <h4>
+                                <img src="{{ ranking.team.imageLocation }}" style="height: 50px;">
+                                #{{ ranking.coachesPollRank }}
+                                {{ ranking.team.name }}
+                            </h4>
+                        </a>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+{% endblock %}

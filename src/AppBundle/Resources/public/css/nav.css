@@ -1,0 +1,43 @@
+.page-title {
+    font-size: 1.8em;
+    color: #2196f3;
+}
+
+.navbar {
+    border-radius: 0px;
+    margin-bottom: 0px;
+}
+
+.navbar-brand {
+    color: #778086 !important;
+    font-size: 1.2em;
+}
+
+.navbar-search {
+    height: 50px;
+    margin-top: 20px;
+}
+.navbar-search input {
+    width: 300px;
+    border-radius: 25px;
+    background-color: #374046;
+    border-color: #374046;
+    color: #ccc;
+}
+.navbar-search > ul {
+    position: relative;
+    z-index: 999;
+    width: auto;
+    display: none;
+}
+
+@media (max-width: 767px) {
+    .navbar-search {
+        height: inherit;
+        margin: 0;
+    }
+    .navbar-search input {
+        width: 100%;
+        border-radius: 0;
+    }
+}

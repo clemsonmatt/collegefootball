@@ -1,0 +1,26 @@
+{% extends 'AppBundle:Security:layout.html.twig' %}
+
+{% block content %}
+    <div class="panel panel-default" style="padding-top: 20px;">
+        <div class="panel-body">
+            <legend><h4>Create Account</h4></legend>
+            {{ form_start(form, {'attr': {'class': 'form-signin'}}) }}
+                {{ form_row(form.firstName) }}
+                {{ form_row(form.lastName) }}
+                {{ form_row(form.email) }}
+                <hr>
+                {{ form_rest(form) }}
+
+                <button type="submit" class="btn btn-primary btn-block">
+                    {{ icon('log-in') }}
+                    Create
+                </button>
+                <br>
+                <a href="{{ path('app_security_login') }}">
+                    I already have an account
+                </a>
+            {{ form_end(form) }}
+            <br>
+        </div>
+    </div>
+{% endblock %}

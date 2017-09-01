@@ -1,0 +1,52 @@
+{% extends 'AppBundle:Manage:layout.html.twig' %}
+
+{% block content %}
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <a href="{{ path('app_manage_people') }}">
+                Manage People
+            </a>
+            |
+            Add Person
+        </div>
+        <div class="panel-body">
+            {{ form_start(form, {'attr': {'class': 'form-horizontal'}}) }}
+                <div class="form-group row">
+                    <label class="col-md-2 control-label">First Name</label>
+                    <div class="col-md-10">
+                        {{ form_widget(form.firstName, {'attr': {'class': 'form-control'}}) }}
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-md-2 control-label">Last Name</label>
+                    <div class="col-md-10">
+                        {{ form_widget(form.lastName, {'attr': {'class': 'form-control'}}) }}
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-md-2 control-label">Username</label>
+                    <div class="col-md-10">
+                        {{ form_widget(form.username, {'attr': {'class': 'form-control'}}) }}
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-md-2 control-label">Email</label>
+                    <div class="col-md-10">
+                        {{ form_widget(form.email, {'attr': {'class': 'form-control'}}) }}
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-md-2 control-label">Team</label>
+                    <div class="col-md-10">
+                        {{ form_widget(form.team, {'attr': {'class': 'form-control'}}) }}
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-primary pull-right">
+                    {{ icon('checkmark') }}
+                    Save
+                </button>
+            {{ form_end(form) }}
+        </div>
+    </div>
+{% endblock %}

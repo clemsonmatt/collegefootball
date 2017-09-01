@@ -1,0 +1,219 @@
+{% extends 'AppBundle:Game:layout.html.twig' %}
+
+{% block content %}
+    <legend>
+        <h2>
+            <div class="btn-group pull-right">
+                <button type="button" class="btn btn-sm btn-primary dropdown-toggle" data-toggle="dropdown">
+                    {{ icon('calendar') }}
+                    {{ week }}
+                    <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu dropdown-menu-right">
+                    {% for season_week in season_weeks %}
+                        <li>
+                            <a href="{{ path('app_game_index_week', {'season': season, 'week': season_week.number}) }}">
+                                {{ season_week }}
+                            </a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+            {{ week }} Games
+        </h2>
+    </legend>
+
+    {% if week == 'Bowl' and playoff_games.firstSemifinal is defined %}
+        <h4 class="text-center">College Football Playoffs</h4>
+        <div class="row">
+            <div class="col-sm-3">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <img src="{{ asset(playoff_games.firstSemifinal.homeTeam.imageLocation) }}" style="width: 40px; float: left;">
+                        <h4 style="margin-left: 50px;">{{ (playoff_games.firstSemifinal is defined and playoff_games.firstSemifinal.homeTeam ? playoff_games.firstSemifinal.homeTeam.nameShort : '<span class="text-muted">TBD</span>')|raw }}</h4>
+                    </div>
+                </div>
+                <a href="{{ path('app_game_show', {game: playoff_games.firstSemifinal.id}) }}">
+                    <h5 class="text-center" style="margin-top: -10px;">{{ playoff_games.firstSemifinal ? playoff_games.firstSemifinal.bowlName }}</h5>
+                </a>
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <img src="{{ asset(playoff_games.firstSemifinal.awayTeam.imageLocation) }}" style="width: 40px; float: left;">
+                        <h4 style="margin-left: 50px;">{{ (playoff_games.firstSemifinal is defined and playoff_games.firstSemifinal.awayTeam ? playoff_games.firstSemifinal.awayTeam.nameShort : '<span class="text-muted">TBD</span>')|raw }}</h4>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="row" style="margin-top: 60px;">
+                    <div class="col-sm-6">
+                        <div class="panel panel-default">
+                            <div class="panel-body">
+                                {% if playoff_games.championship is defined and playoff_games.championship.homeTeam %}
+                                    <img src="{{ asset(playoff_games.championship.homeTeam.imageLocation) }}" style="width: 40px; float: left;">
+                                    <h4 style="margin-left: 50px;">{{ playoff_games.championship.homeTeam.nameShort }}</h4>
+                                {% else %}
+                                    <h4 class="text-muted">TBD</h4>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="panel panel-default">
+                            <div class="panel-body">
+                                {% if playoff_games.championship is defined and playoff_games.championship.homeTeam %}
+                                    <img src="{{ asset(playoff_games.championship.awayTeam.imageLocation) }}" style="width: 40px; float: left;">
+                                    <h4 style="margin-left: 50px;">{{ playoff_games.championship.awayTeam.nameShort }}</h4>
+                                {% else %}
+                                    <h4 class="text-muted">TBD</h4>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <a href="{{ path('app_game_show', {game: playoff_games.championship.id}) }}">
+                    <h5 class="text-center" style="margin-top: 0px;">{{ playoff_games.championship ? playoff_games.championship.bowlName }}</h5>
+                </a>
+            </div>
+            <div class="col-sm-3">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <img src="{{ asset(playoff_games.secondSemifinal.homeTeam.imageLocation) }}" style="width: 40px; float: left;">
+                        <h4 style="margin-left: 50px;">{{ (playoff_games.secondSemifinal is defined and playoff_games.secondSemifinal.homeTeam ? playoff_games.secondSemifinal.homeTeam.nameShort : '<span class="text-muted">TBD</span>')|raw }}</h4>
+                    </div>
+                </div>
+                <a href="{{ path('app_game_show', {game: playoff_games.secondSemifinal.id}) }}">
+                    <h5 class="text-center" style="margin-top: -10px;">{{ playoff_games.secondSemifinal ? playoff_games.secondSemifinal.bowlName }}</h5>
+                </a>
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <img src="{{ asset(playoff_games.secondSemifinal.awayTeam.imageLocation) }}" style="width: 40px; float: left;">
+                        <h4 style="margin-left: 50px;">{{ (playoff_games.secondSemifinal is defined and playoff_games.secondSemifinal.awayTeam ? playoff_games.secondSemifinal.awayTeam.nameShort : '<span class="text-muted">TBD</span>')|raw }}</h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <hr>
+    {% endif %}
+
+    {% set current_date = null %}
+    {% for game in games %}
+        {% if current_date != game.date %}
+            {% set current_date = game.date %}
+            <h3>{{ game.date|date('D, M. j') }}</h3>
+        {% endif %}
+        <div class="panel panel-default {{ game.homeTeam ? 'panel-click' }}" data-url="{{ path('app_game_show', {'game': game.id}) }}">
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-xs-4">
+                        {% if game.winningTeam.id == game.homeTeam.id %}
+                            <div style="position: absolute;">
+                                <h1 style="font-size: 3.0em; margin-top: -10px; margin-left: -10px; background-color: #fff; border-radius: 3.0em; padding: 0px 5px;" class="text-success">
+                                    {{ icon('checkmark-circled') }}
+                                </h1>
+                            </div>
+                        {% endif %}
+                        <div class="hidden-lg">
+                            {% if game.homeTeam %}
+                                <img src="{{ asset(game.homeTeam.imageLocation) }}" style="width: 85%; max-width: 100px; float: left;">
+                            {% else %}
+                                <div style="width: 100px; height: 85px; background-color: #f2f2f2;">
+                                </div>
+                            {% endif %}
+                        </div>
+                        <div class="visible-lg" style="margin: -15px 0px;">
+                            {% if game.homeTeam %}
+                                <img src="{{ asset(game.homeTeam.imageLocation) }}" style="width: 100px; float: left; padding-right: 15px; border-right: 1px solid #{{ game.homeTeam.primaryColor }};">
+                                <h3 style="color: #{{ game.homeTeam.primaryColor }}; line-height: 1.2em; margin: 15px 0px 0px 110px; padding: 15px 0px 0px 0px;">
+                                    <a href="{{ path('app_team_show', {'slug': game.homeTeam.slug}) }}" style="color: inherit;">
+                                        {{ game.homeTeam.name }}
+                                    </a>
+                                </h3>
+                            {% else %}
+                                <div style="width: 100px; height: 85px; background-color: #f2f2f2; float: left;">
+                                </div>
+                                <h3 style="line-height: 1.2em; margin: 15px 0px 0px 110px; padding: 15px 0px 0px 0px;">
+                                    TBD
+                                </h3>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="col-xs-4">
+                        <center class="text-muted" style="margin-top: 20px;">
+                            {% if game.winningTeam.id %}
+                                Final
+                                <h4>
+                                    {{ game.stats.homeStats.pointsFinal }}
+                                    &mdash;
+                                    {{ game.stats.awayStats.pointsFinal }}
+                                </h4>
+                            {% else %}
+                                {% if is_granted('ROLE_MANAGE') %}
+                                    <a href="{{ path('app_game_edit', {'game': game.id}) }}" class=" pull-right">
+                                        {{ icon('compose') }}
+                                    </a>
+                                {% endif %}
+                                <div class="hidden-xs">
+                                    {{ game.location }}
+                                    <hr style="margin: 5px 60px;">
+                                    {{ game.date|date('m/d') }} @ {{ game.time ? game.time|date('h:i A') : 'TBD' }}
+                                </div>
+                                <div class="visible-xs">
+                                    {{ game.date|date('m/d') }}
+                                    <br>
+                                    {{ game.time ? game.time|date('h:i A') : 'TBD' }}
+                                </div>
+                            {% endif %}
+                        </center>
+                    </div>
+                    <div class="col-xs-4">
+                        {% if game.winningTeam.id == game.awayTeam.id %}
+                            <div class="pull-right" style="margin-right: 40px;">
+                                <div style="position: absolute;">
+                                    <h1 style="font-size: 3.0em; margin-top: -10px; background-color: #fff; border-radius: 3.0em; padding: 0px 5px;" class="text-success">
+                                        {{ icon('checkmark-circled') }}
+                                    </h1>
+                                </div>
+                            </div>
+                        {% endif %}
+                        <div class="hidden-lg">
+                            {% if game.awayTeam %}
+                                <img src="{{ asset(game.awayTeam.imageLocation) }}" style="width: 85%; max-width: 100px; float: right;">
+                            {% else %}
+                                <div style="width: 100px; height: 85px; background-color: #f2f2f2; float: right;">
+
+                                </div>
+                            {% endif %}
+                        </div>
+                        <div class="visible-lg" style="margin: -15px 0px;">
+                            {% if game.awayTeam %}
+                                <img src="{{ asset(game.awayTeam.imageLocation) }}" style="width: 100px; float: right; padding-left: 15px; border-left: 1px solid #{{ game.awayTeam.primaryColor }};">
+                                <h3 style="color: #{{ game.awayTeam.primaryColor }}; line-height: 1.2em; margin: 15px 110px 0px 0px; padding: 15px 0px 0px 0px; text-align: right;">
+                                    <a href="{{ path('app_team_show', {'slug': game.awayTeam.slug}) }}" style="color: inherit;">
+                                        {{ game.awayTeam.name }}
+                                    </a>
+                                </h3>
+                            {% else %}
+                                <div style="width: 100px; height: 85px; background-color: #f2f2f2; float: right;">
+                                </div>
+                                <h3 style="line-height: 1.2em; margin: 15px 110px 0px 0px; padding: 15px 0px 0px 0px; text-align: right;">
+                                    TBD
+                                </h3>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% if game.conferenceChampionship or game.bowlName %}
+                <div class="panel-footer">
+                    <h4 class="text-primary text-center" style="margin: 0;">
+                        {% if game.conferenceChampionship %}
+                            {{ game.homeTeam.conference }} Championship Game
+                        {% else %}
+                            {{ game.bowlName }}
+                        {% endif %}
+                    </h4>
+                </div>
+            {% endif %}
+        </div>
+    {% endfor %}
+{% endblock %}

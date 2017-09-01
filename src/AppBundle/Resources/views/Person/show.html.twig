@@ -1,0 +1,369 @@
+{% extends 'AppBundle:Person:layout.html.twig' %}
+
+{% import _self as macros %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-lg-4">
+            <div class="row">
+                <div class="col-lg-12 col-md-6">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            {% if app.user == person or is_granted('ROLE_MANAGE') %}
+                                <div class="pull-right">
+                                    <a href="{{ path('app_person_edit', {'username': person.username}) }}" class="btn btn-xs btn-primary">
+                                        {{ icon('compose') }}
+                                        Edit
+                                    </a>
+                                </div>
+                            {% endif %}
+                            Profile
+                        </div>
+                        <div class="panel-body">
+                            <dl class="dl-spaced">
+                                <dt>Name</dt>
+                                <dd>{{ person }}</dd>
+                                <dt>Email</dt>
+                                <dd>{{ person.email|default('&mdash;')|raw }}</dd>
+                                <dt>Username</dt>
+                                <dd>{{ person.username }}</dd>
+                                <dt>My Team</dt>
+                                <dd>
+                                    {% if person.team %}
+                                        {{ person.team.name }}
+                                    {% else %}
+                                        <span class="text-muted">Not set</span>
+                                        <a href="{{ path('app_person_edit', {'username': person.username}) }}" style="margin-left: 10px;">
+                                            {{ icon('compose') }}
+                                        </a>
+                                    {% endif %}
+                                </dd>
+                            </dl>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-12 col-md-6">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            Pick'em Stats
+                        </div>
+                        <div class="panel-body">
+                            <h4>Season Picks</h4>
+                            <center>
+                                <div id="js-pickem-stats" data-wins="{{ person.predictionWins() }}" data-losses="{{ person.predictionLosses() }}"></div>
+                            </center>
+                            <hr>
+                            <h4>{{ week }} Picks</h4>
+                            {% if (week_win_picks + week_lose_picks) %}
+                                <div class="progress">
+                                    <div class="progress-bar progress-bar-striped progress-bar-success" data-toggle="tooltip" title="{{ ((week_win_picks / (week_win_picks + week_lose_picks)) * 100)|number_format(1) }}%" style="line-height: 16px; width: {{ (week_win_picks / (week_win_picks + week_lose_picks)) * 100 }}%;">
+                                        {{ week_win_picks }}
+                                    </div>
+                                    <div class="progress-bar progress-bar-striped progress-bar-danger" data-toggle="tooltip" title="{{ ((week_lose_picks / (week_win_picks + week_lose_picks)) * 100)|number_format(1) }}%" style="line-height: 16px; width: {{ (week_lose_picks / (week_win_picks + week_lose_picks)) * 100 }}%;">
+                                        {{ week_lose_picks }}
+                                    </div>
+                                </div>
+                            {% else %}
+                                <span class="text-muted">None</span>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    Pick'em Leaderboard
+                </div>
+                <div class="panel-body">
+                    <h4 class="text-center">
+                        #{{ current_rank }} {{ person.username }} &mdash; {{ current_score }} pts
+                    </h4>
+                </div>
+                <table class="table table-striped table-hover">
+                    <thead>
+                        <th class="text-center">Rank</th>
+                        <th>Username</th>
+                        <th class="text-center">
+                            <span data-toggle="tooltip" data-placement="top" title="wins * %correct * 10">Score {{ icon('help-circled') }}</span>
+                        </th>
+                        <th class="text-center">Win Ratio</th>
+                    </thead>
+                    {% for person_rank in people_rank %}
+                        <tr>
+                            <td class="text-center">{{ person_rank.rank }}</td>
+                            <td>
+                                {% if is_granted('ROLE_MANAGE') %}
+                                    <a href="{{ path('app_person_show', {username: person_rank.username}) }}">
+                                        {{ person_rank.username }}
+                                    </a>
+                                {% else %}
+                                    {{ person_rank.username }}
+                                {% endif %}
+                            </td>
+                            <td class="text-center">{{ person_rank.score|number_format(1) }} pts</td>
+                            <td class="text-center">{{ person_rank.percentage|number_format(1) }}% ({{ person_rank.wins }} &ndash; {{ person_rank.losses }})</td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+        <div class="col-lg-8">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <div class="btn-group pull-right">
+                        <button type="button" class="btn btn-xs btn-primary dropdown-toggle" data-toggle="dropdown">
+                            {{ icon('calendar') }}
+                            {{ week }}
+                            <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-right">
+                            {% for season_week in season_weeks|reverse %}
+                                {% if season_week.startDate|date('U') <= "now"|date('U') and season_week != week %}
+                                    <li>
+                                        <a href="{{ path('app_person_show_week', {'username': person.username, 'season': season, 'week': season_week.number}) }}">
+                                            {{ season_week }}
+                                        </a>
+                                    </li>
+                                {% endif %}
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    Pick'em
+                </div>
+            </div>
+            {% for game in games %}
+                <div class="panel panel-default">
+                    {% if game.winningTeam.id %}
+                        {% set winning_team = game.winningTeam.id == game.homeTeam.id ? game.homeTeam : game.awayTeam %}
+                        {% set is_winner    = game.winningTeam.id == winning_team.id and game.id in week_winners|keys and winning_team.slug in week_winners[game.id] %}
+                        {% set is_loser     = game.winningTeam.id == winning_team.id and game.id in week_winners|keys and game.winningTeam.slug not in week_winners[game.id] %}
+
+                        <div class="panel-heading text-center {% if is_winner %}bg-success{% else %}bg-danger{% endif %}">
+                            {{ game.stats.awayStats.pointsFinal }} &ndash; {{ game.stats.homeStats.pointsFinal }}
+                        </div>
+                    {% endif %}
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-sm-4 col-xs-5" {% if game.winningTeam.id and game.winningTeam.id != game.awayTeam.id %}style="opacity: 0.3;"{% endif %}>
+                                <center>
+                                    {# team #}
+                                    {% if game.winningTeam.id or not game.canPick %}
+                                        {{ macros.teamPick(game, game.awayTeam, week_winners, 'Away') }}
+                                    {% else %}
+                                        <button class="btn btn-default js-btn-winner {% if game.id in week_winners|keys and game.awayTeam.id in week_winners[game.id] %} text-primary {% endif %}" data-game="{{ game.id }}" data-home-away="away" data-url="{{ path('app_person_prediction', {username: person.username, game: game.id, slug: game.awayTeam.slug}) }}" style="width: 100%; overflow: hidden; background-color: #f4f4f4; border-radius: 4px;">
+                                            {{ macros.teamPick(game, game.awayTeam, week_winners, 'Away') }}
+                                        </button>
+                                    {% endif %}
+                                    <hr style="margin: 5px 0px;">
+                                    {# predictions #}
+                                    {% if game.id in game_picks|keys %}
+                                        {% set pick_total = game_picks[game.id].awayCount + game_picks[game.id].homeCount %}
+                                        <div class="progress" style="border: none; height: 15px; margin-bottom: 0px;">
+                                            <div class="progress-bar progress-bar-striped" role="progressbar" style="width: {{ (game_picks[game.id].awayCount / pick_total) * 100 }}%;" data-toggle="tooltip" data-placement="top" title="{{ game_picks[game.id].people.away is defined ? game_picks[game.id].people.away|join(', ') }}">
+                                            </div>
+                                        </div>
+                                    {% else %}
+                                        <span class="text-muted">
+                                            No picks
+                                        </span>
+                                    {% endif %}
+                                </center>
+                            </div>
+                            <div class="col-sm-4 col-xs-2 text-center">
+                                <div id="js-game-spinner-{{ game.id }}" style="display: none; position: absolute; margin-top: 40px; left: 40%; font-size: 3.5em;">
+                                    {{ icon('load-c ion-spin-animation') }}
+                                </div>
+
+                                <div class="hidden-xs">
+                                    {{ game.location }}
+                                    <hr style="margin: 5px 0px;">
+                                    {{ game.date|date('D. M, j') }}
+                                    <br>
+                                    {{ game.time ? game.time|date('h:i A') : 'TBD' }}
+                                    <br>
+                                </div>
+                                <a href="{{ path('app_game_show', {'game': game.id}) }}" class="btn btn-primary btn-sm hidden-xs" style="margin-top: 10px;">
+                                    {{ icon('information-circled') }}
+                                    Game Details
+                                </a>
+                                <a href="{{ path('app_game_show', {'game': game.id}) }}" class="visible-xs" style="margin-top: 10px; font-size: 2.4em;">
+                                    {{ icon('information-circled') }}
+                                </a>
+
+                                {% if not game.winningTeam.id %}
+                                    <h1 class="text-muted">
+                                        {% if game.canPick %}
+                                            <span class="text-success">{{ icon('unlocked') }}</span>
+                                        {% else %}
+                                            {{ icon('locked') }}
+                                        {% endif %}
+                                    </h1>
+                                {% endif %}
+
+                                <span class="text-muted visible-xs">
+                                    {{ game.spread ? game[game.predictedWinner|lower ~ 'Team'].nameAbbr ~ ' (-' ~ game.spread ~ ')' }}
+                                </span>
+                            </div>
+                            <div class="col-sm-4 col-xs-5" {% if game.winningTeam.id and game.winningTeam.id != game.homeTeam.id %}style="opacity: 0.3;"{% endif %}>
+                                <center>
+                                    {% if game.winningTeam.id or not game.canPick %}
+                                        {{ macros.teamPick(game, game.homeTeam, week_winners, 'Home') }}
+                                    {% else %}
+                                        <button class="btn btn-default js-btn-winner {% if game.id in week_winners|keys and game.homeTeam.slug in week_winners[game.id] %} text-primary {% endif %}" data-game="{{ game.id }}" data-home-away="home" data-url="{{ path('app_person_prediction', {'username': person.username, 'game': game.id, 'slug': game.homeTeam.slug}) }}" style="width: 100%; overflow: hidden; background-color: #f4f4f4; border-radius: 4px;">
+                                            {{ macros.teamPick(game, game.homeTeam, week_winners, 'Home') }}
+                                        </button>
+                                    {% endif %}
+                                    <hr style="margin: 5px 0px;">
+                                    {% if game.id in game_picks|keys %}
+                                        {% set pick_total = game_picks[game.id].awayCount + game_picks[game.id].homeCount %}
+                                        <div class="progress" style="border: none; height: 15px; margin-bottom: 0px;">
+                                            <div class="progress-bar progress-bar-striped" role="progressbar" style="width: {{ (game_picks[game.id].homeCount / pick_total) * 100 }}%;" data-toggle="tooltip" data-placement="top" title="{{ game_picks[game.id].people.home is defined ? game_picks[game.id].people.home|join(', ') }}">
+                                            </div>
+                                        </div>
+                                    {% else %}
+                                        <span class="text-muted">
+                                            No picks
+                                        </span>
+                                    {% endif %}
+                                </center>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}
+
+{% macro teamPick(game, team, week_winners, home_away) %}
+    <div style="width: 100%;">
+        <img src="{{ team.imageLocation }}" class="hidden-xs" style="max-width: 50%;">
+        <center class="visible-xs"><img src="{{ team.imageLocation }}" style="max-width: 85%;"></center>
+        <br>
+        <span class="visible-xs" style="margin: -10px;">{{ team.rankingNameShort }}</span>
+        <span class="hidden-xs">{{ team.rankingNameShort }}</span>
+        <span class="text-muted hidden-xs">
+            {{ game.spread and game.predictedWinner == home_away ? '(-' ~ game.spread ~ ')' }}
+        </span>
+    </div>
+    {% if game.winningTeam.id %}
+        {% set is_winner = game.winningTeam.id == team.id and game.id in week_winners|keys and team.slug in week_winners[game.id] %}
+        {% set is_loser  = game.winningTeam.id != team.id and game.id in week_winners|keys and game.winningTeam.slug not in week_winners[game.id] %}
+
+        <label class="{% if is_winner %} text-success {% elseif is_loser %} text-danger {% endif %}">
+            <div style="position: absolute;">
+                <h1 style="font-size: 5.0em; margin-top: -100px; margin-left: -30px; background-color: #fff; border-radius: 3.0em; padding: 0px 5px; opacity: 0.9;">
+                    {% if is_winner %}
+                        {{ icon('checkmark-circled') }}
+                    {% elseif is_loser %}
+                        {{ icon('close-circled') }}
+                    {% endif %}
+                </h1>
+            </div>
+        </label>
+    {% else %}
+        <h2 id="js-{{ home_away|lower }}-{{ game.id }}" class="{% if game.id in week_winners|keys and team.slug in week_winners[game.id] %}text-primary{% else %}text-light{% endif %}" style="margin: 5px 0px;">
+            {{ icon('checkmark-circled') }}
+        </h2>
+    {% endif %}
+{% endmacro %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    <script src="{{ asset('bundles/app/js/highcharts/highcharts.js') }}"></script>
+
+    <script type="text/javascript">
+        Highcharts.setOptions({
+            colors: ['#43cc6a', '#f04124']
+        });
+
+        $('.js-btn-winner').on('click', function(event, state) {
+            var url = $(this).attr('data-url');
+            var btn = $(this);
+
+            var gameId = btn.data('game');
+
+            $('#js-game-spinner-' + gameId).show();
+
+            $.post(url,
+                null,
+                function(response) {
+                    if (response.code == 100 && response.success) {
+                        btn.children().removeClass('text-light');
+                        btn.children().addClass('text-primary');
+
+                        var homeAway    = btn.data('home-away');
+                        var oppHomeAway = 'home';
+
+                        if (homeAway == 'home') {
+                            oppHomeAway = 'away';
+                        }
+
+                        $('#js-' + oppHomeAway + '-' + gameId).removeClass('text-primary');
+                        $('#js-' + oppHomeAway + '-' + gameId).addClass('text-light');
+
+                        $('#js-game-spinner-' + gameId).hide();
+                    }
+                },
+                "json"
+            );
+        });
+
+        $('#js-pickem-stats').highcharts({
+            chart: {
+                plotBackgroundColor: null,
+                plotBorderWidth: 0,
+                plotShadow: false,
+                spacingBottom: -250,
+                spacingTop: -150,
+                spacingLeft: 0,
+                spacingRight: 0,
+
+                // Explicitly tell the width and height of a chart
+                width: 265,
+                height: 150
+            },
+            title: {
+                text: false,
+                style: {
+                    fontSize: 14,
+                },
+                align: 'center',
+                verticalAlign: 'middle',
+                y: 0,
+                x: -7
+            },
+            credits: {
+                enabled: false
+            },
+            tooltip: {
+                pointFormat: '{series.name}: <b>{point.y} ({point.percentage:.1f}%)</b>'
+            },
+            plotOptions: {
+                pie: {
+                    dataLabels: {
+                        enabled: true,
+                        distance: -25,
+                        style: {
+                            color: 'white',
+                            textShadow: '0px 1px 2px black'
+                        }
+                    },
+                    startAngle: -90,
+                    endAngle: 90
+                }
+            },
+            series: [{
+                type: 'pie',
+                name: 'Count/Percentage',
+                innerSize: '50%',
+                data: [
+                    ['Wins',   $('#js-pickem-stats').data('wins')],
+                    ['Losses', $('#js-pickem-stats').data('losses')],
+                ]
+            }]
+        });
+    </script>
+{% endblock %}

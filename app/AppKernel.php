@@ -23,8 +23,7 @@ class AppKernel extends Kernel
             new JMS\AopBundle\JMSAopBundle(),
             new Braincrafted\Bundle\BootstrapBundle\BraincraftedBootstrapBundle(),
 
-            new CollegeFootball\AppBundle\CollegeFootballAppBundle(),
-            new CollegeFootball\TeamBundle\CollegeFootballTeamBundle(),
+            new AppBundle\AppBundle(),
         ];
 
         if (in_array($this->getEnvironment(), ['dev', 'test'], true)) {

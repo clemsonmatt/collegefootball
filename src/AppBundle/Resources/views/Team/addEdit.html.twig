@@ -1,0 +1,115 @@
+{% extends 'AppBundle:Team:layout.html.twig' %}
+
+{% block content %}
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            {% if team is defined %}
+                <div class="pull-right">
+                    <a href="{{ path('app_team_remove', {'slug': team.slug}) }}" class="btn btn-danger btn-xs" data-confirm-action data-confirm-title="Remove" data-confirm-btn-class="danger">
+                        {{ icon('trash-a') }}
+                        Remove
+                    </a>
+                </div>
+            {% endif %}
+            Manage Team
+        </div>
+        <div class="panel-body">
+            {{ form_start(form, {'attr': {'class': 'form-horizontal'}}) }}
+                <div class="row">
+                    <div class="col-lg-6">
+                        <h3>Team Info</h3>
+                        <div class="form-group row">
+                            <label class="col-md-2 control-label">{{ form_label(form.name) }}</label>
+                            <div class="col-md-10">
+                                {{ form_widget(form.name, {'attr': {'class': 'form-control'}}) }}
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-2 control-label">{{ form_label(form.nameShort) }}</label>
+                            <div class="col-md-10">
+                                {{ form_widget(form.nameShort, {'attr': {'class': 'form-control'}}) }}
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-2 control-label">{{ form_label(form.nameAbbr) }}</label>
+                            <div class="col-md-10">
+                                {{ form_widget(form.nameAbbr, {'attr': {'class': 'form-control'}}) }}
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-2 control-label">{{ form_label(form.mascot) }}</label>
+                            <div class="col-md-10">
+                                {{ form_widget(form.mascot, {'attr': {'class': 'form-control'}}) }}
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-2 control-label">{{ form_label(form.primaryColor) }}</label>
+                            <div class="col-md-10">
+                                {{ form_widget(form.primaryColor, {'attr': {'class': 'form-control'}}) }}
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-2 control-label">{{ form_label(form.secondaryColor) }}</label>
+                            <div class="col-md-10">
+                                {{ form_widget(form.secondaryColor, {'attr': {'class': 'form-control'}}) }}
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-2 control-label">{{ form_label(form.logo) }}</label>
+                            <div class="col-md-10">
+                                {{ form_widget(form.logo) }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <h3>School Info</h3>
+                        <div class="form-group row">
+                            <label class="col-md-2 control-label">{{ form_label(form.school) }}</label>
+                            <div class="col-md-10">
+                                {{ form_widget(form.school, {'attr': {'class': 'form-control'}}) }}
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-2 control-label">{{ form_label(form.city) }}</label>
+                            <div class="col-md-10">
+                                {{ form_widget(form.city, {'attr': {'class': 'form-control'}}) }}
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-2 control-label">{{ form_label(form.state) }}</label>
+                            <div class="col-md-10">
+                                {{ form_widget(form.state, {'attr': {'class': 'form-control'}}) }}
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-2 control-label">{{ form_label(form.stadiumName) }}</label>
+                            <div class="col-md-10">
+                                {{ form_widget(form.stadiumName, {'attr': {'class': 'form-control'}}) }}
+                            </div>
+                        </div>
+
+                        <h3>Conference Info</h3>
+                        <div class="form-group row">
+                            <label class="col-md-2 control-label">{{ form_label(form.conference) }}</label>
+                            <div class="col-md-10">
+                                {{ form_widget(form.conference, {'attr': {'class': 'form-control'}}) }}
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-2 control-label">{{ form_label(form.subConference) }}</label>
+                            <div class="col-md-10">
+                                {{ form_widget(form.subConference, {'attr': {'class': 'form-control'}}) }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="pull-right">
+                    <button class="btn btn-primary" type="submit">
+                        {{ icon('checkmark') }}
+                        Save
+                    </button>
+                </div>
+            {{ form_end(form) }}
+        </div>
+    </div>
+{% endblock %}

@@ -1,10 +1,10 @@
 app:
-    resource: "@CollegeFootballAppBundle/Resources/config/routing.yml"
+    resource: "@AppBundle/Resources/config/routing.yml"
     schemes:  [http]
 
 login:
     path: /login
-    defaults: { _controller: CollegeFootballAppBundle:Security:login }
+    defaults: { _controller: AppBundle:Security:login }
 
 login_check:
     path: /login_check

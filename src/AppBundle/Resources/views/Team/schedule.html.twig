@@ -1,0 +1,96 @@
+{% extends 'AppBundle:Team:layout.html.twig' %}
+
+{% block content %}
+    {% include 'AppBundle:Team:header.html.twig' %}
+
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <div class="pull-right">
+                {% if is_granted('ROLE_MANAGE') %}
+                    <a href="{{ path('app_game_add_team', {'slug': team.slug}) }}" class="btn btn-primary btn-xs">
+                        {{ icon('plus') }}
+                        Add Game
+                    </a>
+                {% endif %}
+            </div>
+            {{ "now"|date('Y') }} Schedule
+        </div>
+        <table class="table table-striped table-hover hidden-xs">
+            <thead>
+                <th>Date</th>
+                <th>Opponent</th>
+                <th>Time</th>
+                <th>Location</th>
+                <th>Prediction</th>
+                <th>Outcome</th>
+            </thead>
+            {% for game in games %}
+                <tr class="table-click" data-url="{{ path('app_game_show', {'game': game.id}) }}">
+                    <td>{{ game.date|date('D, M. j') }}</td>
+                    <td>
+                        {% if game.awayTeam == team %}
+                            <img src="{{ asset(game.homeTeam.imageLocation) }}" style="width: 25px;">
+                            @
+                            <a href="{{ path('app_team_show', {'slug': game.homeTeam.slug}) }}" style="color: inherit;">
+                                {{ game.homeTeam }}
+                            </a>
+                        {% else %}
+                            <img src="{{ asset(game.awayTeam.imageLocation) }}" style="width: 25px;">
+                            vs.
+                            <a href="{{ path('app_team_show', {'slug': game.awayTeam.slug}) }}" style="color: inherit;">
+                                {{ game.awayTeam }}
+                            </a>
+                        {% endif %}
+                    </td>
+                    <td>{{ game.time ? game.time|date('h:i A') : 'TBD' }}</td>
+                    <td>{{ game.location }}</td>
+                    <td>
+                        {% if game.id in user_predictions|keys %}
+                            {{ user_predictions[game.id].nameShort }}
+                        {% else %}
+                            &mdash;
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if game.winningTeam %}
+                            {{ game.winningTeam == team ? '<span class="text-success">W</span>' : '<span class="text-danger">L</span>' }}
+                            <span class="text-muted">
+                                ({{ game.stats.homeStats.pointsFinal }} &ndash; {{ game.stats.awayStats.pointsFinal }})
+                            </span>
+                        {% else %}
+                            &mdash;
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+
+        <ul class="list-group visible-xs">
+            {% for game in games %}
+                <a href="{{ path('app_game_show', {game: game.id}) }}" class="list-group-item">
+                    <strong>{{ game.date|date('D, M. j') }} @ {{ game.time ? game.time|date('h:i A') : 'TBD' }}</strong>
+                    <br>
+                    <h5 class="list-group-item-heading">
+                        <div class="pull-right">
+                            {% if game.winningTeam %}
+                                {{ game.winningTeam == team ? '<span class="text-success">W</span>' : '<span class="text-danger">L</span>' }}
+                                <span class="text-muted">
+                                    ({{ game.stats.homeStats.pointsFinal }} &ndash; {{ game.stats.awayStats.pointsFinal }})
+                                </span>
+                            {% endif %}
+                        </div>
+                        {% if game.awayTeam == team %}
+                            <img src="{{ asset(game.homeTeam.imageLocation) }}" style="width: 35px;">
+                            @
+                            {{ game.homeTeam.rankingNameShort }}
+                        {% else %}
+                            <img src="{{ asset(game.awayTeam.imageLocation) }}" style="width: 35px;">
+                            vs.
+                            {{ game.awayTeam.rankingNameShort }}
+                        {% endif %}
+                    </h5>
+                </a>
+            {% endfor %}
+        </ul>
+    </div>
+{% endblock %}
