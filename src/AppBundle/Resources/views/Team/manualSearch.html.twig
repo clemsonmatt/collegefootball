@@ -1,0 +1,16 @@
+{% extends 'AppBundle:Shared:layout.html.twig' %}
+
+{% block page_title %}
+    Teams
+{% endblock %}
+
+{% block content %}
+    <h4>Search results for "{{ search_name }}"</h4>
+    <ul class="list-group">
+        {% for team in teams %}
+            <a href="{{ team.route }}" class="list-group-item">
+                {{ team.name }}
+            </a>
+        {% endfor %}
+    </ul>
+{% endblock %}

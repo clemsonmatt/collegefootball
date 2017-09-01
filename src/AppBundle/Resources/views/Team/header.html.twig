@@ -1,0 +1,48 @@
+<div class="panel panel-default" style="margin-bottom: 0px;">
+    <div class="panel-body">
+        <div class="hidden-xs">
+            <img src="{{ asset(team.imageLocation) }}" style="width: 100px; float: left; padding-right: 15px; border-right: 1px solid #{{ team.primaryColor }};">
+            <h2 style="color: #{{ team.primaryColor }}; margin-left: 110px; line-height: 2.3em; margin-bottom: 0px; padding-bottom: 0px;">
+                {{ team }}
+                <small>{{ team.printStandings|raw }}</small>
+            </h2>
+        </div>
+        <div class="visible-xs">
+            <center>
+                <img src="{{ asset(team.imageLocation) }}" style="width: 35%;">
+                <br>
+                <h3 style="color: #{{ team.primaryColor }};">
+                    {{ team.rankingNameShort }}
+                    <small>{{ team.printStandings|raw }}</small>
+                </h3>
+            </center>
+        </div>
+    </div>
+</div>
+<nav class="navbar navbar-default" style="margin-bottom: 20px;">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-2">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+        </div>
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
+            {% set primary_navigation = knp_menu_get('AppBundle:Builder:teamMenu', [], {'team': team}) %}
+            {{ knp_menu_render(primary_navigation, {'currentClass': 'active', 'depth': 2}) }}
+
+            {% if is_granted('ROLE_MANAGE') %}
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="{{ path('app_team_edit', {'slug': team.slug}) }}">
+                            {{ icon('compose') }}
+                            Edit
+                        </a>
+                    </li>
+                </ul>
+            {% endif %}
+        </div>
+    </div>
+</nav>

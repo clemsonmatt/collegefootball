@@ -1,0 +1,50 @@
+{% extends 'AppBundle:Security:layout.html.twig' %}
+
+{% block content %}
+    <center>
+        <img src="{{ asset('bundles/app/images/espnCollegeFootballLogo.png') }}" style="max-width: 55%; margin-bottom: 20px;">
+    </center>
+
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <form class="form-signin" action="login_check" method="post" style="margin-top: 20px;">
+                {% if error %}
+                    <div class="hidden-print alert alert-custom alert-danger }}" role="alert" style="margin-bottom: 20px;">
+                        <table>
+                            <td>
+                                <div class="alert-icon alert-icon-danger">
+                                    {{ icon('alert-circled') }}
+                                </div>
+                            </td>
+                            <td style="padding-left: 10px;">
+                                <strong class="alert-text-danger">
+                                    Error!
+                                </strong>
+                                {{ error.message }}
+                            </td>
+                        </table>
+                    </div>
+                {% else %}
+                    <div style="margin-top: 10px;"></div>
+                {% endif %}
+
+                <input type="text" class="form-control input-sm" name="_username" value="{{ username }}" placeholder="Email" autofocus />
+
+                <input type="password" class="form-control input-sm" name="_password" placeholder="Password" />
+
+                <button type="submit" class="btn btn-primary btn-block">
+                    {{ icon('log-in') }}
+                    Login
+                </button>
+                <br>
+                <a href="{{ path('app_security_forgot') }}" class="pull-right text-muted">
+                    Forgot Passord?
+                </a>
+                <a href="{{ path('app_security_create') }}">
+                    Create Account
+                </a>
+            </form>
+            <br>
+        </div>
+    </div>
+{% endblock %}

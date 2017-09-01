@@ -82,8 +82,7 @@ stof_doctrine_extensions:
 jms_di_extra:
     locations:
         bundles:
-            - CollegeFootballAppBundle
-            - CollegeFootballTeamBundle
+            - AppBundle
         directories:
             - "%kernel.root_dir%/../src"
 

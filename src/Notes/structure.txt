@@ -35,7 +35,7 @@ AppBundle
             winner_score
             loser_score
 
-TeamBundle
+AppBundle
     Controller
         Conference
         Game

@@ -1,0 +1,322 @@
+{% extends 'AppBundle:Game:layout.html.twig' %}
+
+{% import _self as macros %}
+
+{% block content %}
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-sm-6">
+                    <img src="{{ asset(game.homeTeam.imageLocation) }}" style="width: 100px; float: left; padding-right: 15px; border-right: 1px solid #{{ game.homeTeam.primaryColor }};">
+                    <h3 style="color: #{{ game.homeTeam.primaryColor }}; margin-left: 110px; line-height: 1.3em; margin-bottom: 0px; padding-bottom: 0px;">
+                        <a href="{{ path('app_team_show', {'slug': game.homeTeam.slug}) }}" style="color: inherit;">
+                            {{ game.homeTeam }}
+                        </a>
+                    </h3>
+                </div>
+                <div class="col-xs-12 visible-xs text-center text-muted" style="padding: 15px 0px;">&mdash; VS &mdash;</div>
+                <div class="col-sm-6">
+                    <img src="{{ asset(game.awayTeam.imageLocation) }}" style="width: 100px; float: right; padding-left: 15px; border-left: 1px solid #{{ game.awayTeam.primaryColor }};">
+                    <h3 style="color: #{{ game.awayTeam.primaryColor }}; margin-right: 110px; line-height: 1.3em; margin-bottom: 0px; padding-bottom: 0px; text-align: right;">
+                        <a href="{{ path('app_team_show', {'slug': game.awayTeam.slug}) }}" style="color: inherit;">
+                            {{ game.awayTeam }}
+                        </a>
+                    </h3>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-4">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    {{ icon('document') }}
+                    Details
+                </div>
+                <div class="panel-body">
+                    <center>
+                        {% if game.conferenceChampionship %}
+                            <h3 class="text-primary">{{ game.homeTeam.conference }} Championship Game</h3>
+                            <br>
+                        {% elseif game.bowlName %}
+                            <h3 class="text-primary">{{ game.bowlName }}</h3>
+                            <br>
+                        {% endif %}
+                        {{ game.location }}
+                        <hr style="margin: 5px 60px;">
+                        {{ game.date|date('m/d') }} @ {{ game.time ? game.time|date('h:i A') : 'TBD' }}
+                    </center>
+                </div>
+            </div>
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    {{ icon('star') }}
+                    Odds / Picks
+                </div>
+                <div class="panel-body">
+                    <dl class="dl-spaced">
+                        <dt>Spread</dt>
+                        <dd>
+                            {% if game.predictedWinner %}
+                                {% if game.predictedWinner == 'Home' %}
+                                    {{ game.homeTeam.nameShort }}
+                                {% else %}
+                                    {{ game.awayTeam.nameShort }}
+                                {% endif %}
+                                (- {{ game.spread }})
+                            {% else %}
+                                &mdash;
+                            {% endif %}
+                        </dd>
+                    </dl>
+                    <hr>
+                    <dl class="dl-spaced">
+                        <dt>Pick'em Results</dt>
+                        <dd>
+                            {% if game.id in game_predictions|keys %}
+                                {% set pick_total = game_predictions[game.id].awayCount + game_predictions[game.id].homeCount %}
+                                {{ game.awayTeam }}
+                                <div class="progress" style="border: none; height: 15px; margin-bottom: 0px;">
+                                    <div class="progress-bar progress-bar-striped" role="progressbar" style="width: {{ (game_predictions[game.id].awayCount / pick_total) * 100 }}%;">
+                                    </div>
+                                </div>
+                                <hr style="margin: 5px 0px;">
+                                {{ game.homeTeam }}
+                                <div class="progress" style="border: none; height: 15px; margin-bottom: 0px;">
+                                    <div class="progress-bar progress-bar-striped" role="progressbar" style="width: {{ (game_predictions[game.id].homeCount / pick_total) * 100 }}%;">
+                                    </div>
+                                </div>
+                            {% else %}
+                                &mdash;
+                            {% endif %}
+                        </dd>
+                        <dt>Your Pick</dt>
+                        <dd>
+                            {% if user_prediction %}
+                                {{ user_prediction.team.nameShort }}
+                            {% else %}
+                                &mdash;
+                            {% endif %}
+                        </dd>
+                    </dl>
+                </div>
+            </div>
+
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    {{ icon('checkmark-circled') }}
+                    Gameday Picks
+                </div>
+                <div class="panel-body">
+                    <dl class="dl-spaced">
+                        <dt>Lee Corso</dt>
+                        <dd>{{ macros.teamPick('leecorso', gameday_picks, game) }}</dd>
+                        <dt>Kirk Herbstreit</dt>
+                        <dd>{{ macros.teamPick('kirkherbstreit', gameday_picks, game) }}</dd>
+                        <dt>Desmond Howard</dt>
+                        <dd>{{ macros.teamPick('desmondhoward', gameday_picks, game) }}</dd>
+                        <dt>David Pollack</dt>
+                        <dd>{{ macros.teamPick('davidpollack', gameday_picks, game) }}</dd>
+                        <dt>Chris Fallica "The Bear"</dt>
+                        <dd>{{ macros.teamPick('thebear', gameday_picks, game) }}</dd>
+                    </dl>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-8">
+            {% if not game.winningTeam %}
+                {% include 'AppBundle:Game:comparison.html.twig' %}
+            {% endif %}
+            <hr>
+            {{ macros.game_stats(game) }}
+        </div>
+    </div>
+{% endblock %}
+
+{% macro game_stats(game) %}
+    <h3>
+        Winner:
+        {% if not game.winningTeam and is_granted('ROLE_MANAGE') %}
+            <a href="{{ path('app_game_outcome', {'slug': game.homeTeam.slug, 'game': game.id}) }}" class="btn btn-default btn-xs" style="color: #{{ game.homeTeam.primaryColor }}" data-confirm-action data-confirm-title="Mark {{ game.homeTeam.nameShort }} as the winner">
+                {{ game.homeTeam.nameShort }}
+            </a>
+            <a href="{{ path('app_game_outcome', {'slug': game.awayTeam.slug, 'game': game.id}) }}" class="btn btn-default btn-xs" style="color: #{{ game.awayTeam.primaryColor }}" data-confirm-action data-confirm-title="Mark {{ game.awayTeam.nameShort }} as the winner">
+                {{ game.awayTeam.nameShort }}
+            </a>
+            <br>
+        {% elseif game.winningTeam %}
+            <span style="color: #{{ game.winningTeam.primaryColor }}">{{ game.winningTeam.name }}</span>
+            <br>
+        {% endif %}
+    </h3>
+
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            {% if is_granted('ROLE_MANAGE') %}
+                <a href="{{ path('app_game_stats_add', {'game': game.id}) }}" class="btn btn-xs btn-primary pull-right">
+                    {{ icon('compose') }}
+                    Edit Stats
+                </a>
+            {% endif %}
+            {{ icon('clipboard') }}
+            Game Statistics
+        </div>
+        {% if game.stats %}
+            <table class="table table-striped table-bordered table-hover stats-table">
+                <thead>
+                    <th>Stat</th>
+                    <th style="text-align: center;">{{ game.homeTeam.nameShort }}</th>
+                    <th style="text-align: center;">{{ game.awayTeam.nameShort }}</th>
+                </thead>
+                <tr><th colspan="3" class="tr-header">Points</th></tr>
+                <tr>
+                    <th>Final</th>
+                    <td>{{ game.stats.homeStats.pointsFinal }}</td>
+                    <td>{{ game.stats.awayStats.pointsFinal }}</td>
+                </tr>
+                <tr>
+                    <th>1st Quarter</th>
+                    <td>{{ game.stats.homeStats.pointsFirst }}</td>
+                    <td>{{ game.stats.awayStats.pointsFirst }}</td>
+                </tr>
+                <tr>
+                    <th>2nd Quarter</th>
+                    <td>{{ game.stats.homeStats.pointsSecond }}</td>
+                    <td>{{ game.stats.awayStats.pointsSecond }}</td>
+                </tr>
+                <tr>
+                    <th>3rd Quarter</th>
+                    <td>{{ game.stats.homeStats.pointsThird }}</td>
+                    <td>{{ game.stats.awayStats.pointsThird }}</td>
+                </tr>
+                <tr>
+                    <th>4th Quarter</th>
+                    <td>{{ game.stats.homeStats.pointsFourth }}</td>
+                    <td>{{ game.stats.awayStats.pointsFourth }}</td>
+                </tr>
+                <tr>
+                    <th>OT</th>
+                    <td>{{ game.stats.homeStats.ot|default('&mdash;')|raw }}</td>
+                    <td>{{ game.stats.awayStats.ot|default('&mdash;')|raw }}</td>
+                </tr>
+
+                <tr><th colspan="3" class="tr-header">Total Offense</th></tr>
+                <tr>
+                    <th>Yards</th>
+                    <td>{{ game.stats.homeStats.totalOffenseYards|default('&mdash;')|raw }}</td>
+                    <td>{{ game.stats.awayStats.totalOffenseYards|default('&mdash;')|raw }}</td>
+                </tr>
+
+                <tr><th colspan="3" class="tr-header">Rushing</th></tr>
+                <tr>
+                    <th>Yards</th>
+                    <td>{{ game.stats.homeStats.rushingYards|default('&mdash;')|raw }}</td>
+                    <td>{{ game.stats.awayStats.rushingYards|default('&mdash;')|raw }}</td>
+                </tr>
+                <tr>
+                    <th>Attempts</th>
+                    <td>{{ game.stats.homeStats.rushingAttempts|default('&mdash;')|raw }}</td>
+                    <td>{{ game.stats.awayStats.rushingAttempts|default('&mdash;')|raw }}</td>
+                </tr>
+
+                <tr><th colspan="3" class="tr-header">Passing</th></tr>
+                <tr>
+                    <th>Yards</th>
+                    <td>{{ game.stats.homeStats.passingYards|default('&mdash;')|raw }}</td>
+                    <td>{{ game.stats.awayStats.passingYards|default('&mdash;')|raw }}</td>
+                </tr>
+                <tr>
+                    <th>Attempts</th>
+                    <td>{{ game.stats.homeStats.passingAttempts|default('&mdash;')|raw }}</td>
+                    <td>{{ game.stats.awayStats.passingAttempts|default('&mdash;')|raw }}</td>
+                </tr>
+                <tr>
+                    <th>Completions</th>
+                    <td>{{ game.stats.homeStats.passingCompletions|default('&mdash;')|raw }}</td>
+                    <td>{{ game.stats.awayStats.passingCompletions|default('&mdash;')|raw }}</td>
+                </tr>
+
+                <tr><th colspan="3" class="tr-header">Turnovers</th></tr>
+                <tr>
+                    <th>Count</th>
+                    <td>{{ (game.stats.homeStats.turnoverCount)|default('&mdash;')|raw }}</td>
+                    <td>{{ (game.stats.awayStats.turnoverCount)|default('&mdash;')|raw }}</td>
+                </tr>
+
+                <tr><th colspan="3" class="tr-header">Penalties</th></tr>
+                <tr>
+                    <th>Yards</th>
+                    <td>{{ game.stats.homeStats.penaltyYards|default('&mdash;')|raw }}</td>
+                    <td>{{ game.stats.awayStats.penaltyYards|default('&mdash;')|raw }}</td>
+                </tr>
+            </table>
+        {% elseif is_granted('ROLE_MANAGE') %}
+            <div class="panel-body">
+                <a href="{{ path('app_game_stats_add', {'game': game.id}) }}" class="btn btn-primary">
+                    {{ icon('plus') }}
+                    Add Stats
+                </a>
+            </div>
+        {% else %}
+            <div class="panel-body">
+                <span class="text-muted">No stats available</span>
+            </div>
+        {% endif %}
+    </div>
+{% endmacro %}
+
+{% macro teamPick(username, gameday_picks, game) %}
+    {% if username in gameday_picks|keys %}
+        {% if gameday_picks[username].0.winnerSlug == game.homeTeam.slug %}
+            {{ game.homeTeam.nameShort }}
+        {% else %}
+            {{ game.awayTeam.nameShort }}
+        {% endif %}
+    {% else %}
+        &mdash;
+    {% endif %}
+
+    {% if is_granted('ROLE_MANAGE') %}
+        <br>
+        <div class="btn-group-justified">
+            <div class="btn-group">
+                <button class="btn btn-sm {{ username in gameday_picks|keys and gameday_picks[username].0.winnerSlug == game.homeTeam.slug ? 'btn-primary' : 'btn-default' }} js-btn-winner js-pick-{{ username }}" data-url="{{ path('app_person_prediction', {username: username, game: game.id, slug: game.homeTeam.slug}) }}" data-username="{{ username }}">
+                    {{ game.homeTeam.nameShort }}
+                </button>
+            </div>
+            <div class="btn-group">
+                <button class="btn btn-sm {{ username in gameday_picks|keys and gameday_picks[username].0.winnerSlug == game.awayTeam.slug ? 'btn-primary' : 'btn-default' }} js-btn-winner js-pick-{{ username }}" data-url="{{ path('app_person_prediction', {username: username, game: game.id, slug: game.awayTeam.slug}) }}" data-username="{{ username }}">
+                    {{ game.awayTeam.nameShort }}
+                </button>
+            </div>
+        </div>
+    {% endif %}
+{% endmacro %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        $(function(){
+            $('.js-btn-winner').on('click', function() {
+                var url      = $(this).attr('data-url');
+                var btn      = $(this);
+                var username = $(this).data('username');
+
+                $.post(url,
+                    null,
+                    function(response) {
+                        if (response.success) {
+                            $('.js-pick-' + username).removeClass('btn-primary');
+                            $('.js-pick-' + username).removeClass('btn-default');
+                            $('.js-pick-' + username).addClass('btn-default');
+                            btn.removeClass('btn-default');
+                            btn.addClass('btn-primary');
+                        }
+                    },
+                    "json"
+                );
+            });
+        });
+    </script>
+{% endblock %}

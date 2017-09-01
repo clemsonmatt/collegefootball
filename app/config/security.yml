@@ -3,12 +3,12 @@
 security:
 
     encoders:
-        CollegeFootball\AppBundle\Entity\Person:
+        AppBundle\Entity\Person:
             algorithm: bcrypt
 
     providers:
         administrators:
-            entity: { class: CollegeFootballAppBundle:Person, property: email }
+            entity: { class: AppBundle:Person, property: email }
 
     firewalls:
         dev:
