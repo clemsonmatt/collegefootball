@@ -28,6 +28,12 @@ class Week
         return 'Week '.$this->number;
     }
 
+    public function isCurrentWeek()
+    {
+        $today = new \DateTime();
+        return $today >= $this->startDate && $today < $this->endDate;
+    }
+
     /**
      * @ORM\Id()
      * @ORM\Column(type="integer")

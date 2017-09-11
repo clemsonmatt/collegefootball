@@ -132,6 +132,13 @@
                     Pick'em
                 </div>
             </div>
+
+            {% if week.isCurrentWeek %}
+                <h2 class="text-center {{ week_winners|length == games|length ? 'text-success' : 'text-primary' }}" id="js-picks-made" data-games-picked="{{ week_winners|keys|json_encode }}">
+                    <span id="js-current-pick-count">{{ week_winners|length }}</span>/{{ games|length }} picks made
+                </h2>
+            {% endif %}
+
             {% for game in games %}
                 <div class="panel panel-default">
                     {% if game.winningTeam.id %}
@@ -279,6 +286,8 @@
             colors: ['#43cc6a', '#f04124']
         });
 
+        var gamesPicked = $('#js-picks-made').data('games-picked');
+
         $('.js-btn-winner').on('click', function(event, state) {
             var url = $(this).attr('data-url');
             var btn = $(this);
@@ -305,6 +314,19 @@
                         $('#js-' + oppHomeAway + '-' + gameId).addClass('text-light');
 
                         $('#js-game-spinner-' + gameId).hide();
+
+                        // add count to picks made
+                        if ($.inArray(gameId, gamesPicked) < 0) {
+                            var currentCount = parseInt($('#js-current-pick-count').text());
+                            $('#js-current-pick-count').text(currentCount + 1);
+
+                            gamesPicked.push(gameId);
+
+                            if (currentCount >= 9) {
+                                $('#js-picks-made').removeClass('text-primary');
+                                $('#js-picks-made').addClass('text-success');
+                            }
+                        }
                     }
                 },
                 "json"
