@@ -38,7 +38,11 @@
                         <a href="{{ path('app_game_show', {'game': game.id}) }}" class="list-group-item">
                             <h4 class="list-group-item-heading" style="margin-top: 5px;">
                                 <div class="pull-right">
-                                    {% if game.winningTeam %}
+                                    {% if game.isCanceled %}
+                                        <span class="text-warning" style="font-size: 0.8em; line-height: 2.2;">
+                                            Canceled
+                                        </span>
+                                    {% elseif game.winningTeam %}
                                         {% if game.winningTeam == team %}
                                             <span class="text-success pull-right">W</span>
                                         {% else %}

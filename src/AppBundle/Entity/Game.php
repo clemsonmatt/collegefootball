@@ -96,6 +96,11 @@ class Game
      */
     private $pickemGame = false;
 
+    /**
+     * @ORM\Column(name="canceled", type="boolean")
+     */
+    private $canceled = false;
+
 
     /**
      * Get id
@@ -437,5 +442,28 @@ class Game
     public function isPickemGame()
     {
         return $this->pickemGame;
+    }
+
+    /**
+     * Set canceled
+     *
+     * @param bool $canceled
+     * @return Game
+     */
+    public function setCanceled($canceled)
+    {
+        $this->canceled = $canceled;
+
+        return $this;
+    }
+
+    /**
+     * Get canceled
+     *
+     * @return bool
+     */
+    public function isCanceled()
+    {
+        return $this->canceled;
     }
 }

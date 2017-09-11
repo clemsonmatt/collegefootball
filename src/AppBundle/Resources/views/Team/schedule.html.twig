@@ -52,7 +52,11 @@
                         {% endif %}
                     </td>
                     <td>
-                        {% if game.winningTeam %}
+                        {% if game.isCanceled %}
+                            <span class="text-warning">
+                                Canceled
+                            </span>
+                        {% elseif game.winningTeam %}
                             {{ game.winningTeam == team ? '<span class="text-success">W</span>' : '<span class="text-danger">L</span>' }}
                             <span class="text-muted">
                                 ({{ game.stats.homeStats.pointsFinal }} &ndash; {{ game.stats.awayStats.pointsFinal }})
