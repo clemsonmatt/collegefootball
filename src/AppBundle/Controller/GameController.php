@@ -178,6 +178,22 @@ class GameController extends Controller
     }
 
     /**
+     * @Route("/{game}/toggle-cancel", name="app_game_toggle_cancel")
+     * @Security("is_granted('ROLE_MANAGE')")
+     */
+    public function toggleCancelAction(Game $game)
+    {
+        $game->setCanceled(!$game->isCanceled());
+
+        $em = $this->getDoctrine()->getManager();
+        $em->flush();
+
+        return $this->redirectToRoute('app_game_show', [
+            'game' => $game->getId(),
+        ]);
+    }
+
+    /**
      * @Route("/team/{slug}/game/{game}/outcome", name="app_game_outcome")
      * @Security("is_granted('ROLE_MANAGE')")
      */

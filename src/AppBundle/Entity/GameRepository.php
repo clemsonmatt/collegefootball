@@ -62,6 +62,7 @@ class GameRepository extends EntityRepository
         $query .= "
             WHERE g.date >= :startDate
             AND g.date <= :endDate
+            AND g.canceled = 0
         ";
 
         if ($top25Only) {
