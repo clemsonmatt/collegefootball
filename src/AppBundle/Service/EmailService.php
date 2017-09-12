@@ -27,6 +27,7 @@ class EmailService
         $repository = $this->em->getRepository('AppBundle:Person');
         $people     = $repository->createQueryBuilder('p')
             ->where('p.email IS NOT NULL')
+            ->andWhere('p.emailSubscription = 1')
             ->getQuery()
             ->getResult();
 

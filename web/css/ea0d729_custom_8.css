@@ -1,0 +1,41 @@
+.tr-header {
+    background: #374046;
+    border-color: #374046 !important;
+    color: #dee9ef;
+}
+.stats-table td {
+    text-align: center;
+}
+
+.panel-click {
+    cursor: pointer;
+}
+.panel-click:hover {
+    box-shadow: 0px 0px 10px #ddd;
+}
+.table-click {
+    cursor: pointer;
+}
+
+.dropdown-menu {
+    max-height: 300px;
+    overflow: auto;
+}
+
+.dl-spaced > dd {
+    color: #777;
+    margin-bottom: 10px;
+}
+
+.btn-xxs {
+    padding: 2px 3px;
+    font-size: 10px;
+    line-height: 1.0em;
+    border-radius: 0;
+    min-height: 15px;
+    min-width: 15px;
+}
+
+.text-light {
+    color: #e4e4e4;
+}

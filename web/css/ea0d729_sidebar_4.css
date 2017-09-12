@@ -1,0 +1,96 @@
+/* sidebar */
+.sidebar {
+    border: none;
+    box-shadow: 0 2px 5px 0 rgba(0,0,0,0.16),0 2px 10px 0 rgba(0,0,0,0.12);
+    background: #374046;
+}
+
+#side-menu {
+    margin-top: 0px;
+    margin-bottom: 30px;
+    background: #374046;
+}
+#side-menu > li {
+    width: 100%;
+}
+#side-menu > li > a {
+    color: #778086;
+    padding: 15px 25px;
+    font-size: 1.1em;
+    transition: all 0.3s ease 0s;
+}
+#side-menu > li > a:hover,
+#side-menu > li > a:focus {
+    color: #ccc;
+    background: #475056;
+}
+#side-menu > .active {
+    background: #475056;
+}
+#side-menu > .active > a {
+    color: #ccc !important;
+}
+
+/* sb-admin-custom */
+.sidebar .sidebar-nav.navbar-collapse {
+    padding-right: 0;
+    padding-left: 0;
+}
+
+.sidebar .sidebar-search {
+    padding: 15px;
+}
+
+.sidebar ul li {
+    /*border-bottom: 1px solid #24394e;*/
+}
+.sidebar ul .first {
+    /*border-top: 1px solid #d6d6d6;*/
+}
+.sidebar ul .active {
+    background: #475056;
+}
+
+.sidebar ul li a.active {
+    background: #475056;
+}
+
+.sidebar .arrow {
+    float: right;
+}
+
+.sidebar .fa.arrow:before {
+    content: "\f104";
+}
+
+.sidebar .active>a>.fa.arrow:before {
+    content: "\f107";
+}
+
+.sidebar .nav-second-level li,
+.sidebar .nav-third-level li {
+    border-bottom: 0!important;
+}
+
+.sidebar .nav-second-level li a {
+    padding-left: 37px;
+}
+
+.sidebar .nav-third-level li a {
+    padding-left: 52px;
+}
+
+.sidebar input {
+    background: #475056;
+    border: none;
+    color: #ccc;
+}
+
+@media(min-width:768px) {
+    .sidebar {
+        z-index: 1;
+        position: fixed;
+        width: 250px;
+        min-height: 100%;
+    }
+}

@@ -118,6 +118,11 @@ class Person implements AdvancedUserInterface
      */
     private $tempPassword;
 
+    /**
+     * @ORM\Column(name="email_subscription", type="boolean")
+     */
+    private $emailSubscription = true;
+
 
 
     public function isAccountNonExpired()
@@ -363,5 +368,28 @@ class Person implements AdvancedUserInterface
     public function getTempPassword()
     {
         return $this->tempPassword;
+    }
+
+    /**
+     * Set emailSubscription
+     *
+     * @param bool $emailSubscription
+     * @return Person
+     */
+    public function setEmailSubscription($emailSubscription)
+    {
+        $this->emailSubscription = $emailSubscription;
+
+        return $this;
+    }
+
+    /**
+     * Get emailSubscription
+     *
+     * @return bool
+     */
+    public function hasEmailSubscription()
+    {
+        return $this->emailSubscription;
     }
 }

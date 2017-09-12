@@ -1,0 +1,56 @@
+{% extends 'AppBundle:Person:layout.html.twig' %}
+
+{% block content %}
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <a href="{{ path('app_person_show', {username: person.username}) }}">
+                Profile
+            </a>
+            |
+            Edit
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-4">
+            {% include 'AppBundle:Person:_profileLinks.html.twig' %}
+        </div>
+        <div class="col-sm-8">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    Manage Subscriptions
+                </div>
+                <ul class="list-group">
+                    <li class="list-group-item">
+                        <p class="list-group-item-body">
+                            <div class="pull-right">
+                                <input type="checkbox" data-toggle="switch" data-size="mini" data-url="{{ path('app_person_toggle_subscription', {username: person.username, type: 'email'}) }}" {% if person.hasEmailSubscription %} checked {% endif %}>
+                            </div>
+                            <h4 class="list-group-item-header">Pick'em email</h4>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    <script type="text/javascript">
+        $('input[data-toggle="switch"]').on('switchChange.bootstrapSwitch', function(event, state) {
+            var url = $(this).data('url');
+
+            $.post(url,
+                null,
+                function(response) {
+                    if (response.code == 100 && response.success) {
+
+                    }
+                },
+                "json"
+            );
+        });
+    </script>
+{% endblock %}

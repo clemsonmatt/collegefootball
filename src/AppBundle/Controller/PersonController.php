@@ -163,6 +163,34 @@ class PersonController extends Controller
     }
 
     /**
+     * @Route("/{username}/subscriptions", name="app_person_manage_subscriptions")
+     * @Security("user == person or is_granted('ROLE_MANAGE')")
+     */
+    public function manageSubscriptionsAction(Person $person)
+    {
+        return $this->render('AppBundle:Person:subscriptions.html.twig', [
+            'person' => $person,
+        ]);
+    }
+
+    /**
+     * @Route("/{username}/{type}/toggle-subscription", name="app_person_toggle_subscription", requirements={"type": "email"})
+     * @Security("user == person or is_granted('ROLE_MANAGE')")
+     */
+    public function toggleSubscriptionAction(Person $person, $type)
+    {
+        if ($type == 'email') {
+            $person->setEmailSubscription(! $person->hasEmailSubscription());
+        }
+
+        $em = $this->getDoctrine()->getManager();
+        $em->flush();
+
+        $response = ['code' => 100, 'success' => true];
+        return new JsonResponse($response);
+    }
+
+    /**
      * @Route("/{username}/game/{game}/winner/{slug}", name="app_person_prediction")
      * @Security("user == person or is_granted('ROLE_MANAGE')")
      */
