@@ -104,6 +104,8 @@ class PersonController extends Controller
             $em = $this->getDoctrine()->getManager();
             $em->flush();
 
+            $this->addFlash('success', 'Profile saved');
+
             return $this->redirectToRoute('app_person_show', [
                 'username' => $person->getUsername(),
             ]);
@@ -174,19 +176,37 @@ class PersonController extends Controller
     }
 
     /**
-     * @Route("/{username}/{type}/toggle-subscription", name="app_person_toggle_subscription", requirements={"type": "email"})
+     * @Route("/{username}/{type}/toggle-subscription", name="app_person_toggle_subscription", requirements={"type": "email|phone"})
      * @Security("user == person or is_granted('ROLE_MANAGE')")
      */
     public function toggleSubscriptionAction(Person $person, $type)
     {
+        $toggle = false;
+
         if ($type == 'email') {
-            $person->setEmailSubscription(! $person->hasEmailSubscription());
+            $emailSub = $person->hasEmailSubscription();
+            $person->setEmailSubscription(! $emailSub);
+
+            if (! $emailSub && $person->hasTextSubscription()) {
+                $person->setTextSubscription(false);
+            }
+        } else {
+            $textSub = $person->hasTextSubscription();
+            $person->setTextSubscription(! $textSub);
+
+            if (! $textSub && $person->hasEmailSubscription()) {
+                $person->setEmailSubscription(false);
+            }
+        }
+
+        if ($person->hasEmailSubscription() || $person->hasTextSubscription()) {
+            $toggle = true;
         }
 
         $em = $this->getDoctrine()->getManager();
         $em->flush();
 
-        $response = ['code' => 100, 'success' => true];
+        $response = ['code' => 100, 'success' => true, 'toggle' => $toggle];
         return new JsonResponse($response);
     }
 

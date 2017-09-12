@@ -62,12 +62,23 @@
                                     <div class="form-group row">
                                         <label class="col-md-2 control-label">Email</label>
                                         <div class="col-md-10">
+                                            <span class="text-danger">{{ form_errors(form.email) }}</span>
                                             {{ form_widget(form.email, {'attr': {'class': 'form-control'}}) }}
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-md-2 control-label">Phone</label>
+                                        <div class="col-md-10">
+                                            {{ form_widget(form.phoneNumber, {'attr': {'class': 'form-control'}}) }}
+                                            {% if form.phoneNumber.vars.errors|length > 0 %}
+                                                <span class="text-danger">Invalid 10 digit phone number (ex: 1234567890)</span>
+                                            {% endif %}
                                         </div>
                                     </div>
                                     <div class="form-group row">
                                         <label class="col-md-2 control-label">Username</label>
                                         <div class="col-md-10">
+                                            <span class="text-danger">{{ form_errors(form.username) }}</span>
                                             {{ form_widget(form.username, {'attr': {'class': 'form-control'}}) }}
                                         </div>
                                     </div>

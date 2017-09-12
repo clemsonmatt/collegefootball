@@ -24,9 +24,27 @@
                     <li class="list-group-item">
                         <p class="list-group-item-body">
                             <div class="pull-right">
-                                <input type="checkbox" data-toggle="switch" data-size="mini" data-url="{{ path('app_person_toggle_subscription', {username: person.username, type: 'email'}) }}" {% if person.hasEmailSubscription %} checked {% endif %}>
+                                <input type="checkbox" id="js-email-switch" class="js-switch" data-toggle="switch" data-size="mini" data-url="{{ path('app_person_toggle_subscription', {username: person.username, type: 'email'}) }}" {% if person.hasEmailSubscription %} checked {% endif %}>
                             </div>
                             <h4 class="list-group-item-header">Pick'em email</h4>
+                        </p>
+                    </li>
+                    <li class="list-group-item">
+                        <p class="list-group-item-body">
+                            <div class="pull-right">
+                                {% if not person.phoneNumber %}
+                                    <a href="{{ path('app_person_edit', {username: person.username}) }}" class="btn btn-default btn-xs">
+                                        Add phone number
+                                    </a>
+                                {% endif %}
+                                <input type="checkbox" id="js-phone-switch" class="js-switch" data-toggle="switch" data-size="mini" data-url="{{ path('app_person_toggle_subscription', {username: person.username, type: 'phone'}) }}" {% if person.hasTextSubscription %} checked {% endif %} {% if not person.phoneNumber %} disabled {% endif %}>
+                            </div>
+                            <h4 class="list-group-item-header">
+                                Pick'em text
+                                {% if person.phoneNumber %}
+                                    <span class="text-muted">({{ person.phoneNumber }})</span>
+                                {% endif %}
+                            </h4>
                         </p>
                     </li>
                 </ul>
@@ -40,13 +58,16 @@
 
     <script type="text/javascript">
         $('input[data-toggle="switch"]').on('switchChange.bootstrapSwitch', function(event, state) {
-            var url = $(this).data('url');
+            var url           = $(this).data('url');
+            var clickedSwitch = $(this).attr('id');
+
+            $('.js-switch').prop('checked', false).trigger("change.bootstrapSwitch", true);
 
             $.post(url,
                 null,
                 function(response) {
-                    if (response.code == 100 && response.success) {
-
+                    if (response.code == 100 && response.success && response.toggle) {
+                        $('#' + clickedSwitch).prop('checked', true).trigger("change.bootstrapSwitch", true);
                     }
                 },
                 "json"

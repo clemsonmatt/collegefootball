@@ -5,6 +5,7 @@ namespace AppBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 use Symfony\Component\Security\Core\User\AdvancedUserInterface;
 
 use AppBundle\Traits\TimestampableTrait;
@@ -22,6 +23,18 @@ class Person implements AdvancedUserInterface
     public function __toString()
     {
         return $this->firstName.' '.$this->lastName;
+    }
+
+    /**
+     * @Assert\Callback
+     */
+    public function validate(ExecutionContextInterface $context, $payload)
+    {
+        if ($this->phoneNumber && ! preg_match('/^[1-9][0-9]{9}$/', $this->phoneNumber)) {
+            $context->buildViolation('Invalid phone number (ex: 1234567890)')
+                ->atPath('phoneNumber')
+                ->addViolation();
+        }
     }
 
     public function getPredictionWins()
@@ -48,6 +61,15 @@ class Person implements AdvancedUserInterface
         }
 
         return $losses;
+    }
+
+    public function getPhoneLink()
+    {
+        if ($this->phoneNumber && $this->textSubscription) {
+            return $this->phoneNumber.'@vtext.com';
+        }
+
+        return null;
     }
 
     /**
@@ -98,6 +120,11 @@ class Person implements AdvancedUserInterface
     private $email;
 
     /**
+     * @ORM\Column(name="phone_number", type="string", length=10, nullable=true)
+     */
+    private $phoneNumber;
+
+    /**
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Team")
      * @ORM\JoinColumn(name="team_id", referencedColumnName="id", nullable=true)
      */
@@ -122,6 +149,11 @@ class Person implements AdvancedUserInterface
      * @ORM\Column(name="email_subscription", type="boolean")
      */
     private $emailSubscription = true;
+
+    /**
+     * @ORM\Column(name="text_subscription", type="boolean")
+     */
+    private $textSubscription = false;
 
 
 
@@ -271,6 +303,29 @@ class Person implements AdvancedUserInterface
     }
 
     /**
+     * Set phoneNumber
+     *
+     * @param int $phoneNumber
+     * @return Person
+     */
+    public function setPhoneNumber($phoneNumber)
+    {
+        $this->phoneNumber = $phoneNumber;
+
+        return $this;
+    }
+
+    /**
+     * Get phoneNumber
+     *
+     * @return int
+     */
+    public function getPhoneNumber()
+    {
+        return $this->phoneNumber;
+    }
+
+    /**
      * Set team
      *
      * @param Team $team
@@ -391,5 +446,28 @@ class Person implements AdvancedUserInterface
     public function hasEmailSubscription()
     {
         return $this->emailSubscription;
+    }
+
+    /**
+     * Set textSubscription
+     *
+     * @param bool $textSubscription
+     * @return Person
+     */
+    public function setTextSubscription($textSubscription)
+    {
+        $this->textSubscription = $textSubscription;
+
+        return $this;
+    }
+
+    /**
+     * Get textSubscription
+     *
+     * @return bool
+     */
+    public function hasTextSubscription()
+    {
+        return $this->textSubscription;
     }
 }
