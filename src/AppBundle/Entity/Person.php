@@ -34,6 +34,10 @@ class Person implements AdvancedUserInterface
             $context->buildViolation('Invalid phone number (ex: 1234567890)')
                 ->atPath('phoneNumber')
                 ->addViolation();
+        } elseif ($this->phoneNumber && ! $this->phoneCarrier) {
+            $context->buildViolation('Carrier required for phone number')
+                ->atPath('phoneCarrier')
+                ->addViolation();
         }
     }
 
@@ -66,10 +70,19 @@ class Person implements AdvancedUserInterface
     public function getPhoneLink()
     {
         if ($this->phoneNumber && $this->textSubscription) {
-            return $this->phoneNumber.'@vtext.com';
+            return $this->phoneNumber.'@'.$this->getPhoneCarrierAddress();
         }
 
         return null;
+    }
+
+    private function getPhoneCarrierAddress()
+    {
+        if ($this->phoneCarrier == 'verizon') {
+            return 'vtext.com';
+        }
+
+        return 'text.att.net';
     }
 
     /**
@@ -154,6 +167,12 @@ class Person implements AdvancedUserInterface
      * @ORM\Column(name="text_subscription", type="boolean")
      */
     private $textSubscription = false;
+
+    /**
+     * @ORM\Column(name="phone_carrier", type="string", length=255, nullable=true)
+     * @Assert\Choice(choices={"att", "verizon"}, strict=true)
+     */
+    private $phoneCarrier;
 
 
 
@@ -469,5 +488,28 @@ class Person implements AdvancedUserInterface
     public function hasTextSubscription()
     {
         return $this->textSubscription;
+    }
+
+    /**
+     * Set phoneCarrier
+     *
+     * @param string $phoneCarrier
+     * @return Person
+     */
+    public function setPhoneCarrier($phoneCarrier)
+    {
+        $this->phoneCarrier = $phoneCarrier;
+
+        return $this;
+    }
+
+    /**
+     * Get phoneCarrier
+     *
+     * @return string
+     */
+    public function getPhoneCarrier()
+    {
+        return $this->phoneCarrier;
     }
 }

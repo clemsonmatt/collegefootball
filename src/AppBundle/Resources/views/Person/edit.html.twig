@@ -76,6 +76,15 @@
                                         </div>
                                     </div>
                                     <div class="form-group row">
+                                        <label class="col-md-2 control-label">Phone Carrier</label>
+                                        <div class="col-md-10">
+                                            {{ form_widget(form.phoneCarrier, {'attr': {'class': 'form-control'}}) }}
+                                            {% if form.phoneCarrier.vars.errors|length > 0 %}
+                                                <span class="text-danger">Carrier requried for phone number</span>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
                                         <label class="col-md-2 control-label">Username</label>
                                         <div class="col-md-10">
                                             <span class="text-danger">{{ form_errors(form.username) }}</span>

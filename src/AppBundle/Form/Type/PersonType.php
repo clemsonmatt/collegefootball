@@ -46,6 +46,16 @@ class PersonType extends AbstractType
                     'attr'     => ['placeholder' => 'Phone number'],
                     'required' => false,
                 ]);
+
+                $builder->add('phoneCarrier', SymfonyTypes\ChoiceType::class, [
+                    'label'       => false,
+                    'placeholder' => '-- Phone Carrier --',
+                    'required'    => false,
+                    'choices'     => [
+                        'Verizon' => 'verizon',
+                        'AT&T'    => 'att',
+                    ]
+                ]);
             }
         } else {
             $builder->add('currentPassword', SymfonyTypes\PasswordType::class, [
