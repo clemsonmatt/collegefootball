@@ -70,7 +70,7 @@ class ManageController extends Controller
         $emailService->sendPickemReminder();
 
         $this->addFlash('success', 'Pickem reminder sent');
-        return $this->redirectToRoute('app_manage_people');
+        return $this->redirectToRoute('app_manage_pickem');
     }
 
     /**

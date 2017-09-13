@@ -25,6 +25,16 @@ use AppBundle\Service\WeekService;
 class PersonController extends Controller
 {
     /**
+     * @Route("/pickem", name="app_person_pickem")
+     */
+    public function pickemAction()
+    {
+        return $this->redirectToRoute('app_person_show', [
+            'username' => $this->getUser()->getUsername(),
+        ]);
+    }
+
+    /**
      * @Route("/{username}/show", name="app_person_show")
      * @Route("/{username}/show/{season}/week/{week}", name="app_person_show_week")
      * @Security("user == person or is_granted('ROLE_MANAGE')")
@@ -176,21 +186,21 @@ class PersonController extends Controller
     }
 
     /**
-     * @Route("/{username}/subscriptions", name="app_person_manage_subscriptions")
+     * @Route("/{username}/notifications", name="app_person_manage_notifications")
      * @Security("user == person or is_granted('ROLE_MANAGE')")
      */
-    public function manageSubscriptionsAction(Person $person)
+    public function manageNotificationsAction(Person $person)
     {
-        return $this->render('AppBundle:Person:subscriptions.html.twig', [
+        return $this->render('AppBundle:Person:notifications.html.twig', [
             'person' => $person,
         ]);
     }
 
     /**
-     * @Route("/{username}/{type}/toggle-subscription", name="app_person_toggle_subscription", requirements={"type": "email|phone"})
+     * @Route("/{username}/{type}/toggle-notification", name="app_person_toggle_notification", requirements={"type": "email|phone"})
      * @Security("user == person or is_granted('ROLE_MANAGE')")
      */
-    public function toggleSubscriptionAction(Person $person, $type)
+    public function toggleNotificaitonAction(Person $person, $type)
     {
         $toggle = false;
 

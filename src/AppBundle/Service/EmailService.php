@@ -33,7 +33,7 @@ class EmailService
 
         foreach ($people as $person) {
             if ($person->getPhoneLink()) {
-                $body = 'Reminder to complete your weekly college football pick\'em predictions at: college-football.herokuapp.com';
+                $body = 'Reminder to complete your weekly college football pick\'em predictions at: college-football.herokuapp.com/person/pickem';
                 $this->sendNotification($person->getPhoneLink(), $body);
             } else {
                 $correct           = $person->getPredictionWins();
@@ -62,7 +62,7 @@ class EmailService
         $message = \Swift_Message::newInstance()
             ->setFrom('noreply@college-football.herokuapp.com')
             ->setTo($to)
-            ->setBody($body);
+            ->setBody($body, 'text/html');
 
         if ($subject) {
             $message->setSubject($subject);
