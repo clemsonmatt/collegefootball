@@ -327,7 +327,7 @@ class Person implements AdvancedUserInterface
      * @param int $phoneNumber
      * @return Person
      */
-    public function setPhoneNumber($phoneNumber)
+    public function setPhoneNumber($phoneNumber = null)
     {
         $this->phoneNumber = $phoneNumber;
 

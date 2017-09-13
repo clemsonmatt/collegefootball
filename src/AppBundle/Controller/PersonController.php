@@ -101,12 +101,23 @@ class PersonController extends Controller
         $form->handleRequest($request);
 
         if ($form->isValid()) {
+            // clear out phone data if user deletes
+            if (! $person->getPhoneNumber()) {
+                $person->setPhoneCarrier(null);
+
+                // toggle subscriptions if signed up for texts
+                if ($person->hasTextSubscription()) {
+                    $person->setTextSubscription(false);
+                    $person->setEmailSubscription(true);
+                }
+            }
+
             $em = $this->getDoctrine()->getManager();
             $em->flush();
 
             $this->addFlash('success', 'Profile saved');
 
-            return $this->redirectToRoute('app_person_show', [
+            return $this->redirectToRoute('app_person_edit', [
                 'username' => $person->getUsername(),
             ]);
         }

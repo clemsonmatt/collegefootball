@@ -6,6 +6,15 @@
         <h5 class="list-group-item-heading">Change Password</h5>
     </a>
     <a href="{{ path('app_person_manage_subscriptions', {username: person.username}) }}" class="list-group-item {{ app.request.attributes.get('_route') == 'app_person_manage_subscriptions' ? 'active' }}">
-        <h5 class="list-group-item-heading">Manage Subscriptions</h5>
+        <h5 class="list-group-item-heading">
+            {% if not person.hasEmailSubscription and not person.hasTextSubscription %}
+                <div class="pull-right">
+                    <span data-toggle="tooltip" title="No subscriptions checked">
+                        {{ icon('alert-circled') }}
+                    </span>
+                </div>
+            {% endif %}
+            Manage Subscriptions
+        </h5>
     </a>
 </ul>

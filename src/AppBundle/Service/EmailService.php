@@ -32,18 +32,18 @@ class EmailService
             ->getResult();
 
         foreach ($people as $person) {
-            $correct           = $person->getPredictionWins();
-            $totalPicks        = $correct + $person->getPredictionLosses();
-            $pickemPredictions = 0;
-
-            if ($totalPicks) {
-                $pickemPredictions = ($correct / ($correct + $person->getPredictionLosses())) * 100;
-            }
-
             if ($person->getPhoneLink()) {
                 $body = 'Reminder to complete your weekly college football pick\'em predictions at: college-football.herokuapp.com';
                 $this->sendNotification($person->getPhoneLink(), $body);
             } else {
+                $correct           = $person->getPredictionWins();
+                $totalPicks        = $correct + $person->getPredictionLosses();
+                $pickemPredictions = 0;
+
+                if ($totalPicks) {
+                    $pickemPredictions = ($correct / ($correct + $person->getPredictionLosses())) * 100;
+                }
+
                 $template = $this->templating->render('AppBundle:Email:pickemReminder.html.twig', [
                     'person'             => $person,
                     'pickem_predictions' => $pickemPredictions,

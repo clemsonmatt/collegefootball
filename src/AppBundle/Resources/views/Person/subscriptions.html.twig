@@ -42,7 +42,7 @@
                             <h4 class="list-group-item-header">
                                 Pick'em text
                                 {% if person.phoneNumber %}
-                                    <span class="text-muted">({{ person.phoneNumber }})</span>
+                                    <span class="text-muted">{{ person.phoneNumber|phone_number }}</span>
                                 {% endif %}
                             </h4>
                         </p>
