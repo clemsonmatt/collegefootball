@@ -12,6 +12,7 @@
             '@AppBundle/Resources/public/css/sidebar.css'
             '@AppBundle/Resources/public/css/ionicons.css'
             '@AppBundle/Resources/public/css/bootstrap-datepicker.css'
+            '@AppBundle/Resources/public/css/bootstrap-switch.css'
             '@AppBundle/Resources/public/css/custom.css'
             '@AppBundle/Resources/public/css/circle.css'
         %}
@@ -179,6 +180,7 @@
             'bundles/app/js/jquery-3.1.0.min.js'
             'bundles/app/js/bootstrap.js'
             'bundles/app/js/bootstrap-datepicker.js'
+            'bundles/app/js/bootstrap-switch.js'
         %}
             <script src="{{ asset_url }}"></script>
         {% endjavascripts %}
@@ -194,6 +196,9 @@
 
             /* popover */
             $('[data-toggle="popover"]').popover({'html': true});
+
+            /* switch */
+            $('[data-toggle="switch"]').bootstrapSwitch();
 
             /* panel-click */
             $('.panel-click, .table-click').on('click', function(){

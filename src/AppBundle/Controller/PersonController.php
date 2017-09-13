@@ -101,10 +101,23 @@ class PersonController extends Controller
         $form->handleRequest($request);
 
         if ($form->isValid()) {
+            // clear out phone data if user deletes
+            if (! $person->getPhoneNumber()) {
+                $person->setPhoneCarrier(null);
+
+                // toggle subscriptions if signed up for texts
+                if ($person->hasTextSubscription()) {
+                    $person->setTextSubscription(false);
+                    $person->setEmailSubscription(true);
+                }
+            }
+
             $em = $this->getDoctrine()->getManager();
             $em->flush();
 
-            return $this->redirectToRoute('app_person_show', [
+            $this->addFlash('success', 'Profile saved');
+
+            return $this->redirectToRoute('app_person_edit', [
                 'username' => $person->getUsername(),
             ]);
         }
@@ -160,6 +173,52 @@ class PersonController extends Controller
             'person'  => $person,
             'heading' => 'Change Password',
         ]);
+    }
+
+    /**
+     * @Route("/{username}/subscriptions", name="app_person_manage_subscriptions")
+     * @Security("user == person or is_granted('ROLE_MANAGE')")
+     */
+    public function manageSubscriptionsAction(Person $person)
+    {
+        return $this->render('AppBundle:Person:subscriptions.html.twig', [
+            'person' => $person,
+        ]);
+    }
+
+    /**
+     * @Route("/{username}/{type}/toggle-subscription", name="app_person_toggle_subscription", requirements={"type": "email|phone"})
+     * @Security("user == person or is_granted('ROLE_MANAGE')")
+     */
+    public function toggleSubscriptionAction(Person $person, $type)
+    {
+        $toggle = false;
+
+        if ($type == 'email') {
+            $emailSub = $person->hasEmailSubscription();
+            $person->setEmailSubscription(! $emailSub);
+
+            if (! $emailSub && $person->hasTextSubscription()) {
+                $person->setTextSubscription(false);
+            }
+        } else {
+            $textSub = $person->hasTextSubscription();
+            $person->setTextSubscription(! $textSub);
+
+            if (! $textSub && $person->hasEmailSubscription()) {
+                $person->setEmailSubscription(false);
+            }
+        }
+
+        if ($person->hasEmailSubscription() || $person->hasTextSubscription()) {
+            $toggle = true;
+        }
+
+        $em = $this->getDoctrine()->getManager();
+        $em->flush();
+
+        $response = ['code' => 100, 'success' => true, 'toggle' => $toggle];
+        return new JsonResponse($response);
     }
 
     /**
