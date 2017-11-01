@@ -38,7 +38,7 @@ class Ranking
 
     public function usePlayoffRanking()
     {
-        return $this->week->getNumber() > 10;
+        return $this->week->getNumber() >= 10;
     }
 
     /**
