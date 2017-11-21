@@ -263,8 +263,8 @@
         </span>
     </div>
     {% if game.winningTeam.id %}
-        {% set is_winner = game.winningTeam.id == team.id and game.id in week_winners|keys and team.slug in week_winners[game.id] %}
-        {% set is_loser  = game.winningTeam.id != team.id and game.id in week_winners|keys and game.winningTeam.slug not in week_winners[game.id] %}
+        {% set is_winner = game.winningTeam.id == team.id and game.id in week_winners|keys and team.slug == week_winners[game.id] %}
+        {% set is_loser  = game.winningTeam.id != team.id and game.id in week_winners|keys and game.winningTeam.slug != week_winners[game.id] %}
 
         <label class="{% if is_winner %} text-success {% elseif is_loser %} text-danger {% endif %}">
             <div style="position: absolute;">
@@ -278,7 +278,7 @@
             </div>
         </label>
     {% else %}
-        <h2 id="js-{{ home_away|lower }}-{{ game.id }}" class="{% if game.id in week_winners|keys and team.slug in week_winners[game.id] %}text-primary{% else %}text-light{% endif %}" style="margin: 5px 0px;">
+        <h2 id="js-{{ home_away|lower }}-{{ game.id }}" class="{% if game.id in week_winners|keys and team.slug == week_winners[game.id] %}text-primary{% else %}text-light{% endif %}" style="margin: 5px 0px;">
             {{ icon('checkmark-circled') }}
         </h2>
     {% endif %}
