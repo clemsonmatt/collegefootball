@@ -151,8 +151,8 @@
                 <div class="panel panel-default">
                     {% if game.winningTeam.id %}
                         {% set winning_team = game.winningTeam.id == game.homeTeam.id ? game.homeTeam : game.awayTeam %}
-                        {% set is_winner    = game.winningTeam.id == winning_team.id and game.id in week_winners|keys and winning_team.slug in week_winners[game.id] %}
-                        {% set is_loser     = game.winningTeam.id == winning_team.id and game.id in week_winners|keys and game.winningTeam.slug not in week_winners[game.id] %}
+                        {% set is_winner    = game.winningTeam.id == winning_team.id and game.id in week_winners|keys and winning_team.slug == week_winners[game.id] %}
+                        {% set is_loser     = game.winningTeam.id == winning_team.id and game.id in week_winners|keys and game.winningTeam.slug != week_winners[game.id] %}
 
                         <div class="panel-heading text-center {% if is_winner %}bg-success{% else %}bg-danger{% endif %}">
                             {{ game.stats.awayStats.pointsFinal }} &ndash; {{ game.stats.homeStats.pointsFinal }}
