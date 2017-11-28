@@ -4,11 +4,13 @@
 {% block content %}
     <div class="panel panel-default">
         <div class="panel-heading">
-            <a href="{{ path('app_game_toggle_cancel', {game: game.id}) }}" class="pull-right btn btn-warning btn-xs">
-                {{ icon('alert-circled') }}
-                {{ game.isCanceled ? 'Set active' : 'Cancel game' }}
-            </a>
-            {% if team is defined %}
+            {% if game is defined %}
+                <a href="{{ path('app_game_toggle_cancel', {game: game.id}) }}" class="pull-right btn btn-warning btn-xs">
+                    {{ icon('alert-circled') }}
+                    {{ game.isCanceled ? 'Set active' : 'Cancel game' }}
+                </a>
+            {% endif %}
+            {% if team is defined and team is not null %}
                 <a href="{{ path('app_team_show', {'slug': team.slug}) }}">
                     {{ team }}
                 </a>

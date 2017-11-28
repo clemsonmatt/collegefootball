@@ -23,7 +23,7 @@
         </h2>
     </legend>
 
-    {% if week == 'Bowl' and playoff_games.firstSemifinal is defined %}
+    {% if week.number == 16 and playoff_games.firstSemifinal is defined %}
         <h4 class="text-center">College Football Playoffs</h4>
         <div class="row">
             <div class="col-sm-3">
@@ -105,7 +105,7 @@
             <div class="panel-body">
                 <div class="row">
                     <div class="col-xs-4">
-                        {% if game.winningTeam.id == game.homeTeam.id %}
+                        {% if game.winningTeam.id > 0 and game.winningTeam.id == game.homeTeam.id %}
                             <div style="position: absolute;">
                                 <h1 style="font-size: 3.0em; margin-top: -10px; margin-left: -10px; background-color: #fff; border-radius: 3.0em; padding: 0px 5px;" class="text-success">
                                     {{ icon('checkmark-circled') }}
@@ -113,7 +113,7 @@
                             </div>
                         {% endif %}
                         <div class="hidden-lg">
-                            {% if game.homeTeam %}
+                            {% if game.homeTeam and game.homeTeam.name|length > 0 %}
                                 <img src="{{ asset(game.homeTeam.imageLocation) }}" style="width: 85%; max-width: 100px; float: left;">
                             {% else %}
                                 <div style="width: 100px; height: 85px; background-color: #f2f2f2;">
@@ -121,7 +121,7 @@
                             {% endif %}
                         </div>
                         <div class="visible-lg" style="margin: -15px 0px;">
-                            {% if game.homeTeam %}
+                            {% if game.homeTeam and game.homeTeam.name|length > 0 %}
                                 <img src="{{ asset(game.homeTeam.imageLocation) }}" style="width: 100px; float: left; padding-right: 15px; border-right: 1px solid #{{ game.homeTeam.primaryColor }};">
                                 <h3 style="color: #{{ game.homeTeam.primaryColor }}; line-height: 1.2em; margin: 15px 0px 0px 110px; padding: 15px 0px 0px 0px;">
                                     <a href="{{ path('app_team_show', {'slug': game.homeTeam.slug}) }}" style="color: inherit;">
@@ -166,7 +166,7 @@
                         </center>
                     </div>
                     <div class="col-xs-4">
-                        {% if game.winningTeam.id == game.awayTeam.id %}
+                        {% if game.winningTeam.id > 0 and game.winningTeam.id == game.awayTeam.id %}
                             <div class="pull-right" style="margin-right: 40px;">
                                 <div style="position: absolute;">
                                     <h1 style="font-size: 3.0em; margin-top: -10px; background-color: #fff; border-radius: 3.0em; padding: 0px 5px;" class="text-success">
@@ -176,7 +176,7 @@
                             </div>
                         {% endif %}
                         <div class="hidden-lg">
-                            {% if game.awayTeam %}
+                            {% if game.awayTeam and game.awayTeam.name|length > 0 %}
                                 <img src="{{ asset(game.awayTeam.imageLocation) }}" style="width: 85%; max-width: 100px; float: right;">
                             {% else %}
                                 <div style="width: 100px; height: 85px; background-color: #f2f2f2; float: right;">
@@ -185,7 +185,7 @@
                             {% endif %}
                         </div>
                         <div class="visible-lg" style="margin: -15px 0px;">
-                            {% if game.awayTeam %}
+                            {% if game.awayTeam and game.awayTeam.name|length > 0 %}
                                 <img src="{{ asset(game.awayTeam.imageLocation) }}" style="width: 100px; float: right; padding-left: 15px; border-left: 1px solid #{{ game.awayTeam.primaryColor }};">
                                 <h3 style="color: #{{ game.awayTeam.primaryColor }}; line-height: 1.2em; margin: 15px 110px 0px 0px; padding: 15px 0px 0px 0px; text-align: right;">
                                     <a href="{{ path('app_team_show', {'slug': game.awayTeam.slug}) }}" style="color: inherit;">
