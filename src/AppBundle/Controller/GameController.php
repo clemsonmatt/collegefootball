@@ -37,15 +37,15 @@ class GameController extends Controller
 
         $playoffGames = [];
 
-        if ((string)$week == 'Bowl') {
+        if ((string)$week == 16) {
             foreach ($games as $game) {
-                if (strpos($game->getBowlName(), 'CFP Semifinal')) {
+                if (strpos($game['bowlName'], 'CFP Semifinal')) {
                     if (! array_key_exists('firstSemifinal', $playoffGames)) {
                         $playoffGames['firstSemifinal'] = $game;
                     } else {
                         $playoffGames['secondSemifinal'] = $game;
                     }
-                } elseif ($game->getBowlName() == 'CFP National Championship Game') {
+                } elseif ($game['bowlName'] == 'CFP National Championship Game') {
                     $playoffGames['championship'] = $game;
                 }
             }
@@ -82,7 +82,12 @@ class GameController extends Controller
 
         $gamePredictions = $pickemService->picksByWeek($week, $game);
         $gamedayPicks    = $pickemService->gamedayWeekPicks($week, $game);
-        $gameComparison  = $statsService->teamComparison($game->getHomeTeam()->getId(), $game->getAwayTeam()->getId());
+
+        $gameComparison = null;
+
+        if ($game->getHomeTeam() && $game->getAwayTeam()) {
+            $gameComparison  = $statsService->teamComparison($game->getHomeTeam()->getId(), $game->getAwayTeam()->getId());
+        }
 
         return $this->render('AppBundle:Game:show.html.twig', [
             'game'             => $game,
