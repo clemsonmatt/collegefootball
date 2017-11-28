@@ -32,6 +32,7 @@ class GameRepository extends EntityRepository
                 homeTeam.name_short as homeTeamNameShort,
                 homeTeam.name_abbr as homeTeamNameAbbr,
                 homeTeam.primary_color as homeTeamPrimaryColor,
+                homeTeam.conference_id,
                 homeTeamRank.ap_rank as homeTeamApRank,
                 homeTeamRank.playoff_rank as homeTeamPlayoffRank,
                 awayTeam.id as awayTeamId,
@@ -46,10 +47,12 @@ class GameRepository extends EntityRepository
                 winningTeam.id as winningTeamId,
                 winningTeam.slug as winningTeamSlug,
                 winningTeam.logo as winningTeamLogo,
-                winningTeam.name_short as winningTeamNameShort
+                winningTeam.name_short as winningTeamNameShort,
+                c.name_short as conference
             FROM game g
             JOIN team homeTeam ON g.home_team_id = homeTeam.id
             JOIN team awayTeam ON g.away_team_id = awayTeam.id
+            JOIN conference c ON homeTeam.conference_id = c.id
             LEFT JOIN ranking homeTeamRank ON homeTeamRank.team_id = g.home_team_id AND homeTeamRank.week_id = :week
             LEFT JOIN ranking awayTeamRank ON awayTeamRank.team_id = g.away_team_id AND awayTeamRank.week_id = :week
             LEFT JOIN team winningTeam ON g.winning_team_id = winningTeam.id
@@ -118,6 +121,7 @@ class GameRepository extends EntityRepository
                 'predictedWinner'        => $game['predicted_winner'],
                 'canPick'                => $this->canPick($game),
                 'conferenceChampionship' => $game['conference_championship'],
+                'conference'             => $game['conference'],
                 'bowlName'               => $game['bowl_name'],
                 'isPickemGame'           => $game['pickem_game'],
                 'winningChance'          => unserialize($game['winning_chance']),
