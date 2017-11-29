@@ -37,7 +37,7 @@ class GameController extends Controller
 
         $playoffGames = [];
 
-        if ((string)$week == 16) {
+        if ($week->getNumber() == 16) {
             foreach ($games as $game) {
                 if (strpos($game['bowlName'], 'CFP Semifinal')) {
                     if (! array_key_exists('firstSemifinal', $playoffGames)) {
