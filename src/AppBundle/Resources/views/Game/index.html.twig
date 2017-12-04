@@ -30,7 +30,7 @@
                 <div class="panel panel-default">
                     <div class="panel-body">
                         <img src="{{ asset(playoff_games.firstSemifinal.homeTeam.imageLocation) }}" style="width: 40px; float: left;">
-                        <h4 style="margin-left: 50px;">{{ (playoff_games.firstSemifinal is defined and playoff_games.firstSemifinal.homeTeam.name|length > 0 ? playoff_games.firstSemifinal.homeTeam.name : '<span class="text-muted">TBD</span>')|raw }}</h4>
+                        <h4 style="margin-left: 50px;">{{ (playoff_games.firstSemifinal is defined and playoff_games.firstSemifinal.homeTeam.name|length > 0 ? playoff_games.firstSemifinal.homeTeam.rankingNameShort : '<span class="text-muted">TBD</span>')|raw }}</h4>
                     </div>
                 </div>
                 <a href="{{ path('app_game_show', {game: playoff_games.firstSemifinal.id}) }}">
@@ -39,7 +39,7 @@
                 <div class="panel panel-default">
                     <div class="panel-body">
                         <img src="{{ asset(playoff_games.firstSemifinal.awayTeam.imageLocation) }}" style="width: 40px; float: left;">
-                        <h4 style="margin-left: 50px;">{{ (playoff_games.firstSemifinal is defined and playoff_games.firstSemifinal.awayTeam.name|length > 0 ? playoff_games.firstSemifinal.awayTeam.name : '<span class="text-muted">TBD</span>')|raw }}</h4>
+                        <h4 style="margin-left: 50px;">{{ (playoff_games.firstSemifinal is defined and playoff_games.firstSemifinal.awayTeam.name|length > 0 ? playoff_games.firstSemifinal.awayTeam.rankingNameShort : '<span class="text-muted">TBD</span>')|raw }}</h4>
                     </div>
                 </div>
             </div>
@@ -78,7 +78,7 @@
                 <div class="panel panel-default">
                     <div class="panel-body">
                         <img src="{{ asset(playoff_games.secondSemifinal.homeTeam.imageLocation) }}" style="width: 40px; float: left;">
-                        <h4 style="margin-left: 50px;">{{ (playoff_games.secondSemifinal is defined and playoff_games.secondSemifinal.homeTeam.name|length > 0 ? playoff_games.secondSemifinal.homeTeam.name : '<span class="text-muted">TBD</span>')|raw }}</h4>
+                        <h4 style="margin-left: 50px;">{{ (playoff_games.secondSemifinal is defined and playoff_games.secondSemifinal.homeTeam.name|length > 0 ? playoff_games.secondSemifinal.homeTeam.rankingNameShort : '<span class="text-muted">TBD</span>')|raw }}</h4>
                     </div>
                 </div>
                 <a href="{{ path('app_game_show', {game: playoff_games.secondSemifinal.id}) }}">
@@ -87,7 +87,7 @@
                 <div class="panel panel-default">
                     <div class="panel-body">
                         <img src="{{ asset(playoff_games.secondSemifinal.awayTeam.imageLocation) }}" style="width: 40px; float: left;">
-                        <h4 style="margin-left: 50px;">{{ (playoff_games.secondSemifinal is defined and playoff_games.secondSemifinal.awayTeam.name|length > 0 ? playoff_games.secondSemifinal.awayTeam.name : '<span class="text-muted">TBD</span>')|raw }}</h4>
+                        <h4 style="margin-left: 50px;">{{ (playoff_games.secondSemifinal is defined and playoff_games.secondSemifinal.awayTeam.name|length > 0 ? playoff_games.secondSemifinal.awayTeam.rankingNameShort : '<span class="text-muted">TBD</span>')|raw }}</h4>
                     </div>
                 </div>
             </div>

@@ -43,7 +43,12 @@ class GameController extends Controller
                     if (! array_key_exists('firstSemifinal', $playoffGames)) {
                         $playoffGames['firstSemifinal'] = $game;
                     } else {
-                        $playoffGames['secondSemifinal'] = $game;
+                        if ($game['id'] < $playoffGames['firstSemifinal']['id']) {
+                            $playoffGames['secondSemifinal'] = $playoffGames['firstSemifinal'];
+                            $playoffGames['firstSemifinal'] = $game;
+                        } else {
+                            $playoffGames['secondSemifinal'] = $game;
+                        }
                     }
                 } elseif ($game['bowlName'] == 'CFP National Championship Game') {
                     $playoffGames['championship'] = $game;
