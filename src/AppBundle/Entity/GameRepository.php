@@ -161,6 +161,8 @@ class GameRepository extends EntityRepository
     {
         if ($game['winningTeamId']) {
             return false;
+        } elseif ($game['homeTeamId'] == "" || $game['awayTeamId'] == "") {
+            return false;
         }
 
         $now  = new \DateTime();
