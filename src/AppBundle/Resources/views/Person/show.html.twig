@@ -252,16 +252,21 @@
 {% endblock %}
 
 {% macro teamPick(game, team, week_winners, home_away) %}
-    <div style="width: 100%;">
-        <img src="{{ team.imageLocation }}" class="hidden-xs" style="max-width: 50%;">
-        <center class="visible-xs"><img src="{{ team.imageLocation }}" style="max-width: 85%;"></center>
+    {% if team.id %}
+        <div style="width: 100%;">
+            <img src="{{ team.imageLocation }}" class="hidden-xs" style="max-width: 50%;">
+            <center class="visible-xs"><img src="{{ team.imageLocation }}" style="max-width: 85%;"></center>
+            <br>
+            <span class="visible-xs" style="margin: -10px;">{{ team.rankingNameShort }}</span>
+            <span class="hidden-xs">{{ team.rankingNameShort }}</span>
+            <span class="text-muted hidden-xs">
+                {{ game.spread and game.predictedWinner == home_away ? '(-' ~ game.spread ~ ')' }}
+            </span>
+        </div>
+    {% else %}
+        <h2>TBD</h2>
         <br>
-        <span class="visible-xs" style="margin: -10px;">{{ team.rankingNameShort }}</span>
-        <span class="hidden-xs">{{ team.rankingNameShort }}</span>
-        <span class="text-muted hidden-xs">
-            {{ game.spread and game.predictedWinner == home_away ? '(-' ~ game.spread ~ ')' }}
-        </span>
-    </div>
+    {% endif %}
     {% if game.winningTeam.id %}
         {% set is_winner = game.winningTeam.id == team.id and game.id in week_winners|keys and team.slug == week_winners[game.id] %}
         {% set is_loser  = game.winningTeam.id != team.id and game.id in week_winners|keys and game.winningTeam.slug != week_winners[game.id] %}
