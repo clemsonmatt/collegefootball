@@ -141,112 +141,180 @@
                 </div>
             </div>
 
-            {% if week.isCurrentWeek %}
-                <h2 class="text-center {{ week_winners|length == games|length ? 'text-success' : 'text-primary' }}" id="js-picks-made" data-games-picked="{{ week_winners|keys|json_encode }}">
-                    <span id="js-current-pick-count">{{ week_winners|length }}</span>/{{ games|length }} picks made
-                </h2>
-            {% endif %}
+            <ul class="nav nav-tabs nav-justified" role="tablist">
+                <li role="presentation" class="active">
+                    <a href="#my-picks" role="tab" data-toggle="tab">My Picks</a>
+                </li>
+                <li role="presentation">
+                    <a href="#all-picks" role="tab" data-toggle="tab">All Picks</a>
+                </li>
+            </ul>
 
-            {% for game in games %}
-                <div class="panel panel-default">
-                    {% if game.winningTeam.id %}
-                        {% set winning_team = game.winningTeam.id == game.homeTeam.id ? game.homeTeam : game.awayTeam %}
-                        {% set is_winner    = game.winningTeam.id == winning_team.id and game.id in week_winners|keys and winning_team.slug == week_winners[game.id] %}
-                        {% set is_loser     = game.winningTeam.id == winning_team.id and game.id in week_winners|keys and game.winningTeam.slug != week_winners[game.id] %}
-
-                        <div class="panel-heading text-center {% if is_winner %}bg-success{% else %}bg-danger{% endif %}">
-                            {{ game.stats.awayStats.pointsFinal }} &ndash; {{ game.stats.homeStats.pointsFinal }}
-                        </div>
+            <div class="tab-content" style="padding: 10px; border: 1px solid #ddd; border-top: none; background-color: #fff;">
+                <div role="tabpanel" class="tab-pane active" id="my-picks">
+                    {# my picks #}
+                    {% if week.isCurrentWeek %}
+                        <h2 class="text-center {{ week_winners|length == games|length ? 'text-success' : 'text-primary' }}" id="js-picks-made" data-games-picked="{{ week_winners|keys|json_encode }}">
+                            <span id="js-current-pick-count">{{ week_winners|length }}</span>/{{ games|length }} picks made
+                        </h2>
                     {% endif %}
-                    <div class="panel-body">
-                        <div class="row">
-                            <div class="col-sm-4 col-xs-5" {% if game.winningTeam.id and game.winningTeam.id != game.awayTeam.id %}style="opacity: 0.3;"{% endif %}>
-                                <center>
-                                    {# team #}
-                                    {% if game.winningTeam.id or not game.canPick %}
-                                        {{ macros.teamPick(game, game.awayTeam, week_winners, 'Away') }}
-                                    {% else %}
-                                        <button class="btn btn-default js-btn-winner {% if game.id in week_winners|keys and game.awayTeam.id in week_winners[game.id] %} text-primary {% endif %}" data-game="{{ game.id }}" data-home-away="away" data-url="{{ path('app_person_prediction', {username: person.username, game: game.id, slug: game.awayTeam.slug}) }}" style="width: 100%; overflow: hidden; background-color: #f4f4f4; border-radius: 4px;">
-                                            {{ macros.teamPick(game, game.awayTeam, week_winners, 'Away') }}
-                                        </button>
-                                    {% endif %}
-                                    <hr style="margin: 5px 0px;">
-                                    {# predictions #}
-                                    {% if game.id in game_picks|keys %}
-                                        {% set pick_total = game_picks[game.id].awayCount + game_picks[game.id].homeCount %}
-                                        <div class="progress" style="border: none; height: 15px; margin-bottom: 0px;">
-                                            <div class="progress-bar progress-bar-striped" role="progressbar" style="width: {{ (game_picks[game.id].awayCount / pick_total) * 100 }}%;" data-toggle="tooltip" data-placement="top" title="{{ game_picks[game.id].people.away is defined ? game_picks[game.id].people.away|join(', ') }}">
-                                            </div>
+
+                    {% for game in games %}
+                        <div class="panel panel-default" style="background-color: #eee;">
+                            {% if game.winningTeam.id %}
+                                {% set winning_team = game.winningTeam.id == game.homeTeam.id ? game.homeTeam : game.awayTeam %}
+                                {% set is_winner    = game.winningTeam.id == winning_team.id and game.id in week_winners|keys and winning_team.slug == week_winners[game.id] %}
+                                {% set is_loser     = game.winningTeam.id == winning_team.id and game.id in week_winners|keys and game.winningTeam.slug != week_winners[game.id] %}
+
+                                <div class="panel-heading text-center {% if is_winner %}bg-success{% else %}bg-danger{% endif %}">
+                                    {{ game.stats.awayStats.pointsFinal }} &ndash; {{ game.stats.homeStats.pointsFinal }}
+                                </div>
+                            {% endif %}
+                            <div class="panel-body">
+                                <div class="row">
+                                    <div class="col-sm-4 col-xs-5" {% if game.winningTeam.id and game.winningTeam.id != game.awayTeam.id %}style="opacity: 0.3;"{% endif %}>
+                                        <center>
+                                            {# team #}
+                                            {% if game.winningTeam.id or not game.canPick %}
+                                                {{ macros.teamPick(game, game.awayTeam, week_winners, 'Away') }}
+                                            {% else %}
+                                                <button class="btn btn-default js-btn-winner {% if game.id in week_winners|keys and game.awayTeam.id in week_winners[game.id] %} text-primary {% endif %}" data-game="{{ game.id }}" data-home-away="away" data-url="{{ path('app_person_prediction', {username: person.username, game: game.id, slug: game.awayTeam.slug}) }}" style="width: 100%; overflow: hidden; background-color: #f4f4f4; border-radius: 4px;">
+                                                    {{ macros.teamPick(game, game.awayTeam, week_winners, 'Away') }}
+                                                </button>
+                                            {% endif %}
+                                            <hr style="margin: 5px 0px;">
+                                            {# predictions #}
+                                            {% if game.id in game_picks|keys %}
+                                                {% set pick_total = game_picks[game.id].awayCount + game_picks[game.id].homeCount %}
+                                                <div class="progress" style="border: none; height: 15px; margin-bottom: 0px;">
+                                                    <div class="progress-bar progress-bar-striped" role="progressbar" style="width: {{ (game_picks[game.id].awayCount / pick_total) * 100 }}%;" data-toggle="tooltip" data-placement="top" title="{{ game_picks[game.id].people.away is defined ? game_picks[game.id].people.away|join(', ') }}">
+                                                    </div>
+                                                </div>
+                                            {% else %}
+                                                <span class="text-muted">
+                                                    No picks
+                                                </span>
+                                            {% endif %}
+                                        </center>
+                                    </div>
+                                    <div class="col-sm-4 col-xs-2 text-center">
+                                        <div id="js-game-spinner-{{ game.id }}" style="display: none; position: absolute; margin-top: 40px; left: 40%; font-size: 3.5em;">
+                                            {{ icon('load-c ion-spin-animation') }}
                                         </div>
-                                    {% else %}
-                                        <span class="text-muted">
-                                            No picks
-                                        </span>
-                                    {% endif %}
-                                </center>
-                            </div>
-                            <div class="col-sm-4 col-xs-2 text-center">
-                                <div id="js-game-spinner-{{ game.id }}" style="display: none; position: absolute; margin-top: 40px; left: 40%; font-size: 3.5em;">
-                                    {{ icon('load-c ion-spin-animation') }}
-                                </div>
 
-                                <div class="hidden-xs">
-                                    {{ game.location }}
-                                    <hr style="margin: 5px 0px;">
-                                    {{ game.date|date('D. M, j') }}
-                                    <br>
-                                    {{ game.time ? game.time|date('h:i A') : 'TBD' }}
-                                    <br>
-                                </div>
-                                <a href="{{ path('app_game_show', {'game': game.id}) }}" class="btn btn-primary btn-sm hidden-xs" style="margin-top: 10px;">
-                                    {{ icon('information-circled') }}
-                                    Game Details
-                                </a>
-                                <a href="{{ path('app_game_show', {'game': game.id}) }}" class="visible-xs" style="margin-top: 10px; font-size: 2.4em;">
-                                    {{ icon('information-circled') }}
-                                </a>
+                                        <div class="hidden-xs">
+                                            {{ game.location }}
+                                            <hr style="margin: 5px 0px;">
+                                            {{ game.date|date('D. M, j') }}
+                                            <br>
+                                            {{ game.time ? game.time|date('h:i A') : 'TBD' }}
+                                            <br>
+                                        </div>
+                                        <a href="{{ path('app_game_show', {'game': game.id}) }}" class="btn btn-primary btn-sm hidden-xs" style="margin-top: 10px;">
+                                            {{ icon('information-circled') }}
+                                            Game Details
+                                        </a>
+                                        <a href="{{ path('app_game_show', {'game': game.id}) }}" class="visible-xs" style="margin-top: 10px; font-size: 2.4em;">
+                                            {{ icon('information-circled') }}
+                                        </a>
 
-                                {% if not game.winningTeam.id %}
-                                    <h1 class="text-muted">
-                                        {% if game.canPick %}
-                                            <span class="text-success">{{ icon('unlocked') }}</span>
-                                        {% else %}
-                                            {{ icon('locked') }}
+                                        {% if not game.winningTeam.id %}
+                                            <h1 class="text-muted">
+                                                {% if game.canPick %}
+                                                    <span class="text-success">{{ icon('unlocked') }}</span>
+                                                {% else %}
+                                                    {{ icon('locked') }}
+                                                {% endif %}
+                                            </h1>
                                         {% endif %}
-                                    </h1>
-                                {% endif %}
 
-                                <span class="text-muted visible-xs">
-                                    {{ game.spread ? game[game.predictedWinner|lower ~ 'Team'].nameAbbr ~ ' (-' ~ game.spread ~ ')' }}
-                                </span>
-                            </div>
-                            <div class="col-sm-4 col-xs-5" {% if game.winningTeam.id and game.winningTeam.id != game.homeTeam.id %}style="opacity: 0.3;"{% endif %}>
-                                <center>
-                                    {% if game.winningTeam.id or not game.canPick %}
-                                        {{ macros.teamPick(game, game.homeTeam, week_winners, 'Home') }}
-                                    {% else %}
-                                        <button class="btn btn-default js-btn-winner {% if game.id in week_winners|keys and game.homeTeam.slug in week_winners[game.id] %} text-primary {% endif %}" data-game="{{ game.id }}" data-home-away="home" data-url="{{ path('app_person_prediction', {'username': person.username, 'game': game.id, 'slug': game.homeTeam.slug}) }}" style="width: 100%; overflow: hidden; background-color: #f4f4f4; border-radius: 4px;">
-                                            {{ macros.teamPick(game, game.homeTeam, week_winners, 'Home') }}
-                                        </button>
-                                    {% endif %}
-                                    <hr style="margin: 5px 0px;">
-                                    {% if game.id in game_picks|keys %}
-                                        {% set pick_total = game_picks[game.id].awayCount + game_picks[game.id].homeCount %}
-                                        <div class="progress" style="border: none; height: 15px; margin-bottom: 0px;">
-                                            <div class="progress-bar progress-bar-striped" role="progressbar" style="width: {{ (game_picks[game.id].homeCount / pick_total) * 100 }}%;" data-toggle="tooltip" data-placement="top" title="{{ game_picks[game.id].people.home is defined ? game_picks[game.id].people.home|join(', ') }}">
-                                            </div>
-                                        </div>
-                                    {% else %}
-                                        <span class="text-muted">
-                                            No picks
+                                        <span class="text-muted visible-xs">
+                                            {{ game.spread ? game[game.predictedWinner|lower ~ 'Team'].nameAbbr ~ ' (-' ~ game.spread ~ ')' }}
                                         </span>
-                                    {% endif %}
-                                </center>
+                                    </div>
+                                    <div class="col-sm-4 col-xs-5" {% if game.winningTeam.id and game.winningTeam.id != game.homeTeam.id %}style="opacity: 0.3;"{% endif %}>
+                                        <center>
+                                            {% if game.winningTeam.id or not game.canPick %}
+                                                {{ macros.teamPick(game, game.homeTeam, week_winners, 'Home') }}
+                                            {% else %}
+                                                <button class="btn btn-default js-btn-winner {% if game.id in week_winners|keys and game.homeTeam.slug in week_winners[game.id] %} text-primary {% endif %}" data-game="{{ game.id }}" data-home-away="home" data-url="{{ path('app_person_prediction', {'username': person.username, 'game': game.id, 'slug': game.homeTeam.slug}) }}" style="width: 100%; overflow: hidden; background-color: #f4f4f4; border-radius: 4px;">
+                                                    {{ macros.teamPick(game, game.homeTeam, week_winners, 'Home') }}
+                                                </button>
+                                            {% endif %}
+                                            <hr style="margin: 5px 0px;">
+                                            {% if game.id in game_picks|keys %}
+                                                {% set pick_total = game_picks[game.id].awayCount + game_picks[game.id].homeCount %}
+                                                <div class="progress" style="border: none; height: 15px; margin-bottom: 0px;">
+                                                    <div class="progress-bar progress-bar-striped" role="progressbar" style="width: {{ (game_picks[game.id].homeCount / pick_total) * 100 }}%;" data-toggle="tooltip" data-placement="top" title="{{ game_picks[game.id].people.home is defined ? game_picks[game.id].people.home|join(', ') }}">
+                                                    </div>
+                                                </div>
+                                            {% else %}
+                                                <span class="text-muted">
+                                                    No picks
+                                                </span>
+                                            {% endif %}
+                                        </center>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    {% endfor %}
                 </div>
-            {% endfor %}
+
+                <div role="tabpanel" class="tab-pane" id="all-picks">
+                    {# everyones picks #}
+                    <br>
+                    <table class="table table-striped table-bordered table-hover">
+                        <thead>
+                            <th>Username</th>
+                            {% for game in games %}
+                                <th class="text-center">
+                                    <img src="{{ game.homeTeam.imageLocation }}" style="max-width: 75%;">
+                                    <h4>VS</h4>
+                                    <img src="{{ game.awayTeam.imageLocation }}" style="max-width: 75%;">
+                                </th>
+                            {% endfor %}
+                        </thead>
+                        <tbody>
+                            {% for person_username, single_person_picks in picks_by_person %}
+                                <tr>
+                                    <td class="text-center" style="padding-top: 25px;">{{ person_username }}</td>
+                                    {% for game in games %}
+                                        {% set is_game_picked = false %}
+
+                                        {% for game_id, single_game_pick in single_person_picks %}
+                                            {% if game.id == game_id %}
+                                                {% set bg_color = null %}
+
+                                                {% if game.winningTeam.id %}
+                                                    {% set bg_color = 'bg-success' %}
+                                                    {% if game.winningTeam.id != game[single_game_pick ~ 'Team'].id %}
+                                                        {% set bg_color = 'bg-danger' %}
+                                                    {% endif %}
+                                                {% endif %}
+
+                                                <td class="text-center {{ bg_color ? bg_color }}">
+                                                    <img src="{{ game[single_game_pick ~ 'Team'].imageLocation }}" style="max-width: 75%;">
+                                                </td>
+
+                                                {% set is_game_picked = true %}
+                                            {% endif %}
+                                        {% endfor %}
+
+                                        {% if not is_game_picked %}
+                                            <td>&mdash;</td>
+                                        {% endif %}
+                                    {% endfor %}
+                                </tr>
+                            {% else %}
+                                <tr>
+                                    <td colspan="11">No picks yet</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
     </div>
 {% endblock %}

@@ -62,8 +62,8 @@ class PersonController extends Controller
         $repository = $em->getRepository('AppBundle:Game');
         $games      = $repository->findGamesByWeek($week, false, true);
 
-        $weekWinners   = $pickemService->predictedWeekWinnersByPerson($person, $week);
-        $gamePicks     = $pickemService->picksByWeek($week);
+        $weekWinners                     = $pickemService->predictedWeekWinnersByPerson($person, $week);
+        list($gamePicks, $picksByPerson) = $pickemService->picksByWeek($week, null, true);
 
         /* find games won/lost this week */
         $weekWinPicks  = 0;
@@ -89,6 +89,7 @@ class PersonController extends Controller
             'games'           => $games,
             'week_winners'    => $weekWinners,
             'game_picks'      => $gamePicks,
+            'picks_by_person' => $picksByPerson,
             'week_win_picks'  => $weekWinPicks,
             'week_lose_picks' => $weekLosePicks,
             'people_rank'     => $leaderboard['peopleByRank'],
