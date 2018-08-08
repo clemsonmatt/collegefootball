@@ -1,0 +1,508 @@
+{
+    "games": [
+        {
+            "date": "9/13/18",
+            "awayTeam": "Tennessee Tech",
+            "homeTeam": "Utah State",
+            "time": "TBD",
+            "location": "Romney Stadium, Logan, UT"
+        },
+        {
+            "date": "9/13/18",
+            "awayTeam": "Boston College",
+            "homeTeam": "Wake Forest",
+            "time": "7:30 PM",
+            "location": "BB&T Field, Winston-salem, NC"
+        },
+        {
+            "date": "9/14/18",
+            "awayTeam": "Georgia State",
+            "homeTeam": "Memphis",
+            "time": "7:00 PM",
+            "location": "Liberty Bowl Memorial Stadium, Memphis, TN"
+        },
+        {
+            "date": "9/15/18",
+            "awayTeam": "Tulane",
+            "homeTeam": "UAB",
+            "time": "TBD",
+            "location": "Legion Field , Birmingham, AL"
+        },
+        {
+            "date": "9/15/18",
+            "awayTeam": "Prairie View",
+            "homeTeam": "UNLV",
+            "time": "TBD",
+            "location": "Sam Boyd Stadium, Las Vegas, NV"
+        },
+        {
+            "date": "9/15/18",
+            "awayTeam": "Bethune-Cookman",
+            "homeTeam": "Florida Atlantic",
+            "time": "TBD",
+            "location": "FAU Football Stadium, Boca Raton, FL"
+        },
+        {
+            "date": "9/15/18",
+            "awayTeam": "Hawaii",
+            "homeTeam": "Army",
+            "time": "12:00 PM",
+            "location": "Michie Stadium, West Point, NY"
+        },
+        {
+            "date": "9/15/18",
+            "awayTeam": "Troy",
+            "homeTeam": "Nebraska",
+            "time": "12:00 PM",
+            "location": "Memorial Stadium , Lincoln, NE"
+        },
+        {
+            "date": "9/15/18",
+            "awayTeam": "Kent State",
+            "homeTeam": "Penn State",
+            "time": "12:00 PM",
+            "location": "Beaver Stadium, University Park, PA"
+        },
+        {
+            "date": "9/15/18",
+            "awayTeam": "Rhode Island",
+            "homeTeam": "UConn",
+            "time": "12:00 PM",
+            "location": "Pratt & Whitney Stadium at Rentschler Field, East Hartford, CT"
+        },
+        {
+            "date": "9/15/18",
+            "awayTeam": "Oklahoma",
+            "homeTeam": "Iowa State",
+            "time": "12:00 PM",
+            "location": "Jack Trice Stadium, Ames, IA"
+        },
+        {
+            "date": "9/15/18",
+            "awayTeam": "Florida State",
+            "homeTeam": "Syracuse",
+            "time": "12:00 PM",
+            "location": "Carrier Dome, Syracuse, NY"
+        },
+        {
+            "date": "9/15/18",
+            "awayTeam": "Miami",
+            "homeTeam": "Toledo",
+            "time": "12:00 PM",
+            "location": "Glass Bowl, Toledo, OH"
+        },
+        {
+            "date": "9/15/18",
+            "awayTeam": "UCF",
+            "homeTeam": "North Carolina",
+            "time": "12:00 PM",
+            "location": "Kenan Stadium, Chapel Hill, NC"
+        },
+        {
+            "date": "9/15/18",
+            "awayTeam": "Rutgers",
+            "homeTeam": "Kansas",
+            "time": "12:00 PM",
+            "location": "Memorial Stadium , Lawrence, KS"
+        },
+        {
+            "date": "9/15/18",
+            "awayTeam": "Ball State",
+            "homeTeam": "Indiana",
+            "time": "12:00 PM",
+            "location": "Memorial Stadium , Bloomington, IN"
+        },
+        {
+            "date": "9/15/18",
+            "awayTeam": "Temple",
+            "homeTeam": "Maryland",
+            "time": "12:00 PM",
+            "location": "Maryland Stadium, College Park, MD"
+        },
+        {
+            "date": "9/15/18",
+            "awayTeam": "Murray State",
+            "homeTeam": "Kentucky",
+            "time": "12:00 PM",
+            "location": "Commonwealth Stadium, Lexington, KY"
+        },
+        {
+            "date": "9/15/18",
+            "awayTeam": "UTEP",
+            "homeTeam": "Tennessee",
+            "time": "12:00 PM",
+            "location": "Neyland Stadium, Knoxville, TN"
+        },
+        {
+            "date": "9/15/18",
+            "awayTeam": "East Carolina",
+            "homeTeam": "Virginia Tech",
+            "time": "12:20 PM",
+            "location": "Lane Stadium, Blacksburg, VA"
+        },
+        {
+            "date": "9/15/18",
+            "awayTeam": "Georgia Tech",
+            "homeTeam": "Pittsburgh",
+            "time": "12:30 PM",
+            "location": "Heinz Field, Pittsburgh, PA"
+        },
+        {
+            "date": "9/15/18",
+            "awayTeam": "UC Davis",
+            "homeTeam": "Stanford",
+            "time": "2:00 PM",
+            "location": "Stanford Stadium, Stanford, CA"
+        },
+        {
+            "date": "9/15/18",
+            "awayTeam": "Vanderbilt",
+            "homeTeam": "Notre Dame",
+            "time": "2:30 PM",
+            "location": "Notre Dame Stadium, Notre Dame, IN"
+        },
+        {
+            "date": "9/15/18",
+            "awayTeam": "Ohio",
+            "homeTeam": "Virginia",
+            "time": "3:00 PM",
+            "location": "Scott Stadium, Charlottesville, VA"
+        },
+        {
+            "date": "9/15/18",
+            "awayTeam": "BYU",
+            "homeTeam": "Wisconsin",
+            "time": "3:30 PM",
+            "location": "Camp Randall Stadium, Madison, WI"
+        },
+        {
+            "date": "9/15/18",
+            "awayTeam": "Miami (OH)",
+            "homeTeam": "Minnesota",
+            "time": "3:30 PM",
+            "location": "TCF Bank Stadium, Minneapolis, MN"
+        },
+        {
+            "date": "9/15/18",
+            "awayTeam": "Southern Mississippi",
+            "homeTeam": "Appalachian State",
+            "time": "3:30 PM",
+            "location": "Kidd Brewer Stadium, Boone, NC"
+        },
+        {
+            "date": "9/15/18",
+            "awayTeam": "Boise State",
+            "homeTeam": "Oklahoma State",
+            "time": "3:30 PM",
+            "location": "Boone Pickens Stadium, Stillwater, OK"
+        },
+        {
+            "date": "9/15/18",
+            "awayTeam": "Lehigh",
+            "homeTeam": "Navy",
+            "time": "3:30 PM",
+            "location": "Navy-Marine Corps Memorial Stadium, Annapolis, MD"
+        },
+        {
+            "date": "9/15/18",
+            "awayTeam": "Central Michigan",
+            "homeTeam": "Northern Illinois",
+            "time": "3:30 PM",
+            "location": "Huskie Stadium, DeKalb, IL"
+        },
+        {
+            "date": "9/15/18",
+            "awayTeam": "LSU",
+            "homeTeam": "Auburn",
+            "time": "3:30 PM",
+            "location": "Jordan-Hare Stadium, Auburn, AL"
+        },
+        {
+            "date": "9/15/18",
+            "awayTeam": "South Florida",
+            "homeTeam": "Illinois",
+            "time": "3:30 PM",
+            "location": "Soldier Field, Chicago, IL"
+        },
+        {
+            "date": "9/15/18",
+            "awayTeam": "SMU",
+            "homeTeam": "Michigan",
+            "time": "3:30 PM",
+            "location": "Michigan Stadium, Ann Arbor, MI"
+        },
+        {
+            "date": "9/15/18",
+            "awayTeam": "Duke",
+            "homeTeam": "Baylor",
+            "time": "3:30 PM",
+            "location": "McLane Stadium, Waco, TX"
+        },
+        {
+            "date": "9/15/18",
+            "awayTeam": "West Virginia",
+            "homeTeam": "NC State",
+            "time": "3:30 PM",
+            "location": "Carter-Finley Stadium, Raleigh, NC"
+        },
+        {
+            "date": "9/15/18",
+            "awayTeam": "Georgia Southern",
+            "homeTeam": "Clemson",
+            "time": "3:30 PM",
+            "location": "Memorial Stadium , Clemson, SC"
+        },
+        {
+            "date": "9/15/18",
+            "awayTeam": "UT San Antonio",
+            "homeTeam": "Kansas State",
+            "time": "4:00 PM",
+            "location": "Bill Snyder Family Stadium, Manhattan, KS"
+        },
+        {
+            "date": "9/15/18",
+            "awayTeam": "Colorado State",
+            "homeTeam": "Florida",
+            "time": "4:00 PM",
+            "location": "Ben Hill Griffin Stadium, Gainesville, FL"
+        },
+        {
+            "date": "9/15/18",
+            "awayTeam": "North Texas",
+            "homeTeam": "Arkansas",
+            "time": "4:00 PM",
+            "location": "Razorback Stadium, Fayetteville, AR"
+        },
+        {
+            "date": "9/15/18",
+            "awayTeam": "Wofford",
+            "homeTeam": "Wyoming",
+            "time": "4:00 PM",
+            "location": "War Memorial Stadium , Laramie, WY"
+        },
+        {
+            "date": "9/15/18",
+            "awayTeam": "Eastern Kentucky",
+            "homeTeam": "Bowling Green",
+            "time": "4:00 PM",
+            "location": "Doyt Perry Stadium, Bowling Green, OH"
+        },
+        {
+            "date": "9/15/18",
+            "awayTeam": "Houston",
+            "homeTeam": "Texas Tech",
+            "time": "4:00 PM",
+            "location": "Jones AT&T Stadium, Lubbock, TX"
+        },
+        {
+            "date": "9/15/18",
+            "awayTeam": "New Hampshire",
+            "homeTeam": "Colorado",
+            "time": "5:00 PM",
+            "location": "Folsom Field, Boulder, CO"
+        },
+        {
+            "date": "9/15/18",
+            "awayTeam": "San Jose State",
+            "homeTeam": "Oregon",
+            "time": "5:00 PM",
+            "location": "Autzen Stadium, Eugene, OR"
+        },
+        {
+            "date": "9/15/18",
+            "awayTeam": "Idaho State",
+            "homeTeam": "California",
+            "time": "6:00 PM",
+            "location": "Memorial Stadium , Berkeley, CA"
+        },
+        {
+            "date": "9/15/18",
+            "awayTeam": "Old Dominion",
+            "homeTeam": "Charlotte",
+            "time": "6:00 PM",
+            "location": "McColl-Richardson Field, Charlotte, NC"
+        },
+        {
+            "date": "9/15/18",
+            "awayTeam": "Norfolk State",
+            "homeTeam": "Liberty",
+            "time": "6:00 PM",
+            "location": "Williams Stadium , Lynchburg, VA"
+        },
+        {
+            "date": "9/15/18",
+            "awayTeam": "Eastern Michigan",
+            "homeTeam": "Buffalo",
+            "time": "6:00 PM",
+            "location": "UB Stadium, Buffalo, NY"
+        },
+        {
+            "date": "9/15/18",
+            "awayTeam": "Campbell",
+            "homeTeam": "Coastal Carolina",
+            "time": "7:00 PM",
+            "location": "Brooks Stadium, Conway, SC"
+        },
+        {
+            "date": "9/15/18",
+            "awayTeam": "Texas State",
+            "homeTeam": "South Alabama",
+            "time": "7:00 PM",
+            "location": "Ladd-Peebles Stadium, Mobile, AL"
+        },
+        {
+            "date": "9/15/18",
+            "awayTeam": "Arkansas State",
+            "homeTeam": "Tulsa",
+            "time": "7:00 PM",
+            "location": "Chapman Stadium, Tulsa, OK"
+        },
+        {
+            "date": "9/15/18",
+            "awayTeam": "Alabama A&M",
+            "homeTeam": "Cincinnati",
+            "time": "7:00 PM",
+            "location": "Nippert Stadium, Cincinnati, OH"
+        },
+        {
+            "date": "9/15/18",
+            "awayTeam": "Delaware State",
+            "homeTeam": "Western Michigan",
+            "time": "7:00 PM",
+            "location": "Waldo Stadium, Kalamazoo, MI"
+        },
+        {
+            "date": "9/15/18",
+            "awayTeam": "Oregon State",
+            "homeTeam": "Nevada",
+            "time": "7:00 PM",
+            "location": "Mackay Stadium, Reno, NV"
+        },
+        {
+            "date": "9/15/18",
+            "awayTeam": "Alabama",
+            "homeTeam": "Ole Miss",
+            "time": "7:00 PM",
+            "location": "Vaught-Hemingway Stadium, Oxford, MS"
+        },
+        {
+            "date": "9/15/18",
+            "awayTeam": "Middle Tennessee",
+            "homeTeam": "Georgia",
+            "time": "7:15 PM",
+            "location": "Sanford Stadium, Athens, GA"
+        },
+        {
+            "date": "9/15/18",
+            "awayTeam": "UL Monroe",
+            "homeTeam": "Texas A&M",
+            "time": "7:30 PM",
+            "location": "Kyle Field, College Station, TX"
+        },
+        {
+            "date": "9/15/18",
+            "awayTeam": "Louisiana",
+            "homeTeam": "Mississippi State",
+            "time": "7:30 PM",
+            "location": "Davis Wade Stadium, Starkville, MS"
+        },
+        {
+            "date": "9/15/18",
+            "awayTeam": "Missouri",
+            "homeTeam": "Purdue",
+            "time": "7:30 PM",
+            "location": "Ross-Ade Stadium, West Lafayette, IN"
+        },
+        {
+            "date": "9/15/18",
+            "awayTeam": "Marshall",
+            "homeTeam": "South Carolina",
+            "time": "7:30 PM",
+            "location": "Williams-Brice Stadium, Columbia, SC"
+        },
+        {
+            "date": "9/15/18",
+            "awayTeam": "Northern Iowa",
+            "homeTeam": "Iowa",
+            "time": "7:30 PM",
+            "location": "Kinnick Stadium, Iowa City, IA"
+        },
+        {
+            "date": "9/15/18",
+            "awayTeam": "Western Kentucky",
+            "homeTeam": "Louisville",
+            "time": "7:30 PM",
+            "location": "Papa John's Cardinal Stadium, Louisville, KY"
+        },
+        {
+            "date": "9/15/18",
+            "awayTeam": "UMass",
+            "homeTeam": "Florida Intl",
+            "time": "7:30 PM",
+            "location": "FIU Stadium, Miami, FL"
+        },
+        {
+            "date": "9/15/18",
+            "awayTeam": "Akron",
+            "homeTeam": "Northwestern",
+            "time": "7:30 PM",
+            "location": "Ryan Field, Evanston, IL"
+        },
+        {
+            "date": "9/15/18",
+            "awayTeam": "New Mexico",
+            "homeTeam": "New Mexico State",
+            "time": "8:00 PM",
+            "location": "Aggie Memorial Stadium, Las Cruces, NM"
+        },
+        {
+            "date": "9/15/18",
+            "awayTeam": "Ohio State",
+            "homeTeam": "TCU",
+            "time": "8:00 PM",
+            "location": "AT&T Stadium, Arlington, TX"
+        },
+        {
+            "date": "9/15/18",
+            "awayTeam": "Eastern Washington",
+            "homeTeam": "Washington State",
+            "time": "8:00 PM",
+            "location": "Martin Stadium, Pullman, WA"
+        },
+        {
+            "date": "9/15/18",
+            "awayTeam": "USC",
+            "homeTeam": "Texas",
+            "time": "8:00 PM",
+            "location": "Royal Texas Memorial Stadium, Austin, TX"
+        },
+        {
+            "date": "9/15/18",
+            "awayTeam": "Washington",
+            "homeTeam": "Utah",
+            "time": "10:00 PM",
+            "location": "Rice-Eccles Stadium, Salt Lake City, UT"
+        },
+        {
+            "date": "9/15/18",
+            "awayTeam": "Fresno State",
+            "homeTeam": "UCLA",
+            "time": "10:30 PM",
+            "location": "Rose Bowl, Pasadena, CA"
+        },
+        {
+            "date": "9/15/18",
+            "awayTeam": "Arizona State",
+            "homeTeam": "San Diego State",
+            "time": "10:30 PM",
+            "location": "SDCCU Stadium, San Diego, CA"
+        },
+        {
+            "date": "9/15/18",
+            "awayTeam": "Southern Utah",
+            "homeTeam": "Arizona",
+            "time": "11:00 PM",
+            "location": "Arizona Stadium, Tucson, AZ"
+        }
+    ]
+}
