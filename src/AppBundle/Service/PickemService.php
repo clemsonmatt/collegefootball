@@ -17,7 +17,7 @@ class PickemService
         $this->em = $em;
     }
 
-    public function picksByWeek(Week $week, Game $game = null)
+    public function picksByWeek(Week $week, Game $game = null, $byPerson = false)
     {
         $repository        = $this->em->getRepository('AppBundle:Prediction');
         $predictionsByWeek = $repository->createQueryBuilder('p')
@@ -35,7 +35,8 @@ class PickemService
         $predictionsByWeek = $predictionsByWeek->getQuery()
             ->getResult();
 
-        $gamePredictions = [];
+        $gamePredictions     = [];
+        $predictionsByPerson = [];
 
         foreach ($predictionsByWeek as $prediction) {
             $gameId = $prediction->getGame()->getId();
@@ -44,6 +45,8 @@ class PickemService
             if ($prediction->getTeam() == $prediction->getGame()->getAwayTeam()) {
                 $homeAway = 'away';
             }
+
+            $predictionsByPerson[$prediction->getPerson()->getUsername()][$gameId] = $homeAway;
 
             if (array_key_exists($gameId, $gamePredictions)) {
                 if ($homeAway == 'home') {
@@ -71,7 +74,11 @@ class PickemService
             }
         }
 
-        return $gamePredictions;
+        if (! $byPerson) {
+            return $gamePredictions;
+        }
+
+        return [$gamePredictions, $predictionsByPerson];
     }
 
     public function predictedWeekWinnersByPerson(Person $person, Week $week)
