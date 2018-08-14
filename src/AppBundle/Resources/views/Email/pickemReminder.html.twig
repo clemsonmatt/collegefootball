@@ -3,18 +3,25 @@
 {% block message %}
     Hey, {{ person }}
     <br><br>
-    Just a friendly reminder to complete your weekly college football pick'em predictions.
+    {% if week.number == 1 %}
+        <h4>Football season is here!</h4>
+        I've made some changes to the site including a weekly pick'em list to easily view everyone's picks. Also note that the url is changed to elliscfb.com, but the old url should still work too. Good luck! Click the link below to make week 1 predictions.
+    {% else %}
+        Just a friendly reminder to complete your weekly college football pick'em predictions.
+    {% endif %}
 
     <hr style="margin-top: 30px; margin-bottom: 10px; border: 0; border-top: 1px solid #eeeeee;">
 
-    <h4><center>Pick'em Stats</center></h4>
-    <div class="c100 p{{ pickem_predictions|number_format(0) }} center">
-        <span>{{ pickem_predictions|number_format(1) }}%</span>
-        <div class="slice">
-            <div class="bar"></div>
-            <div class="fill"></div>
+    {% if week.number > 1 %}
+        <h4><center>Pick'em Stats</center></h4>
+        <div class="c100 p{{ pickem_predictions|number_format(0) }} center">
+            <span>{{ pickem_predictions|number_format(1) }}%</span>
+            <div class="slice">
+                <div class="bar"></div>
+                <div class="fill"></div>
+            </div>
         </div>
-    </div>
+    {% endif %}
     <br>
     Make your picks now
     <a href="{{ 'http://elliscfb.com/person/pickem' }}">
