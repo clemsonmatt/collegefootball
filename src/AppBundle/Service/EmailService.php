@@ -11,12 +11,16 @@ class EmailService
     private $em;
     private $mailer;
     private $templating;
+    private $pickemService;
+    private $weekService;
 
-    public function __construct(EntityManager $em, Swift_Mailer $mailer, EngineInterface $templating)
+    public function __construct(EntityManager $em, Swift_Mailer $mailer, EngineInterface $templating, PickemService $pickemService, WeekService $weekService)
     {
-        $this->em         = $em;
-        $this->mailer     = $mailer;
-        $this->templating = $templating;
+        $this->em            = $em;
+        $this->mailer        = $mailer;
+        $this->templating    = $templating;
+        $this->pickemService = $pickemService;
+        $this->weekService   = $weekService;
     }
 
     /**
@@ -31,7 +35,19 @@ class EmailService
             ->getQuery()
             ->getResult();
 
+        $week = $this->weekService->currentWeek()['week'];
+
+        $repository = $this->em->getRepository('AppBundle:Game');
+        $games      = $repository->findGamesByWeek($week, false, true);
+
         foreach ($people as $person) {
+            $weekWinners = $this->pickemService->predictedWeekWinnersByPerson($person, $week);
+
+            if (count($weekWinners) == count($games)) {
+                // don't notify if they have aleady picked
+                continue;
+            }
+
             if ($person->getPhoneLink()) {
                 $body = 'Reminder to complete your weekly college football pick\'em predictions at: elliscfb.com/person/pickem';
                 $this->sendNotification($person->getPhoneLink(), $body);
@@ -47,6 +63,7 @@ class EmailService
                 $template = $this->templating->render('AppBundle:Email:pickemReminder.html.twig', [
                     'person'             => $person,
                     'pickem_predictions' => $pickemPredictions,
+                    'week'               => $week,
                 ]);
 
                 $this->sendNotification($person->getEmail(), $template, 'College Football Pick\'em Remider');
