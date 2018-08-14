@@ -116,7 +116,7 @@ class SecurityController extends Controller
                 // send email
                 $message = \Swift_Message::newInstance()
                     ->setSubject('CollegeFootball Forgot Password')
-                    ->setFrom('noreply@college-football.herokuapp.com')
+                    ->setFrom('noreply@elliscfb.com')
                     ->setTo($person->getEmail())
                     ->setBody(
                         $this->renderView('AppBundle:Email:forgotPassword.html.twig', [
