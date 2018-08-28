@@ -10,10 +10,12 @@ use AppBundle\Entity\Team;
 class StatsService
 {
     private $em;
+    private $weekService;
 
-    public function __construct(EntityManager $em)
+    public function __construct(EntityManager $em, WeekService $weekService)
     {
-        $this->em = $em;
+        $this->em          = $em;
+        $this->weekService = $weekService;
     }
 
     public function statsForTeam($teamId)
@@ -203,6 +205,39 @@ class StatsService
         ];
 
         return $comparison;
+    }
+
+    public function gamesMissingStats($season = null, $week = null, $onlyNextGame = false)
+    {
+        $result      = $this->weekService->currentWeek($season, $week);
+        $week        = $result['week'];
+        $season      = $result['season'];
+        $seasonWeeks = $result['seasonWeeks'];
+
+        $repository = $this->em->getRepository('AppBundle:Game');
+        $games      = $repository->findGamesByWeek($week, false, false, $onlyNextGame);
+
+        // only return the next game
+        if ($onlyNextGame && count($games)) {
+            return array_values($games)[0]['id'];
+        } elseif ($onlyNextGame) {
+            return false;
+        }
+
+        $gamesNeedingStats = [];
+
+        foreach ($games as $game) {
+            if ($game['stats'] === null || (! array_key_exists('totalOffenseYards', $game['stats']['homeStats']) || ! $game['stats']['homeStats']['totalOffenseYards'])) {
+                $gamesNeedingStats[] = $game;
+            }
+        }
+
+        return [
+            $gamesNeedingStats,
+            $season,
+            $week,
+            $seasonWeeks,
+        ];
     }
 
     /**

@@ -9,7 +9,7 @@ use Symfony\Component\HttpFoundation\Request;
 
 use AppBundle\Entity\Game;
 use AppBundle\Form\Type\GameStatsType;
-use AppBundle\Service\WeekService;
+use AppBundle\Service\StatsService;
 
 /**
  * @Route("/stats")
@@ -21,24 +21,9 @@ class GameStatsController extends Controller
      * @Route("/{season}", name="app_game_stats_index", defaults={"season": null})
      * @Route("/{season}/week/{week}", name="app_game_stats_index_week", defaults={"week": null})
      */
-    public function indexAction($season = null, $week = null, WeekService $weekService)
+    public function indexAction($season = null, $week = null, StatsService $statsService)
     {
-        $result      = $weekService->currentWeek($season, $week);
-        $week        = $result['week'];
-        $season      = $result['season'];
-        $seasonWeeks = $result['seasonWeeks'];
-
-        $em         = $this->getDoctrine()->getManager();
-        $repository = $em->getRepository('AppBundle:Game');
-        $games      = $repository->findGamesByWeek($week);
-
-        $gamesNeedingStats = [];
-
-        foreach ($games as $game) {
-            if ($game['stats'] === null || (! array_key_exists('totalOffenseYards', $game['stats']['homeStats']) || ! $game['stats']['homeStats']['totalOffenseYards'])) {
-                $gamesNeedingStats[] = $game;
-            }
-        }
+        list($gamesNeedingStats, $season, $week, $seasonWeeks) = $statsService->gamesMissingStats($season, $week);
 
         return $this->render('AppBundle:Game:stats.html.twig', [
             'games'        => $gamesNeedingStats,
@@ -51,20 +36,31 @@ class GameStatsController extends Controller
     /**
      * @Route("/game/{game}/add", name="app_game_stats_add")
      */
-    public function addAction(Game $game, Request $request)
+    public function addAction(Game $game, Request $request, StatsService $statsService)
     {
         $form = $this->createForm(GameStatsType::class, $game);
 
         $form->handleRequest($request);
 
         if ($form->isValid()) {
+            // set the winner
+            $game->setWinnerFromStats();
+
             $em = $this->getDoctrine()->getManager();
             $em->flush();
 
             $this->addFlash('success', 'Game stats saved');
-            return $this->redirectToRoute('app_game_show', [
-                'game' => $game->getId(),
-            ]);
+
+            // get the next game that needs stats
+            $nextGameId = $statsService->gamesMissingStats(null, null, true);
+
+            if ($nextGameId) {
+                return $this->redirectToRoute('app_game_stats_add', [
+                    'game' => $nextGameId,
+                ]);
+            }
+
+            return $this->redirectToRoute('app_game_stats_index');
         }
 
         return $this->render('AppBundle:Game:addEditStats.html.twig', [
