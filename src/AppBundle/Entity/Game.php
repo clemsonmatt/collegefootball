@@ -16,6 +16,17 @@ class Game
         return $this->awayTeam.' @ '.$this->homeTeam;
     }
 
+    public function setWinnerFromStats()
+    {
+        $stats = $this->getStats();
+
+        if ($stats['homeStats']['pointsFinal'] > $stats['awayStats']['pointsFinal']) {
+            return $this->setWinningTeam($this->getHomeTeam());
+        }
+
+        return $this->setWinningTeam($this->getAwayTeam());
+    }
+
     /**
      * @ORM\Id()
      * @ORM\Column(type="integer")

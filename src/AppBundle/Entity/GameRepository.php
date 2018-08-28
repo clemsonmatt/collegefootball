@@ -21,7 +21,7 @@ class GameRepository extends EntityRepository
         return $queryResult;
     }
 
-    public function findGamesByWeek(Week $week, $top25Only = false, $pickemOnly = false)
+    public function findGamesByWeek(Week $week, $top25Only = false, $pickemOnly = false, $missingStatsOnly = false)
     {
         $query  = "
             SELECT distinct g.*,
@@ -72,13 +72,22 @@ class GameRepository extends EntityRepository
             $query .= " AND r.week_id = :week AND r.ap_rank IS NOT NULL";
         } elseif ($pickemOnly) {
             $query .= " AND g.pickem_game = 1";
+        } elseif ($missingStatsOnly) {
+            $query .= " AND g.stats = 'N;' AND STR_TO_DATE(g.time, '%h:%i %p') >= :time";
         }
 
         $em        = $this->getEntityManager();
         $statement = $em->getConnection()->prepare($query);
-        $statement->bindValue('startDate', $week->getStartDate()->format('Y-m-d'));
-        $statement->bindValue('endDate', $week->getEndDate()->format('Y-m-d'));
         $statement->bindValue('week', $week->getId());
+        $statement->bindValue('startDate', $week->getStartDate()->format('Y-m-d'));
+
+        if ($missingStatsOnly) {
+            $now = new \DateTime('+3 hours');
+            $statement->bindValue('endDate', $now->format('Y-m-d'));
+            $statement->bindValue('time', $now->format('h:i:s'));
+        } else {
+            $statement->bindValue('endDate', $week->getEndDate()->format('Y-m-d'));
+        }
 
         $statement->execute();
         $games = $statement->fetchAll();
