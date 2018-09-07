@@ -127,7 +127,7 @@ class SecurityController extends Controller
 
                 $this->get('mailer')->send($message);
 
-                $this->addFlash('note', 'Your temporary password has been assigned. Please check your email ('.$person->getEmail().') for your temporary password.');
+                $this->addFlash('note', 'Your temporary password has been assigned. Please check your email ('.$person->getEmail().') to reset your password.');
 
                 return $this->redirectToRoute('app_security_login');
             }
