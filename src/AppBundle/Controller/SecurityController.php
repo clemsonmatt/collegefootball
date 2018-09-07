@@ -152,6 +152,7 @@ class SecurityController extends Controller
         $person     = $repository->findOneByTempPassword(md5($tempPass));
 
         if (! $person) {
+            $this->addFlash('warning', 'User not found');
             return $this->redirectToRoute('app_security_login');
         }
 
