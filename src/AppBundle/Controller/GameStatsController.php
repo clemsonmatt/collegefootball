@@ -8,8 +8,10 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 
 use AppBundle\Entity\Game;
+use AppBundle\Entity\Week;
 use AppBundle\Form\Type\GameStatsType;
 use AppBundle\Service\StatsService;
+use AppBundle\Service\WeeklyScoresService;
 
 /**
  * @Route("/stats")
@@ -66,6 +68,19 @@ class GameStatsController extends Controller
         return $this->render('AppBundle:Game:addEditStats.html.twig', [
             'game' => $game,
             'form' => $form->createView(),
+        ]);
+    }
+
+    /**
+     * @Route("/{id}/import", name="app_game_stats_import")
+     */
+    public function importAction(Week $week, WeeklyScoresService $weeklyScoresService)
+    {
+        $weeklyScoresService->importScores($week);
+
+        return $this->redirectToRoute('app_game_stats_index_week', [
+            'season' => $week->getSeason(),
+            'week'   => $week->getNumber(),
         ]);
     }
 }
