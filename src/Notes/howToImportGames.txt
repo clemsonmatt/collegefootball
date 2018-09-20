@@ -2,6 +2,15 @@
 2) Put the games into JSON format by weeks
     - copied from http://www.espn.com/college-football/schedule into excel then changed in sublime
     - it helps to remove images before moving to excel
+    - get ESPN game id:
+        - show game id
+            - document.getElementsByName('&lpos=college-football:schedule:score').forEach((l) => {l.innerText = l.href})
+            OR
+            document.getElementsByName('&lpos=college-football:schedule:time').forEach((l) => {l.innerText = l.href})
+        - hide player info
+            - document.getElementsByName('&lpos=college-football:schedule:player').forEach((l) => {l.innerText = ''})
+        - hide tickts info
+            - document.getElementsByName('&lpos=college-football:schedule:tickets').forEach((l) => {l.innerText = ''})
 3) run: bin/console collegefootball:team:games [test|import]
     - will notify if any games were not saved to db
     - test will not persist any to db, import will

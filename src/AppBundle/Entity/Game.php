@@ -112,6 +112,11 @@ class Game
      */
     private $canceled = false;
 
+    /**
+     * @ORM\Column(name="espn_id", type="integer", nullable=true)
+     */
+    private $espnId;
+
 
     /**
      * Get id
@@ -476,5 +481,28 @@ class Game
     public function isCanceled()
     {
         return $this->canceled;
+    }
+
+    /**
+     * Set espnId
+     *
+     * @param int $espnId
+     * @return Game
+     */
+    public function setEspnId($espnId)
+    {
+        $this->espnId = $espnId;
+
+        return $this;
+    }
+
+    /**
+     * Get espnId
+     *
+     * @return int
+     */
+    public function getEspnId()
+    {
+        return $this->espnId;
     }
 }

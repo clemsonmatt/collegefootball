@@ -27,6 +27,10 @@
 
     <div class="panel panel-default">
         <div class="panel-heading">
+            <a href="{{ path('app_game_stats_import', { id: week.id }) }}" class="btn btn-warning btn-sm pull-right">
+                {{ icon('refresh') }}
+                Import stats
+            </a>
             {{ games|length }} Games Needing Stats
         </div>
         <table class="table table-striped table-condensed table-hover">
