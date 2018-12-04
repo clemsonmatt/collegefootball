@@ -80,13 +80,6 @@ stof_doctrine_extensions:
             loggable: true
             sluggable: true
 
-jms_di_extra:
-    locations:
-        bundles:
-            - AppBundle
-        directories:
-            - "%kernel.root_dir%/../src"
-
 braincrafted_bootstrap:
     output_dir:
     assets_dir: %kernel.root_dir%/../vendor/twbs/bootstrap-sass/assets
