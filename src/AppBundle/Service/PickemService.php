@@ -154,6 +154,7 @@ class PickemService
         $repository = $this->em->getRepository('AppBundle:Person');
         $people     = $repository->createQueryBuilder('p')
             ->where('p.email IS NOT NULL')
+            ->orWhere("p.username = 'spread'")
             ->getQuery()
             ->getResult();
 
@@ -201,12 +202,16 @@ class PickemService
         foreach ($sortingScores as $score) {
             foreach ($peopleByRank as $ranking) {
                 if ($score == $ranking['score'] && ! in_array($ranking['username'], $usedPeople)) {
-                    if ($score != $previousScore || $rank == 0) {
-                        $rank++;
-                        $previousScore = $score;
-                    }
+                    if ($ranking['username'] != 'spread') {
+                        if ($score != $previousScore || $rank == 0) {
+                            $rank++;
+                            $previousScore = $score;
+                        }
 
-                    $ranking['rank'] = $rank;
+                        $ranking['rank'] = $rank;
+                    } else {
+                        $ranking['rank'] = '-';
+                    }
 
                     $sortedPeopleByRank[] = $ranking;
                     $usedPeople[]         = $ranking['username'];
