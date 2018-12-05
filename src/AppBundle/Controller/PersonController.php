@@ -49,7 +49,7 @@ class PersonController extends Controller
         /* can't view future weeks */
         $today = new \DateTime("now");
 
-        if ($week->getStartDate()->format('U') > $today->format('U')) {
+        if (($week->getStartDate()->format('U') > $today->format('U')) && ! $this->get('security.authorization_checker')->isGranted('ROLE_MANAGE')) {
             $this->addFlash('warning', 'Cannot view future weeks');
 
             $result      = $weekService->currentWeek();

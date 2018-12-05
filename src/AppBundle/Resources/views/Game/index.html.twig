@@ -70,9 +70,11 @@
                         </div>
                     </div>
                 </div>
-                <a href="{{ path('app_game_show', {game: playoff_games.championship.id}) }}">
-                    <h5 class="text-center" style="margin-top: 0px;">{{ playoff_games.championship ? playoff_games.championship.bowlName }}</h5>
-                </a>
+                {% if playoff_games.championship is defined %}
+                    <a href="{{ path('app_game_show', {game: playoff_games.championship.id}) }}">
+                        <h5 class="text-center" style="margin-top: 0px;">{{ playoff_games.championship ? playoff_games.championship.bowlName }}</h5>
+                    </a>
+                {% endif %}
             </div>
             <div class="col-sm-3">
                 <div class="panel panel-default">
