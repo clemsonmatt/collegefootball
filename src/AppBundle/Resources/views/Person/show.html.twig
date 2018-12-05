@@ -264,60 +264,62 @@
                 <div role="tabpanel" class="tab-pane" id="all-picks">
                     {# everyones picks #}
                     <br>
-                    <table class="table table-striped table-bordered table-hover">
-                        <thead>
-                            <th></th>
-                            {% for game in games %}
-                                <th class="text-center col-md-1">
-                                    <img src="{{ game.homeTeam.imageLocation }}" style="max-width: 75%;">
-                                    <h4>VS</h4>
-                                    <img src="{{ game.awayTeam.imageLocation }}" style="max-width: 75%;">
-                                </th>
-                            {% endfor %}
-                            {% if games|length < 10 %}
-                                {% for i in (games|length)..9 %}
-                                    <th class="col-md-1"></th>
+                    <div class="table-responsive">
+                        <table class="table table-striped table-bordered table-hover">
+                            <thead>
+                                <th></th>
+                                {% for game in games %}
+                                    <th class="text-center col-md-1" style="min-width: 65px;">
+                                        <img src="{{ game.homeTeam.imageLocation }}" style="max-width: 75%;">
+                                        <h4>VS</h4>
+                                        <img src="{{ game.awayTeam.imageLocation }}" style="max-width: 75%;">
+                                    </th>
                                 {% endfor %}
-                            {% endif %}
-                        </thead>
-                        <tbody>
-                            {% for person_username, single_person_picks in picks_by_person %}
-                                <tr>
-                                    <td class="text-center" style="padding-top: 25px;">{{ person_username }}</td>
-                                    {% for game in games %}
-                                        {% set is_game_picked = false %}
+                                {% if games|length < 10 %}
+                                    {% for i in (games|length)..9 %}
+                                        <th class="col-md-1"></th>
+                                    {% endfor %}
+                                {% endif %}
+                            </thead>
+                            <tbody>
+                                {% for person_username, single_person_picks in picks_by_person %}
+                                    <tr>
+                                        <td class="text-center" style="padding-top: 25px;">{{ person_username }}</td>
+                                        {% for game in games %}
+                                            {% set is_game_picked = false %}
 
-                                        {% for game_id, single_game_pick in single_person_picks %}
-                                            {% if game.id == game_id %}
-                                                {% set bg_color = null %}
+                                            {% for game_id, single_game_pick in single_person_picks %}
+                                                {% if game.id == game_id %}
+                                                    {% set bg_color = null %}
 
-                                                {% if game.winningTeam.id %}
-                                                    {% set bg_color = 'bg-success' %}
-                                                    {% if game.winningTeam.id != game[single_game_pick ~ 'Team'].id %}
-                                                        {% set bg_color = 'bg-danger' %}
+                                                    {% if game.winningTeam.id %}
+                                                        {% set bg_color = 'bg-success' %}
+                                                        {% if game.winningTeam.id != game[single_game_pick ~ 'Team'].id %}
+                                                            {% set bg_color = 'bg-danger' %}
+                                                        {% endif %}
                                                     {% endif %}
+
+                                                    <td class="text-center {{ bg_color ? bg_color }}">
+                                                        <img src="{{ game[single_game_pick ~ 'Team'].imageLocation }}" style="max-width: 75%;">
+                                                    </td>
+
+                                                    {% set is_game_picked = true %}
                                                 {% endif %}
+                                            {% endfor %}
 
-                                                <td class="text-center {{ bg_color ? bg_color }}">
-                                                    <img src="{{ game[single_game_pick ~ 'Team'].imageLocation }}" style="max-width: 75%;">
-                                                </td>
-
-                                                {% set is_game_picked = true %}
+                                            {% if not is_game_picked %}
+                                                <td>&mdash;</td>
                                             {% endif %}
                                         {% endfor %}
-
-                                        {% if not is_game_picked %}
-                                            <td>&mdash;</td>
-                                        {% endif %}
-                                    {% endfor %}
-                                </tr>
-                            {% else %}
-                                <tr>
-                                    <td colspan="11">No picks yet</td>
-                                </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
+                                    </tr>
+                                {% else %}
+                                    <tr>
+                                        <td colspan="11">No picks yet</td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
