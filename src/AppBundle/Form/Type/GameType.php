@@ -72,8 +72,12 @@ class GameType extends AbstractType
             'required'    => false,
             'choices'     => [
                 'Away' => 'Away',
-                'Home' => 'Home'
+                'Home' => 'Home',
             ],
+        ]);
+
+        $builder->add('espnId', SymfonyTypes\TextType::class, [
+            'required' => false,
         ]);
 
         $builder->add('conferenceChampionship', SymfonyTypes\CheckboxType::class, [
