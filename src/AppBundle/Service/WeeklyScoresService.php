@@ -31,11 +31,13 @@ class WeeklyScoresService
 
         foreach ($games as $game) {
             $ch = curl_init();
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
-            curl_setopt($ch, CURLOPT_URL, 'http://www.espn.com/college-football/matchup?gameId='.$game->getEspnId());
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch, CURLOPT_URL, 'https://www.espn.com/college-football/matchup?gameId='.$game->getEspnId());
 
             $response = curl_exec($ch);
             curl_close($ch);
+
+            //TODO: set non-stat related items: time, lines, matchup-predictor, etc.
 
             $stats = $this->getStats($response);
 
@@ -48,6 +50,11 @@ class WeeklyScoresService
 
     private function getStats($response)
     {
+        // first check to see if game has any stats
+        if (! $this->hasGameStats($response)) {
+            return null;
+        }
+
         $defaultStats = [
             'pointsFinal'        => null,
             'pointsFirst'        => null,
@@ -86,10 +93,20 @@ class WeeklyScoresService
         return $stats;
     }
 
-    private function getStringBetween($string, $start, $end){
+    private function hasGameStats($response)
+    {
+        $matchupContent = $this->getStringBetween($response, '<div id="gamepackage-matchup" data-module="matchup"  data-sport="football">', '</div>');
+
+        return strpos($matchupContent, 'No Team Stats Available') === false;
+    }
+
+    private function getStringBetween($string, $start, $end)
+    {
         $ini = strpos($string, $start);
 
-        if ($ini == 0) return '';
+        if ($ini == 0) {
+            return '';
+        }
 
         $ini += strlen($start);
         $len = strpos($string, $end, $ini) - $ini;

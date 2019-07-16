@@ -20,6 +20,10 @@ class Game
     {
         $stats = $this->getStats();
 
+        if (! $stats) {
+            return null;
+        }
+
         if ($stats['homeStats']['pointsFinal'] > $stats['awayStats']['pointsFinal']) {
             return $this->setWinningTeam($this->getHomeTeam());
         }
@@ -42,7 +46,7 @@ class Game
     /**
      * @ORM\Column(name="time", type="string", nullable=true)
      */
-     private $time;
+    private $time;
 
     /**
      * @ORM\Column(name="season", type="integer")
