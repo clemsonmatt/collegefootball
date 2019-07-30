@@ -30,8 +30,16 @@ class PopulateGamesCommand extends ContainerAwareCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $finder   = new Finder();
-        $htmlFiles = $finder->files()->in('/Users/mellis/Projects/myProjects/collegefootball/src/Notes/Games/2019');
+        foreach (range(1, 14) as $weekNumber) {
+            $ch = curl_init();
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch, CURLOPT_URL, 'https://www.espn.com/college-football/schedule/_/week/'.$weekNumber);
+
+            $response = curl_exec($ch);
+            curl_close($ch);
+
+            $weeks[] = $response;
+        }
 
         $counter = 0;
 
@@ -41,8 +49,7 @@ class PopulateGamesCommand extends ContainerAwareCommand
         $repository     = $em->getRepository('AppBundle:Team');
         $gameRepository = $em->getRepository('AppBundle:Game');
 
-        foreach ($htmlFiles as $htmlFile) {
-            $result     = $htmlFile->getContents();
+        foreach ($weeks as $result) {
             $dateString = $this->getStringBetween($result, '<h2 class="table-caption">', '</h2>');
             $result     = $this->getStringBetween($result, '<table class="schedule', '</table>', true);
 
@@ -148,19 +155,6 @@ class PopulateGamesCommand extends ContainerAwareCommand
 
         $em->flush();
         $output->writeln($counter.' Games imported');
-
-        // foreach (range(1, 15) as $weekNumber) {
-        // $weekNumber = 1;
-
-        // $ch = curl_init();
-        // curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        // curl_setopt($ch, CURLOPT_URL, 'https://www.espn.com/college-football/schedule/_/week/'.$weekNumber);
-
-        // $response = curl_exec($ch);
-        // curl_close($ch);
-
-        // $weeks[] = $response;
-        // }
     }
 
     private function getStringBetween($string, $start, $end, $returnRest = false)
