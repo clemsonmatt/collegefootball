@@ -24,29 +24,11 @@
                             Profile
                         </div>
                         <div class="panel-body">
-                            <dl class="dl-spaced">
-                                <dt>Name</dt>
-                                <dd>{{ person }}</dd>
-                                <dt>Email</dt>
-                                <dd>{{ person.email|default('&mdash;')|raw }}</dd>
-                                <dt>Username</dt>
-                                <dd>{{ person.username }}</dd>
-                                {% if person.phoneNumber %}
-                                    <dt>Phone</dt>
-                                    <dd>{{ person.phoneNumber|phone_number }} ({{ person.phoneCarrier|capitalize }})</dd>
-                                {% endif %}
-                                <dt>My Team</dt>
-                                <dd>
-                                    {% if person.team %}
-                                        {{ person.team.name }}
-                                    {% else %}
-                                        <span class="text-muted">Not set</span>
-                                        <a href="{{ path('app_person_edit', {'username': person.username}) }}" style="margin-left: 10px;">
-                                            {{ icon('compose') }}
-                                        </a>
-                                    {% endif %}
-                                </dd>
-                            </dl>
+                            {{ person }} ({{ person.username }})
+                            <br>
+                            <span class="text-muted">{{ person.email }}</span>
+                            <hr>
+                            <a href="{{ path('app_person_manage_notifications', {username: person.username}) }}">Mange notifications</a>
                         </div>
                     </div>
                 </div>
