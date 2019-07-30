@@ -76,6 +76,10 @@
                         {{ game.location }}
                         <hr style="margin: 5px 60px;">
                         {{ game.date|date('m/d') }} @ {{ game.time ? game.time|date('h:i A') : 'TBD' }}
+                        {% if game.network %}
+                            <br>
+                            <span class="label label-default">{{ game.network }}</span>
+                        {% endif %}
                         {% if game.espnId %}
                             <hr>
                             <a href="http://www.espn.com/college-football/matchup?gameId={{ game.espnId }}" target="_blank" class="btn btn-danger btn-block">View on ESPN</a>

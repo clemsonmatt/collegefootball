@@ -121,6 +121,11 @@ class Game
      */
     private $espnId;
 
+    /**
+     * @ORM\Column(name="network", type="string", length=255, nullable=true)
+     */
+    private $network;
+
 
     /**
      * Get id
@@ -508,5 +513,28 @@ class Game
     public function getEspnId()
     {
         return $this->espnId;
+    }
+
+    /**
+     * Set network
+     *
+     * @param string $network
+     * @return Game
+     */
+    public function setNetwork($network)
+    {
+        $this->network = $network;
+
+        return $this;
+    }
+
+    /**
+     * Get network
+     *
+     * @return string
+     */
+    public function getNetwork()
+    {
+        return $this->network;
     }
 }

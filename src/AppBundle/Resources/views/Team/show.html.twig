@@ -97,6 +97,9 @@
                             {{ next_game.location }}
                             <hr style="margin: 5px 60px;">
                             {{ next_game.date|date('m/d') }} @ {{ next_game.time ? next_game.time|date('h:i A') : 'TBD' }}
+                            {% if next_game.network %}
+                                <span class="label label-default">{{ next_game.network }}</span>
+                            {% endif %}
                         </center>
                         <br>
                     {% elseif games|length %}

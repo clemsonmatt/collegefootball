@@ -158,11 +158,18 @@
                                     {{ game.location }}
                                     <hr style="margin: 5px 60px;">
                                     {{ game.date|date('m/d') }} @ {{ game.time ? game.time|date('h:i A') : 'TBD' }}
+                                    {% if game.network %}
+                                        <span class="label label-default">{{ game.network }}</span>
+                                    {% endif %}
                                 </div>
                                 <div class="visible-xs">
                                     {{ game.date|date('m/d') }}
                                     <br>
                                     {{ game.time ? game.time|date('h:i A') : 'TBD' }}
+                                    {% if game.network %}
+                                        <br>
+                                        <span class="label label-default">{{ game.network }}</span>
+                                    {% endif %}
                                 </div>
                             {% endif %}
                         </center>
