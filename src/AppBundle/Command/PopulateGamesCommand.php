@@ -88,47 +88,54 @@ class PopulateGamesCommand extends ContainerAwareCommand
                         $location = $location['between'].str_replace(['</a>', ' </a>'], '', $location['rest']);
                     }
 
-                    // update the game if previously added
                     $game = $gameRepository->findOneByEspnId($espnId);
-                    if ($game) {
+                    if ($game && $input->getArgument('context') == 'import') {
+                        // update the game if previously added
                         $output->writeln('update: '.$awayTeamName.' at '.$homeTeamName);
-                        continue;
-                    }
+                        $game->setLocation($location);
+                        $game->setEspnId($espnId);
+                        $game->setNetwork($network);
 
-                    // add the game
-                    $awayTeam = $repository->findOneByNameShort($awayTeamName);
-                    $homeTeam = $repository->findOneByNameShort($homeTeamName);
-
-                    if ($awayTeam && $homeTeam) {
-                        if ($input->getArgument('context') == 'import') {
-                            $newGame = new Game();
-
-                            $newDate = new \DateTime($dateString);
-                            $newGame->setDate($newDate);
-
-                            $newGame->setSeason(date('Y'));
-                            $newGame->setAwayTeam($awayTeam);
-                            $newGame->setHomeTeam($homeTeam);
-                            $newGame->setLocation($location);
-                            $newGame->setEspnId($espnId);
-
-                            if ($dateTime != 'TBD') {
-                                $newGame->setTime($dateTime);
-                            }
-
-                            $em->persist($newGame);
-
-                            $counter++;
+                        if ($dateTime != 'TBD') {
+                            $game->setTime($dateTime);
                         }
                     } else {
-                        $output->writeln('==========');
-                        $output->writeln('date: '.$dateString);
-                        $output->writeln('awayTeam: '.$awayTeamName);
-                        $output->writeln('homeTeam: '.$homeTeamName);
-                        $output->writeln('location: '.$location);
-                        $output->writeln('time: '.$dateTime);
-                        $output->writeln('espnId: '.$espnId);
-                        $output->writeln('==========');
+                        // add the game
+                        $awayTeam = $repository->findOneByNameShort($awayTeamName);
+                        $homeTeam = $repository->findOneByNameShort($homeTeamName);
+
+                        if ($awayTeam && $homeTeam) {
+                            if ($input->getArgument('context') == 'import') {
+                                $newGame = new Game();
+
+                                $newDate = new \DateTime($dateString);
+                                $newGame->setDate($newDate);
+
+                                $newGame->setSeason(date('Y'));
+                                $newGame->setAwayTeam($awayTeam);
+                                $newGame->setHomeTeam($homeTeam);
+                                $newGame->setLocation($location);
+                                $newGame->setEspnId($espnId);
+                                $newGame->setNetwork($network);
+
+                                if ($dateTime != 'TBD') {
+                                    $newGame->setTime($dateTime);
+                                }
+
+                                $em->persist($newGame);
+
+                                $counter++;
+                            }
+                        } else {
+                            $output->writeln('==========');
+                            $output->writeln('date: '.$dateString);
+                            $output->writeln('awayTeam: '.$awayTeamName);
+                            $output->writeln('homeTeam: '.$homeTeamName);
+                            $output->writeln('location: '.$location);
+                            $output->writeln('time: '.$dateTime);
+                            $output->writeln('espnId: '.$espnId);
+                            $output->writeln('==========');
+                        }
                     }
 
                     $dayGames = $this->getStringBetween($dayGames['rest'], '<tr', '</tr>', true);
