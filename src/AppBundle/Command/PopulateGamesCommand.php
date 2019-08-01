@@ -98,13 +98,14 @@ class PopulateGamesCommand extends ContainerAwareCommand
                     $game = $gameRepository->findOneByEspnId($espnId);
                     if ($game && $input->getArgument('context') == 'import') {
                         // update the game if previously added
-                        $output->writeln('update: '.$awayTeamName.' at '.$homeTeamName);
-                        $game->setLocation($location);
-                        $game->setEspnId($espnId);
-                        $game->setNetwork($network);
+                        if ($game->getLocation() != $location || $game->getNetwork() != $network || ($game->getTime() != $dateTime && $dateTime != 'TBD')) {
+                            $output->writeln('update: '.$game->getId().' - '.$awayTeamName.' at '.$homeTeamName);
+                            $game->setLocation($location);
+                            $game->setNetwork($network);
 
-                        if ($dateTime != 'TBD') {
-                            $game->setTime($dateTime);
+                            if ($dateTime != 'TBD') {
+                                $game->setTime($dateTime);
+                            }
                         }
                     } else {
                         // add the game
