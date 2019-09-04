@@ -16,7 +16,7 @@ class WeekService
     public function currentWeek($season = null, $week = null, $includePreseason = false)
     {
         if (! $season) {
-            $season = 2018;
+            $season = 2019;
         }
 
         $repository  = $this->em->getRepository('AppBundle:Week');

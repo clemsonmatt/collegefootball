@@ -125,6 +125,7 @@ class GameRepository extends EntityRepository
                 'date'                   => $game['date'],
                 'time'                   => $game['time'],
                 'location'               => $game['location'],
+                'network'                => $game['network'],
                 'stats'                  => unserialize($game['stats']),
                 'spread'                 => $game['spread'],
                 'predictedWinner'        => $game['predicted_winner'],

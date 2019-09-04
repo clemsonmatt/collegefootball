@@ -83,4 +83,17 @@ class GameStatsController extends Controller
             'week'   => $week->getNumber(),
         ]);
     }
+
+    /**
+     * @Route("/{id}/update", name="app_game_stats_update")
+     */
+    public function updateAction(Week $week, WeeklyScoresService $weeklyScoresService)
+    {
+        $weeklyScoresService->updateData($week);
+
+        return $this->redirectToRoute('app_game_stats_index_week', [
+            'season' => $week->getSeason(),
+            'week'   => $week->getNumber(),
+        ]);
+    }
 }

@@ -28,8 +28,12 @@
     <div class="panel panel-default">
         <div class="panel-heading">
             <a href="{{ path('app_game_stats_import', { id: week.id }) }}" class="btn btn-warning btn-sm pull-right">
-                {{ icon('refresh') }}
+                {{ icon('alert') }}
                 Import stats
+            </a>
+            <a href="{{ path('app_game_stats_update', { id: week.id }) }}" class="btn btn-default btn-sm pull-right">
+                {{ icon('refresh') }}
+                Update games
             </a>
             {{ games|length }} Games Needing Stats
         </div>
@@ -37,6 +41,8 @@
             <thead>
                 <th>Home</th>
                 <th>Away</th>
+                <th>Time</th>
+                <th>Spread</th>
                 <th>Winner</th>
                 <th style="width: 1%;"></th>
             </thead>
@@ -44,6 +50,8 @@
                 <tr>
                     <td>{{ game.homeTeam.rankingNameShort }}</td>
                     <td>{{ game.awayTeam.rankingNameShort }}</td>
+                    <td>{{ game.time }}</td>
+                    <td>-{{ game.spread }} {{ game.predictedWinner }}</td>
                     <td>
                         {% if game.winningTeam.id %}
                             {{ game.winningTeam.rankingNameShort }}

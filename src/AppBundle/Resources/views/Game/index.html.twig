@@ -129,6 +129,9 @@
                                     <a href="{{ path('app_team_show', {'slug': game.homeTeam.slug}) }}" style="color: inherit;">
                                         {{ game.homeTeam.name }}
                                     </a>
+                                    {% if game.predictedWinner == 'Home' %}
+                                        <small class="text-muted">(-{{ game.spread }})</small>
+                                    {% endif %}
                                 </h3>
                             {% else %}
                                 <div style="width: 100px; height: 85px; background-color: #f2f2f2; float: left;">
@@ -158,11 +161,18 @@
                                     {{ game.location }}
                                     <hr style="margin: 5px 60px;">
                                     {{ game.date|date('m/d') }} @ {{ game.time ? game.time|date('h:i A') : 'TBD' }}
+                                    {% if game.network %}
+                                        <span class="label label-default">{{ game.network }}</span>
+                                    {% endif %}
                                 </div>
                                 <div class="visible-xs">
                                     {{ game.date|date('m/d') }}
                                     <br>
                                     {{ game.time ? game.time|date('h:i A') : 'TBD' }}
+                                    {% if game.network %}
+                                        <br>
+                                        <span class="label label-default">{{ game.network }}</span>
+                                    {% endif %}
                                 </div>
                             {% endif %}
                         </center>
@@ -193,6 +203,9 @@
                                     <a href="{{ path('app_team_show', {'slug': game.awayTeam.slug}) }}" style="color: inherit;">
                                         {{ game.awayTeam.name }}
                                     </a>
+                                    {% if game.predictedWinner == 'Away' %}
+                                        <small class="text-muted">(-{{ game.spread }})</small>
+                                    {% endif %}
                                 </h3>
                             {% else %}
                                 <div style="width: 100px; height: 85px; background-color: #f2f2f2; float: right;">

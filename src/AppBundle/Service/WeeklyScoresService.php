@@ -18,21 +18,12 @@ class WeeklyScoresService
 
     public function importScores(Week $week)
     {
-        $repository = $this->em->getRepository(Game::class);
-        $games      = $repository->createQueryBuilder('g')
-            ->where('g.date >= :startDate')
-            ->andWhere('g.date <= :endDate')
-            ->andWhere('g.espnId IS NOT NULL')
-            ->andWhere('g.canceled = 0')
-            ->setParameter('startDate', $week->getStartDate())
-            ->setParameter('endDate', $week->getEndDate())
-            ->getQuery()
-            ->getResult();
+        $games = $this->getGames($week);
 
         foreach ($games as $game) {
             $ch = curl_init();
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
-            curl_setopt($ch, CURLOPT_URL, 'http://www.espn.com/college-football/matchup?gameId='.$game->getEspnId());
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch, CURLOPT_URL, 'https://www.espn.com/college-football/matchup?gameId='.$game->getEspnId());
 
             $response = curl_exec($ch);
             curl_close($ch);
@@ -46,8 +37,53 @@ class WeeklyScoresService
         $this->em->flush();
     }
 
+    public function updateData(Week $week)
+    {
+        $games = $this->getGames($week);
+
+        foreach ($games as $game) {
+            $ch = curl_init();
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch, CURLOPT_URL, 'https://www.espn.com/college-football/game/_/gameId/'.$game->getEspnId());
+
+            $response = curl_exec($ch);
+            curl_close($ch);
+
+            // update spread
+            list($spread, $predictedWinner) = $this->getSpread($response);
+            $game->setSpread($spread);
+            $game->setPredictedWinner($predictedWinner);
+
+            // update time
+            $game->setTime($this->getTime($response));
+        }
+
+        $this->em->flush();
+    }
+
+    private function getGames($week)
+    {
+        $repository = $this->em->getRepository(Game::class);
+        $games      = $repository->createQueryBuilder('g')
+            ->where('g.date >= :startDate')
+            ->andWhere('g.date <= :endDate')
+            ->andWhere('g.espnId IS NOT NULL')
+            ->andWhere('g.canceled = 0')
+            ->setParameter('startDate', $week->getStartDate())
+            ->setParameter('endDate', $week->getEndDate())
+            ->getQuery()
+            ->getResult();
+
+        return $games;
+    }
+
     private function getStats($response)
     {
+        // first check to see if game has any stats
+        if (! $this->hasGameStats($response)) {
+            return null;
+        }
+
         $defaultStats = [
             'pointsFinal'        => null,
             'pointsFirst'        => null,
@@ -86,10 +122,20 @@ class WeeklyScoresService
         return $stats;
     }
 
-    private function getStringBetween($string, $start, $end){
+    private function hasGameStats($response)
+    {
+        $matchupContent = $this->getStringBetween($response, '<div id="gamepackage-matchup" data-module="matchup"  data-sport="football">', '</div>');
+
+        return strpos($matchupContent, 'No Team Stats Available') === false;
+    }
+
+    private function getStringBetween($string, $start, $end)
+    {
         $ini = strpos($string, $start);
 
-        if ($ini == 0) return '';
+        if ($ini == 0) {
+            return '';
+        }
 
         $ini += strlen($start);
         $len = strpos($string, $end, $ini) - $ini;
@@ -168,5 +214,40 @@ class WeeklyScoresService
         $stat = explode('-', $stat);
 
         return $stat[$subIndex];
+    }
+
+    private function getSpread($response)
+    {
+        $spread = null;
+        $predictedWinner = null;
+
+        $pickcenterData = $this->getStringBetween($response, '<table class="mediumTable">', '</table>');
+        $awayData = $this->getStringBetween($pickcenterData, '<tr class="awayteam">', '</tr>');
+        $awaySpread = $this->getStringBetween($awayData, '<td class="score">', '</td>');
+
+        $homeData = $this->getStringBetween($pickcenterData, '<tr class="hometeam">', '</tr>');
+        $homeSpread = $this->getStringBetween($homeData, '<td class="score">', '</td>');
+
+        if (count($awaySpread) && $awaySpread < 0) {
+            $spread = str_replace('-', '', $awaySpread);
+            $predictedWinner = 'Away';
+        } elseif (count($homeSpread) && $homeSpread < 0) {
+            $spread = str_replace('-', '', $homeSpread);
+            $predictedWinner = 'Home';
+        }
+
+        return [$spread, $predictedWinner];
+    }
+
+    private function getTime($response)
+    {
+        $timeString = $this->getStringBetween($response, '<span data-date="', '"');
+
+        if (count($timeString)) {
+            $dateTime = new \DateTime($timeString);
+            return $dateTime->setTimezone(new \DateTimeZone('America/New_York'))->format('h:i A');
+        }
+
+        return null;
     }
 }

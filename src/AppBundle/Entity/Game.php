@@ -20,6 +20,10 @@ class Game
     {
         $stats = $this->getStats();
 
+        if (! $stats) {
+            return null;
+        }
+
         if ($stats['homeStats']['pointsFinal'] > $stats['awayStats']['pointsFinal']) {
             return $this->setWinningTeam($this->getHomeTeam());
         }
@@ -42,7 +46,7 @@ class Game
     /**
      * @ORM\Column(name="time", type="string", nullable=true)
      */
-     private $time;
+    private $time;
 
     /**
      * @ORM\Column(name="season", type="integer")
@@ -116,6 +120,11 @@ class Game
      * @ORM\Column(name="espn_id", type="integer", nullable=true)
      */
     private $espnId;
+
+    /**
+     * @ORM\Column(name="network", type="string", length=255, nullable=true)
+     */
+    private $network;
 
 
     /**
@@ -504,5 +513,28 @@ class Game
     public function getEspnId()
     {
         return $this->espnId;
+    }
+
+    /**
+     * Set network
+     *
+     * @param string $network
+     * @return Game
+     */
+    public function setNetwork($network)
+    {
+        $this->network = $network;
+
+        return $this;
+    }
+
+    /**
+     * Get network
+     *
+     * @return string
+     */
+    public function getNetwork()
+    {
+        return $this->network;
     }
 }
