@@ -241,6 +241,11 @@ class WeeklyScoresService
 
     private function getTime($response)
     {
+        $timeString = $this->getStringBetween($response, '<span class="game-time time status-detail">', '</span>');
+        if ($timeString == 'TBD') {
+            return null;
+        }
+
         $timeString = $this->getStringBetween($response, '<span data-date="', '"');
 
         if (count($timeString)) {
