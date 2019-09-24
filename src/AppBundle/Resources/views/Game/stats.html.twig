@@ -44,7 +44,6 @@
                 <th>Away</th>
                 <th>Time</th>
                 <th>Spread</th>
-                <th>Winner</th>
                 <th style="width: 1%;"></th>
             </thead>
             {% for game in games %}
@@ -73,16 +72,6 @@
                         {% endif %}
                     </td>
                     <td>-{{ game.spread }} {{ game.predictedWinner }}</td>
-                    <td>
-                        {% if game.winningTeam.id %}
-                            {{ game.winningTeam.rankingNameShort }}
-                            <span class="text-muted">
-                                ({{ game.stats.homeStats.pointsFinal }} &ndash; {{ game.stats.awayStats.pointsFinal }})
-                            </span>
-                        {% else %}
-                            &mdash;
-                        {% endif %}
-                    </td>
                     <td>
                         <a href="{{ path('app_game_stats_add', {'game': game.id}) }}" class="btn btn-xxs btn-primary">
                             {{ icon('compose') }}

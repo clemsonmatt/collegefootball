@@ -128,9 +128,9 @@ class WeeklyScoresService
 
     private function hasGameStats($response)
     {
-        $matchupContent = $this->getStringBetween($response, '<div id="gamepackage-matchup" data-module="matchup"  data-sport="football">', '</div>');
+        $gameStatus = $this->getStringBetween($response, '<span class="game-time status-detail">', '</span>');
 
-        return strpos($matchupContent, 'No Team Stats Available') === false;
+        return strpos($gameStatus, 'Final') !== false;
     }
 
     private function getStringBetween($string, $start, $end)
