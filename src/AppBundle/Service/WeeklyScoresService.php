@@ -56,6 +56,9 @@ class WeeklyScoresService
 
             // update time
             $game->setTime($this->getTime($response));
+
+            // update network
+            $game->setNetwork($this->getNetwork($response));
         }
 
         $this->em->flush();
@@ -80,6 +83,7 @@ class WeeklyScoresService
     private function getStats($response)
     {
         // first check to see if game has any stats
+        //TODO: made sure game is final
         if (! $this->hasGameStats($response)) {
             return null;
         }
@@ -254,5 +258,16 @@ class WeeklyScoresService
         }
 
         return null;
+    }
+
+    private function getNetwork($response)
+    {
+        $network = $this->getStringBetween($response, '<span class="network">', '</span>');
+
+        if (count($network) == 0) {
+            return null;
+        }
+
+        return $network;
     }
 }

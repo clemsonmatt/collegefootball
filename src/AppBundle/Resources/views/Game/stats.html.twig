@@ -64,7 +64,14 @@
                             {{ game.awayTeam.rankingNameShort }}
                         </a>
                     </td>
-                    <td>{{ game.time }}</td>
+                    <td>
+                        {{ game.time }}
+                        {% if game.network %}
+                            <span class="label label-default">{{ game.network }}</span>
+                        {% else %}
+                            <span class="label label-warning">Missing</span>
+                        {% endif %}
+                    </td>
                     <td>-{{ game.spread }} {{ game.predictedWinner }}</td>
                     <td>
                         {% if game.winningTeam.id %}
