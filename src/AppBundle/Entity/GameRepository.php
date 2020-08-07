@@ -98,6 +98,10 @@ class GameRepository extends EntityRepository
         $imagePrefixPath = Team::imagePrefixPath();
 
         foreach ($games as $game) {
+            if ($game['time'] == 'Canceled') {
+                continue;
+            }
+
             $dateTime          = new \DateTime($game['date'].' '.$game['time']);
             $homeTeamName      = $game['homeTeamName'];
             $homeTeamNameShort = $game['homeTeamNameShort'];

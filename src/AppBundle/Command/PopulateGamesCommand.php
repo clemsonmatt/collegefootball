@@ -51,12 +51,12 @@ class PopulateGamesCommand extends ContainerAwareCommand
 
         foreach ($weeks as $result) {
             $dateString = $this->getStringBetween($result, '<h2 class="table-caption">', '</h2>');
-            $result     = $this->getStringBetween($result, '<table class="schedule', '</table>', true);
+            $result     = $this->getStringBetween($result, '<div class="responsive-table-wrap"><table class="schedule', '</table>', true);
 
-            while ($result['between']) {
+            while ($result && $result['between']) {
                 $dayGames = $this->getStringBetween($result['between'], '<tr', '</tr>', true);
 
-                while ($dayGames['between']) {
+                while ($dayGames && $dayGames['between']) {
                     $gameRaw = $dayGames['between'];
 
                     if ($gameRaw[0] == '>') {
@@ -71,13 +71,15 @@ class PopulateGamesCommand extends ContainerAwareCommand
                     $homeTeamRaw  = $this->getStringBetween($gameRaw, '<div class="home-wrapper"', '</td>');
                     $homeTeamName = $this->getStringBetween($homeTeamRaw, '<span>', '</span>');
 
-                    $espnId   = $this->getStringBetween($gameRaw, 'href="/college-football/game/_/gameId/', '">');
+                    $espnId = $this->getStringBetween($gameRaw, 'href="/college-football/game/_/gameId/', '">');
 
                     $timeRaw  = $this->getStringBetween($gameRaw, '<td data-behavior="date_time"', '</td>');
                     $dateTime = $this->getStringBetween($timeRaw, 'data-date="', '">');
                     if ($dateTime) {
                         $dateTime = new \DateTime($dateTime, new \DateTimeZone('UTC'));
                         $dateTime = $dateTime->setTimezone(new \DateTimeZone('America/New_York'))->format('h:i A');
+                    } elseif (strpos($gameRaw, 'Canceled') || strpos($gameRaw, 'Postponed')) {
+                        $dateTime = 'Canceled';
                     } else {
                         $dateTime = 'TBD';
                     }
@@ -95,15 +97,19 @@ class PopulateGamesCommand extends ContainerAwareCommand
                         $location = $location['between'].str_replace(['</a>', ' </a>'], '', $location['rest']);
                     }
 
+                    if (! $location) {
+                        $location = 'Missing';
+                    }
+
                     $game = $gameRepository->findOneByEspnId($espnId);
                     if ($game && $input->getArgument('context') == 'import') {
                         // update the game if previously added
-                        if ($game->getLocation() != $location || $game->getNetwork() != $network || ($game->getTime() != $dateTime && $dateTime != 'TBD')) {
+                        if ($game->getLocation() != $location || $game->getNetwork() != $network || ($game->getTime() != $dateTime && $dateTime != 'TBD' && $dateTime != 'Canceled')) {
                             $output->writeln('update: '.$game->getId().' - '.$awayTeamName.' at '.$homeTeamName);
                             $game->setLocation($location);
                             $game->setNetwork($network);
 
-                            if ($dateTime != 'TBD') {
+                            if ($dateTime != 'TBD' && $dateTime != 'Canceled') {
                                 $game->setTime($dateTime);
                             }
                         }
@@ -112,28 +118,26 @@ class PopulateGamesCommand extends ContainerAwareCommand
                         $awayTeam = $repository->findOneByNameShort($awayTeamName);
                         $homeTeam = $repository->findOneByNameShort($homeTeamName);
 
-                        if ($awayTeam && $homeTeam) {
-                            if ($input->getArgument('context') == 'import') {
-                                $newGame = new Game();
+                        if ($awayTeam && $homeTeam && $input->getArgument('context') == 'import') {
+                            $newGame = new Game();
 
-                                $newDate = new \DateTime($dateString);
-                                $newGame->setDate($newDate);
+                            $newDate = new \DateTime($dateString);
+                            $newGame->setDate($newDate);
 
-                                $newGame->setSeason(date('Y'));
-                                $newGame->setAwayTeam($awayTeam);
-                                $newGame->setHomeTeam($homeTeam);
-                                $newGame->setLocation($location);
-                                $newGame->setEspnId($espnId);
-                                $newGame->setNetwork($network);
+                            $newGame->setSeason(date('Y'));
+                            $newGame->setAwayTeam($awayTeam);
+                            $newGame->setHomeTeam($homeTeam);
+                            $newGame->setLocation($location);
+                            $newGame->setEspnId($espnId);
+                            $newGame->setNetwork($network);
 
-                                if ($dateTime != 'TBD') {
-                                    $newGame->setTime($dateTime);
-                                }
-
-                                $em->persist($newGame);
-
-                                $counter++;
+                            if ($dateTime != 'TBD') {
+                                $newGame->setTime($dateTime);
                             }
+
+                            $em->persist($newGame);
+
+                            $counter++;
                         } else {
                             $output->writeln('==========');
                             $output->writeln('date: '.$dateString);
@@ -150,7 +154,7 @@ class PopulateGamesCommand extends ContainerAwareCommand
                 }
 
                 $dateString = $dateString = $this->getStringBetween($result['rest'], '<h2 class="table-caption">', '</h2>');
-                $result     = $this->getStringBetween($result['rest'], '<table class="schedule', '</table>', true);
+                $result     = $this->getStringBetween($result['rest'], '<div class="responsive-table-wrap"><table class="schedule', '</table>', true);
             }
         }
 
