@@ -83,7 +83,6 @@ class WeeklyScoresService
     private function getStats($response)
     {
         // first check to see if game has any stats
-        //TODO: made sure game is final
         if (! $this->hasGameStats($response)) {
             return null;
         }
