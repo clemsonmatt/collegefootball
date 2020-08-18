@@ -49,6 +49,13 @@ class WeeklyScoresService
             $response = curl_exec($ch);
             curl_close($ch);
 
+            $game->setCanceled(false);
+
+            $timeString = $this->getStringBetween($response, '<span class="game-time status-detail">', '</span>');
+            if (in_array($timeString, ['Postponed', 'Canceled'])) {
+                $game->setCanceled(true);
+            }
+
             // update spread
             list($spread, $predictedWinner) = $this->getSpread($response);
             $game->setSpread($spread);
@@ -231,10 +238,10 @@ class WeeklyScoresService
         $homeData = $this->getStringBetween($pickcenterData, '<tr class="hometeam">', '</tr>');
         $homeSpread = $this->getStringBetween($homeData, '<td class="score">', '</td>');
 
-        if (count($awaySpread) && $awaySpread < 0) {
+        if ($awaySpread && count($awaySpread) && $awaySpread < 0) {
             $spread = str_replace('-', '', $awaySpread);
             $predictedWinner = 'Away';
-        } elseif (count($homeSpread) && $homeSpread < 0) {
+        } elseif ($homeSpread && count($homeSpread) && $homeSpread < 0) {
             $spread = str_replace('-', '', $homeSpread);
             $predictedWinner = 'Home';
         }
@@ -251,7 +258,7 @@ class WeeklyScoresService
 
         $timeString = $this->getStringBetween($response, '<span data-date="', '"');
 
-        if (count($timeString)) {
+        if ($timeString !== null && $timeString != '') {
             $dateTime = new \DateTime($timeString);
             return $dateTime->setTimezone(new \DateTimeZone('America/New_York'))->format('h:i A');
         }
@@ -263,7 +270,7 @@ class WeeklyScoresService
     {
         $network = $this->getStringBetween($response, '<span class="network">', '</span>');
 
-        if (count($network) == 0) {
+        if ($network !== null && $network != '') {
             return null;
         }
 
