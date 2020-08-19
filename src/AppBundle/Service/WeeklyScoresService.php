@@ -54,6 +54,7 @@ class WeeklyScoresService
             $timeString = $this->getStringBetween($response, '<span class="game-time status-detail">', '</span>');
             if (in_array($timeString, ['Postponed', 'Canceled'])) {
                 $game->setCanceled(true);
+                continue;
             }
 
             // update spread

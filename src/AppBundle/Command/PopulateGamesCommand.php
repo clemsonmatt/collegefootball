@@ -132,7 +132,11 @@ class PopulateGamesCommand extends ContainerAwareCommand
                             $newGame->setNetwork($network);
 
                             if ($dateTime != 'TBD') {
-                                $newGame->setTime($dateTime);
+                                if (in_array($dateTime, ['Postponed', 'Canceled'])) {
+                                    $newGame->setCanceled(true);
+                                } else {
+                                    $newGame->setTime($dateTime);
+                                }
                             }
 
                             $em->persist($newGame);
