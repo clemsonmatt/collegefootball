@@ -1,5 +1,5 @@
 {
-    "name"    : "collegefootball",
+    "name"    : "ellis/collegefootball",
     "license" : "proprietary",
     "type"    : "project",
     "autoload": {

@@ -239,10 +239,10 @@ class WeeklyScoresService
         $homeData = $this->getStringBetween($pickcenterData, '<tr class="hometeam">', '</tr>');
         $homeSpread = $this->getStringBetween($homeData, '<td class="score">', '</td>');
 
-        if ($awaySpread && count($awaySpread) && $awaySpread < 0) {
+        if ($awaySpread && $awaySpread < 0) {
             $spread = str_replace('-', '', $awaySpread);
             $predictedWinner = 'Away';
-        } elseif ($homeSpread && count($homeSpread) && $homeSpread < 0) {
+        } elseif ($homeSpread &&  $homeSpread < 0) {
             $spread = str_replace('-', '', $homeSpread);
             $predictedWinner = 'Home';
         }
