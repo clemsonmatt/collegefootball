@@ -16,3 +16,4 @@
 /web/bundles/
 .web-server-pid
 /node_modules
+.DS_Store

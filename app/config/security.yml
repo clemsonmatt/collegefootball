@@ -21,6 +21,8 @@ security:
             form_login:
                 login_path: login
                 check_path: login_check
+                default_target_path: app_person_pickem
+                always_use_default_target_path: true
             logout:
                 path:   /logout
                 target: /
