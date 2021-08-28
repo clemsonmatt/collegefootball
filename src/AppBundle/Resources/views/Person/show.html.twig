@@ -70,20 +70,19 @@
                 <div class="panel-heading">
                     Pick'em Leaderboard
                 </div>
-                <div class="panel-body">
-                    <h4 class="text-center">
-                        #{{ current_rank }} {{ person.username }} &mdash; {{ current_score }} pts
-                    </h4>
+                <div class="panel-body" style="border-bottom: 1px solid #ccc;">
+                    <h1 class="text-center text-primary" style="margin-top: 0px;">#{{ current_rank }}</h1>
+                    <h4 class="text-center text-muted" style="margin-bottom: 0px;">{{ current_score }} pts</h4>
                 </div>
                 <div style="max-height: 280px; overflow: auto;">
                     <table class="table table-striped table-hover">
                         <thead>
                             <th class="text-center">Rank</th>
                             <th>Username</th>
-                            <th class="text-center">
+                            <th class="text-center" style="width: 100px;">
                                 <span data-toggle="tooltip" data-placement="top" title="wins * %correct * 10">Score {{ icon('help-circled') }}</span>
                             </th>
-                            <th class="text-center">Win Ratio</th>
+                            <th class="text-center" style="width: 100px;">Win Ratio</th>
                         </thead>
                         <tbody>
                             {% for person_rank in people_rank %}
