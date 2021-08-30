@@ -34,7 +34,9 @@
         "jms/security-extra-bundle"           : "^1.6",
         "braincrafted/bootstrap-bundle"       : "^2.2",
         "mashape/unirest-php"                 : "^3.0",
-        "twig/twig"                           : "^2.0"
+        "twig/twig"                           : "^2.0",
+        "sendgrid/sendgrid": "^7.9",
+        "symfony/dotenv": "3.4.43"
     },
     "require-dev": {
         "sensio/generator-bundle"  : "^3.0",
