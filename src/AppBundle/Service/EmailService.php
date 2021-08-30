@@ -76,6 +76,28 @@ class EmailService
      */
     private function sendNotification($to, $body, $subject = null)
     {
+        $email = new \SendGrid\Mail\Mail();
+        $email->setFrom("noreply@elliscfb.com");
+        $email->addTo($to);
+
+        if ($subject) {
+            $email->setSubject($subject);
+            $email->addContent("text/html", $body);
+        } else {
+            $email->addContent("text/plain", $body);
+        }
+
+        $sendgrid = new \SendGrid(getenv('SENDGRID_API_KEY'));
+
+        try {
+            $sendgrid->send($email);
+        } catch (\Exception $e) {
+            echo 'Caught exception: '. $e->getMessage() ."\n";
+        }
+    }
+
+    private function sendNotificationSMTP($to, $body, $subject = null)
+    {
         $message = \Swift_Message::newInstance()
             ->setFrom('noreply@elliscfb.com')
             ->setTo($to)
