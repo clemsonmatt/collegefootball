@@ -271,7 +271,7 @@ class WeeklyScoresService
     {
         $network = $this->getStringBetween($response, '<span class="network">', '</span>');
 
-        if ($network !== null && $network != '') {
+        if ($network === null || $network == '') {
             return null;
         }
 
