@@ -7,16 +7,18 @@ use Doctrine\ORM\EntityManager;
 class WeekService
 {
     private $em;
+    private $currentSeason;
 
-    public function __construct(EntityManager $em)
+    public function __construct(EntityManager $em, string $currentSeason)
     {
         $this->em = $em;
+        $this->currentSeason = $currentSeason;
     }
 
     public function currentWeek($season = null, $week = null, $includePreseason = false)
     {
         if (! $season) {
-            $season = 2021;
+            $season = $this->currentSeason;
         }
 
         $repository  = $this->em->getRepository('AppBundle:Week');
