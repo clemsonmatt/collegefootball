@@ -3,6 +3,8 @@ services:
         autowire: true
         autoconfigure: true
         public: false
+        bind:
+            $currentSeason: '%current_season%'
 
     AppBundle\Controller\:
         resource: '../../src/AppBundle/Controller'
