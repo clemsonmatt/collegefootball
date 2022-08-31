@@ -77,7 +77,7 @@ class EmailService
     private function sendNotification($to, $body, $subject = null)
     {
         $email = new \SendGrid\Mail\Mail();
-        $email->setFrom("noreply@elliscfb.com");
+        $email->setFrom("matt@codellis.com");
         $email->addTo($to);
 
         if ($subject) {
